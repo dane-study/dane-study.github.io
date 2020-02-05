@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     
-    <title>RPKI Study</title>
-    <base href="https://rpki-study.github.io">
+    <title>DANE Study</title>
+    <base href="https://dane-study.github.io">
     
     
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -38,8 +38,8 @@
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li class="active"><a href="/">Home</a></li>
-        <li><a href="/rpki-archive/">RPKI Archive</a></li>
-        <li><a href="/analysis-code/">Analysis Code</a></li>
+        <li><a href="/server-side/">Server-side Artifacts</a></li>
+        <li><a href="/client-side/">Client-side Artifacts</a></li>
         <li><a href="/contact/">Contact</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
@@ -64,117 +64,30 @@
 
 <div class="jumbotron">
       <div class="container">
-          <h2 align='right'>RPKI is Coming of Age: <br>A Longitudinal Study of RPKI Deployment and Invalid Route Origins</h2>
+          <h2 align='right'><br>A Longitudinal and Comprehensive Study of the DANE Ecosystem in Email</h2>
         <h3 align='right'>
-            <a href="https://taejoong.github.io">Taejoong Chung<sup>§</sup></a>,
-            Emile Aben<sup>†</sup>,
-            Tim Bruijnzeels<sup>‡</sup>,<br>
-            <a href="https://inet.tu-berlin.de/~balakrishnan/">Balakrishnan Chandrasekaran<sup>-</sup>,</a>
-            <a href="http://david.choffnes.com">David Choffnes<sup>*</sup></a>,
-            <a href="http://www.cs.umd.edu/~dml/">Dave Levin<sup>+</sup></a><br>,
-            <a href="http://www.cs.cmu.edu/~bmm/">Bruce Maggs°<sup>•</sup></a>,
-            <a href="http://www.ccs.neu.edu/home/amislove/">Alan Mislove<sup>*</sup></a>,
-            <a href="https://wwwhome.ewi.utwente.nl/~rijswijkrm/">Roland van Rijswijk-Deij<sup>‡±</sup></a>,<br>
-            <a href="http://www.cs.northwestern.edu/~jpr123/">John Rula<sup>•</sup></a>,
-            <a href="https://crypto.dance/">Nick Sullivan<sup>※</sup></a>
+            
+            <a href="https://mmlab.snu.ac.kr/~hmlee/">Hyeonmin Lee<sup>†</sup></a>,
+            <a href="https://anikethfoss.wordpress.com/">Aniketh Gireesh<sup>*</sup></a>,
+            <a href="https://wwwhome.ewi.utwente.nl/~rijswijkrm/">Roland van Rijswijk-Deij<sup>‡</sup></a>,<br>
+            <a href="https://mmlab.snu.ac.kr/~tk/">Taekyoung "Ted" Kwon<sup>†</sup></a>,
+            <a href="https://taejoong.github.io">Taejoong "Tijay" Chung<sup>§</sup></a>,
         </h3>
         <h5 align='right'>
-            <sup>§</sup>Rochester Institute of Technology,
-            <sup>†</sup>RIPE NCC,
-            <sup>‡</sup>NLNetLabs,
-            <sup>±</sup>University of Twente,<br>
-            <sup>-</sup>Max Planck Institute for Informatics,
-            <sup>*</sup>Northeastern University,<br>
-            <sup>+</sup>University of Maryland,
-            <sup>°</sup>Duke University,
-            <sup>•</sup>Akamai Technologies,
-            <sup>※</sup>Cloudflare
+            <sup>†</sup>Seoul National University,
+            <sup>*</sup>Amrita School of Engineering,<br>
+            <sup>‡</sup>NLNetLabs and University of Twente,
+            <sup>§</sup>Rochester Institute of Technology
       </div>
     </div>
 
 <h1 id="about-this-study">About This Study</h1>
 
-<p>Despite its critical role in Internet connectivity, BGP remains highly vulnerable to attacks such as prefix hijacking, where an Autonomous System (AS) announces routes for IP space it does not control. To address this issue, the Resource Public Key Infrastructure (RPKI) was developed starting in 2008, resulting in deployment in 2011. This paper performs the first comprehensive, longitudinal study of the deployment and quality of RPKI. We use a unique dataset containing all RPKI Route Origin Authorizations (ROAs) from the moment RPKI was first deployed, more than 8 years ago. We combine this dataset with BGP announcements from more than 3,300 BGP collectors worldwide. Our analysis shows the after a gradual start, RPKI has seen a rapid increase in adoption over the past two years. We also show that although misconfigurations were rampant when RPKI was first deployed (causing many announcements to appear as RPKI invalid) they are quite rare today. We develop a taxonomy of invalid RPKI announcements, then quantify their prevalence. We further identify suspicious announcements indicative of prefix hijacking and present case studies of likely hijacks. Overall, we conclude that while misconfigurations do occur, RPKI is “ready for the big screen,” and routing security can be increased by dropping invalid announcements.</p>
+<p>The DNS-based Authentication of Named Entities (DANE) standard allows clients and servers to establish a TLS connection without relying on trusted third parties like CAs by publishing Transport Layer Security Authentication (TLSA) records. DANE uses the Domain Name System’s Security Extensions (DNSSEC) PKI to achieve the integrity and authenticity. However, DANE can only work correctly if each of the principals in its PKI properly performs its duty: through their DNSSEC-aware DNS servers, DANE servers (e.g., SMTP servers) must publish their TLSA records, which are consistent with their certificates. Similarly, DANE clients (e.g., SMTP clients) must verify the DANE servers’ TLSA records, which are also used to validate the fetched certificates.
+This paper performs a large-scale, longitudinal, and comprehensive measurement study on how well the DANE standard and its relevant protocols are deployed and managed. We collect the dataset from all the second-level domains under .com, .org, .net, .nl, and .se TLDs over a period of 24 months to analyze the server-side deployment and management. For the client-side deployment and management analysis, we investigated 30 popular email service providers, and four popular MTA and 10 DNS software programs.
+Our study reveals the prevalent mismanagement in the DANE ecosystem. For instance, we found that 36% of TLSA records cannot be validated due to missing or incorrect DNSSEC records, and 14.17% of them are inconsistent with their certificates. We also found that only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking Certificate Usage in TLSA records. On the bright side, the administrators of email servers can leverage open source MTA and DNS programs to support DANE correctly.</p>
 
-<p><b><center> This paper will be published at IMC&rsquo;2019 (Internet Measurement Conference) and you can download the paper <a href="/data/paper.pdf">here</a>.</b></center></p>
-
-<h1 id="datasets-tools-and-source-codes">Datasets, tools, and source codes</h1>
-
-<p>To foster reproducibility and stimulate further research into the RPKI ecosystem, we publicly release the followings:
-(Please cite this study when using the datasets.)</p>
-
-<h2 id="1-rpki-datasets">1. RPKI datasets</h2>
-
-<ul>
-<li>Historical RPKI Objects (from RIPE NCC)</li>
-<li>RPKI Validators (Routinator) and VRP producers (Ziggy)</li>
-</ul>
-
-<p>For these two datasets, <a href="/rpki-archive">RPKI Archive</a> describes the datasets and instruction.</p>
-
-<h2 id="2-bgp-advertisements">2. BGP advertisements</h2>
-
-<p>In order to understand how ROAs affect routing table construction, we used three datasets:</p>
-
-
-
-
-
-
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>Source</th>
-<th align="center">Start date</th>
-<th align="center">End date</th>
-<th align="center"># of VPs</th>
-<th align="center"># of Unique Prefixes</th>
-<th>Link</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td><code>RouteViews</code></td>
-<td align="center">2011-01-21</td>
-<td align="center">2018-12-27</td>
-<td align="center">23</td>
-<td align="center">958K</td>
-<td><a href="http://routeviews.org">RouteViews</a></td>
-</tr>
-
-<tr>
-<td><code>RIPE-RIS</code></td>
-<td align="center">2011-01-21</td>
-<td align="center">2018-12-27</td>
-<td align="center">24</td>
-<td align="center">905K</td>
-<td><a href="https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris/ris-raw-data">RIPE-RIS</a></td>
-</tr>
-
-<tr>
-<td><code>Akamai</code></td>
-<td align="center">2017-01-21</td>
-<td align="center">2018-12-31</td>
-<td align="center">3,300</td>
-<td align="center">1.94M</td>
-<td>N/A<sup>1</sup></td>
-</tr>
-</tbody>
-</table>
-<style>
-table, th, td {
-  text-align: center;
-}
-</style>
-
-
-<p><br>
-<sup>1</sup>Our Akamai dataset is provided under agreement with Akamai; unfortunately, we are not permitted to release this data.</p>
-
-<h2 id="3-analysis-and-plotting-source-codes">3. Analysis and plotting source codes</h2>
-
-<p>For reproducibility of the IMC’19 paper, we share the analysis codes and plotting scripts <a href="/analysis-code">here</a>.</p>
+<p><b><center> This paper will be published at USENIX Security&rsquo;20</b></center></p>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
