@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.55.6" />
+	<meta name="generator" content="Hugo 0.63.2" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -33,7 +33,7 @@
     <span class="icon-bar">&nbsp;</span>
     <span class="icon-bar">&nbsp;</span>
     </button>
-    <a class="navbar-brand" href="#">DANE Study</a>
+    <a class="navbar-brand" href="#">RPKI Study</a>
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
@@ -48,6 +48,8 @@
 </nav>
 
     
+
+    
     <noscript>
   <div class="alert alert-warning" role="alert">
     <strong>JavaScript disabled!</strong> This page requires JavaScript, you might not be able to access all content with JavaScript disabled.
@@ -55,36 +57,28 @@
 </noscript>
 
     <main class="container-fluid">
-
-<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101208253);</script>
-<script async src="//static.getclicky.com/js"></script>
-
-<div class="jumbotron">
-      <div class="container">
-          <h2 align='right'><br>A Longitudinal and Comprehensive Study of the DANE Ecosystem in Email</h2>
-        <h3 align='right'>
-            
-            <a href="https://mmlab.snu.ac.kr/~hmlee/">Hyeonmin Lee<sup>†</sup></a>,
-            <a href="https://anikethgireesh.me/">Aniketh Girish<sup>*</sup></a>,
-            <a href="https://wwwhome.ewi.utwente.nl/~rijswijkrm/">Roland van Rijswijk-Deij<sup>‡</sup></a>,<br>
-            <a href="https://mmlab.snu.ac.kr/~tk/">Taekyoung "Ted" Kwon<sup>†</sup></a>,
-            <a href="https://taejoong.github.io">Taejoong "Tijay" Chung<sup>§</sup></a>,
-        </h3>
-        <h5 align='right'>
-            <sup>†</sup>Seoul National University,
-            <sup>*</sup>Amrita Vishwa Vidyapeetham,<br>
-            <sup>‡</sup>NLNetLabs and University of Twente,
-            <sup>§</sup>Rochester Institute of Technology
-      </div>
-    </div>
-
+      <!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>        &lt;a href=&quot;https://mmlab.snu.ac.kr/~hmlee/&quot;&gt;Hyeonmin Lee&lt;sup&gt;†&lt;/sup&gt;&lt;/a&gt;,
+        &lt;a href=&quot;https://anikethgireesh.me/&quot;&gt;Aniketh Girish&lt;sup&gt;*&lt;/sup&gt;&lt;/a&gt;,
+        &lt;a href=&quot;https://wwwhome.ewi.utwente.nl/~rijswijkrm/&quot;&gt;Roland van Rijswijk-Deij&lt;sup&gt;‡&lt;/sup&gt;&lt;/a&gt;,&lt;br&gt;
+        &lt;a href=&quot;https://mmlab.snu.ac.kr/~tk/&quot;&gt;Taekyoung &quot;Ted&quot; Kwon&lt;sup&gt;†&lt;/sup&gt;&lt;/a&gt;,
+        &lt;a href=&quot;https://taejoong.github.io&quot;&gt;Taejoong &quot;Tijay&quot; Chung&lt;sup&gt;§&lt;/sup&gt;&lt;/a&gt;,
+    &lt;/h3&gt;
+    &lt;h5 align='right'&gt;
+        &lt;sup&gt;†&lt;/sup&gt;Seoul National University,
+        &lt;sup&gt;*&lt;/sup&gt;Amrita Vishwa Vidyapeetham,&lt;br&gt;
+        &lt;sup&gt;‡&lt;/sup&gt;NLNetLabs and University of Twente,
+        &lt;sup&gt;§&lt;/sup&gt;Rochester Institute of Technology
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
 <h1 id="about-this-study">About This Study</h1>
-
 <p>The DNS-based Authentication of Named Entities (DANE) standard allows clients and servers to establish a TLS connection without relying on trusted third parties like CAs by publishing Transport Layer Security Authentication (TLSA) records. DANE uses the Domain Name System’s Security Extensions (DNSSEC) PKI to achieve the integrity and authenticity. However, DANE can only work correctly if each of the principals in its PKI properly performs its duty: through their DNSSEC-aware DNS servers, DANE servers (e.g., SMTP servers) must publish their TLSA records, which are consistent with their certificates. Similarly, DANE clients (e.g., SMTP clients) must verify the DANE servers’ TLSA records, which are also used to validate the fetched certificates.
 This paper performs a large-scale, longitudinal, and comprehensive measurement study on how well the DANE standard and its relevant protocols are deployed and managed. We collect the dataset from all the second-level domains under .com, .org, .net, .nl, and .se TLDs over a period of 24 months to analyze the server-side deployment and management. For the client-side deployment and management analysis, we investigated 30 popular email service providers, and four popular MTA and 10 DNS software programs.
 Our study reveals the prevalent mismanagement in the DANE ecosystem. For instance, we found that 36% of TLSA records cannot be validated due to missing or incorrect DNSSEC records, and 14.17% of them are inconsistent with their certificates. We also found that only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking Certificate Usage in TLSA records. On the bright side, the administrators of email servers can leverage open source MTA and DNS programs to support DANE correctly.</p>
-
-<p><b><center> This paper will be published at USENIX Security&rsquo;20</b></center></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --> This paper will be published at USENIX Security&rsquo;20<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">

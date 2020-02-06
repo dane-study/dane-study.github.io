@@ -32,11 +32,7 @@
     <span class="icon-bar">&nbsp;</span>
     <span class="icon-bar">&nbsp;</span>
     </button>
-<<<<<<< HEAD
-    <a class="navbar-brand" href="#">DANE Study</a>
-=======
     <a class="navbar-brand" href="#">RPKI Study</a>
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
@@ -60,7 +56,6 @@
 </noscript>
 
     <main class="container-fluid">
-<<<<<<< HEAD
       <h1 id="dane-server-side-archive">DANE Server-side Archive</h1>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
@@ -76,34 +71,18 @@
 <p>To analyze collected DANE dataset, we provide analysis codes to process raw-dataset and to plot figures in the USNIEX&rsquo;20 paper. (For your convenience, we provide a raw-dataset which is used for the paper.)</p>
 </li>
 <li>
-<p>Due to the massive size of the datasets (3 months of hourly dataset and 2 years of daily dataset), we strongly encourage you to use distributed cluster-computing framework (we used <a href="https://spark.apache.org/">Spark</a> for large-scael data processing.)</p>
+<p>Due to the massive size of the datasets (4 months of hourly dataset and 2 years of daily dataset), we strongly encourage you to use distributed cluster-computing framework (we used <a href="https://spark.apache.org/">Spark</a> for large-scael data processing.)</p>
 </li>
 </ol>
 <h2 id="summary-of-source-codes">Summary of source codes</h2>
 <p>Here, we provide following source codes. The instruction and usage of the source codes are explained below.</p>
 <h3 id="1-data-scan">1. Data scan</h3>
 <p>These codes are used to scan TLSA records and STARTTLS certificates.</p>
-=======
-      
-
-<h1 id="ripe-historic-rpki-data-archive">RIPE Historic RPKI Data Archive</h1>
-
-<h2 id="data-description">Data description</h2>
-
-<p>Below is a concise description of the archived RPKI data available from RIPE. This data can be accessed using the following URL:</p>
-
-<p><a href="https://ftp.ripe.net/rpki/">https://ftp.ripe.net/rpki/</a></p>
-
-<h2 id="overall-archive-structure">Overall archive structure</h2>
-
-<p>The root of the repositories contains a number of directories, each of which have data for (part of) the RPKI data for a specific Regional Internet Registry (RIR). The table below lists these directories and their specifics:</p>
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
 
 
 
 
 
-<<<<<<< HEAD
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
@@ -159,8 +138,12 @@
 </tbody>
 </table>
 <h2 id="summary-of-dataset">Summary of dataset</h2>
-<p>Here, we provide our collected dataset (Daily and Hourly snapshot) and some other data need to run our scripts.</p>
-<p>You can download all data from here: <a href="https://mmlab.snu.ac.kr/~hmlee/dane/dane_data.html">Download</a></p>
+<p>Here, we provide our collected raw dataset (Hourly snapshot) and some other data need to run our scripts.
+We also provide intermediary data which is the output of our scripts for your convenience.
+(Because Daily dataset was crawled using zone files which are given under agreement with registries, we cannot make them just publicly available.)</p>
+<p>You can download all data from here: <a href="https://mmlab.snu.ac.kr/~hmlee/dane/dane_data.html">Download</a>  (All data are compressed with tar.gz)</p>
+<h3 id="1-auxiliary-data">1. Auxiliary data</h3>
+<p>Files need to run our scripts.</p>
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
@@ -171,18 +154,45 @@
 <tbody>
 <tr>
 <td><code>dependencies.zip</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seed-files.tar</code></td>
-<td></td>
+<td>include python <code>dns</code> package, used for Spark scripts</td>
 </tr>
 <tr>
 <td><code>root-ca-list</code></td>
-<td></td>
+<td>contain root CA&rsquo;s certificates, used for some Spark scripts</td>
+</tr>
+<tr>
+<td><code>seed-files</code></td>
+<td>TLSA base domain data, used for scanning codes &amp; <code>rollover-candidate.py</code> script</td>
+</tr>
+<tr>
+<td><code>tlsa-counts.csv</code></td>
+<td>number of domains with MX reocrds that has a corresponding TLSA records</td>
+</tr>
+<tr>
+<td><code> tlsa-with-mxcount</code></td>
+<td>number of domains corresponding to TLSA base domain for each TLD</td>
+</tr>
+<tr>
+<td><code>alexa_mx_20191031</code></td>
+<td>alexa domains which have MX records</td>
+</tr>
+<tr>
+<td><code>alexa_tlsa_20191031</code></td>
+<td>alexa domains which have TLSA records</td>
+</tr>
+<tr>
+<td><code>alexa-top1m-2019-10-31_0900_UTC.csv</code></td>
+<td>alexa rank file</td>
 </tr>
 </tbody>
 </table>
+<h3 id="2-hourly-snapshot-rawdata">2. Hourly snapshot rawdata</h3>
+<p>Hourly snapshot for 5 vantage points (Virginia, Oregon, Paris, Sydney, Sao Paulo).</p>
+<p>Each vantage points contain 2 datasets: TLSA and STARTTLS.</p>
+<h3 id="3-intermediary-data">3. Intermediary data</h3>
+<p>We also privde output for each scripts for your convenience.</p>
+<p>Example 1) you can use dane_validation_output (output of spark script <code>dane-validation.py</code>) to run <code>dane-validation-stat.py</code>.</p>
+<p>Example 2) you can use alexa_dane_stat_output (output of stats script <code>alexa1m-dane-stat.py</code>) to run <code>alexa-tlsa-adoption.plot</code> which plots figure 2 in the paper.</p>
 <h2 id="collecting-tlsa-records--starttls-certificates">Collecting TLSA records &amp; STARTTLS certificates</h2>
 <h3 id="1-set-up-environment">1. Set up environment</h3>
 <p>To use the scanning scripts, you need to install some dependencies.</p>
@@ -297,17 +307,18 @@
 <h3 id="2-analyze-merged-data">2. Analyze merged data</h3>
 <p>To get meaningful results, merged data go through 2 steps: Running Spark script to get intermediary results and Extracting statistics from the results</p>
 <h4 id="21-run-spark-script">2.1 Run Spark script</h4>
-<p>Because we have to deal with massive size of data, we used <code>Spark</code> to process data. The <code>analysis-spark-codes.tar.gz</code> contains 9 analysis scripts that run on the Spark cluster. These scripts take the merged data as an input and return intermediary results. Intermediary results are aggregated to extract statistics in the next step.</p>
+<p>Because we have to deal with massive size of data, we used <code>Spark</code> to process data. The <code>spark-codes.tar.gz</code> contains 9 analysis scripts that run on the Spark cluster. These scripts take the merged data as an input and return intermediary results. Intermediary results are aggregated to extract statistics in the next step.</p>
 <p>Some scripts need <a href="http://www.dnspython.org/">dns</a> python package to run, but this package is not standard package. Thus, you have to explictliy include this package when you execute the scripts by using <code>--py-files</code> option. For convenience, we upload the package <code>dependencies.zip</code> and you can use it directly. You can run the scripts as follows:</p>
 <pre><code>
 spark-submit --py-files=/path/to/dependencies.zip example.py
 
-</code></pre><p>The below table describes each script and related statistics scripts.</p>
+</code></pre><p>The below table describes each script and related statistics scripts. You can download sample outputs from the above Download link.</p>
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
 <th>file</th>
 <th>description</th>
+<th>sample output</th>
 <th>misc.</th>
 </tr>
 </thead>
@@ -315,223 +326,198 @@ spark-submit --py-files=/path/to/dependencies.zip example.py
 <tr>
 <td><code>dane-validation.py</code></td>
 <td>validate dane results</td>
+<td>dane_validation_output</td>
 <td>need output of <code>chain-validation.py</code> to run</td>
 </tr>
 <tr>
 <td><code>chain-validation.py</code></td>
 <td>verify starttls chain in advance, outputs are used as input for other scripts</td>
+<td>chain_validation_output</td>
 <td>need <code>root-ca-list</code> &amp; <a href="http://manpages.ubuntu.com/manpages/trusty/man1/faketime.1.html">faketime</a> path to run</td>
 </tr>
 <tr>
 <td><code>dnssec.py</code></td>
 <td>validate dnssec results</td>
+<td>dnssec_output</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>starttls-error.py</code></td>
 <td>classify the reasons of starttls scanning error</td>
+<td>starttls_error_output</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>check-incorrect.py</code></td>
 <td>classify the reasons of dane validation failure (related to certificates)</td>
+<td>check_incorrect_output</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>superfluous.py</code></td>
 <td>check if domains have superfluous certificate chain</td>
+<td>superfluous_output</td>
 <td>need output of <code>chain-validation.py</code> to run</td>
 </tr>
 <tr>
 <td><code>rollover-candidate.py</code></td>
 <td>extract target domains for rollover evaluation</td>
+<td>rollover_cand_output</td>
 <td>need <code>seed-files</code> data to run</td>
 </tr>
 <tr>
 <td><code>rollover.py</code></td>
 <td>evaluate rollover behavior of domains</td>
+<td>rollover_output</td>
 <td>need output of <code>rollover-candidate-sub.py</code> to run (ex. rollover-candidate-virginia.txt)</td>
 </tr>
 <tr>
 <td><code>valid-dn.py</code></td>
 <td>count the number of domains associated to mail servers which have valid TLSA record</td>
-<td>need <code>tlsa-with-mxcount</code> data to run</td>
+<td>valid_dn_output</td>
+<td>need output of <code>dane-validation.py</code> &amp; <code>tlsa-with-mxcount</code> data to run</td>
 </tr>
 </tbody>
 </table>
 <h4 id="22-extract-statistics">2.2 Extract statistics</h4>
 <p>After get outputs from the spark scripts, you need to extract statistics from the outputs. <code>stats-codes.tar.gz</code> contains 9 analysis scripts for this purpose. Also, <code>plotting-scripts.tar.gz</code> contains 6 plotting scripts which generate the figures in the paper.</p>
+<p>You can use the sample outputs in 2.1 as an input for below statistics scripts.</p>
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
 <th>file</th>
 <th>description</th>
+<th>sample output</th>
 <th>results in the paper</th>
-<th>related gnuplot script</th>
+<th>related spark script</th>
 <th>misc.</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>dane-validation-stats.py</code></td>
+<td><code>dane-validation-stat.py</code></td>
 <td>calculate stats of dane validation results</td>
+<td>dane_valid_stat_output</td>
 <td>-</td>
-<td>-</td>
-<td>need output of <code>dane-validatation.py</code> as an input</td>
+<td><code>dane-validatation.py</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>dnssec-stat.py</code></td>
 <td>calculate stats of dnssec validation results</td>
-<td>figure 3</td>
-<td>missing-dnssec.plot</td>
-<td>need output of <code>dnssec.py</code> as an input</td>
+<td>dnssec_stat_output</td>
+<td>-</td>
+<td><code>dnssec.py</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>starttls-error-stat.py</code></td>
 <td>calculate stats of starttls crawl errors</td>
-<td>figure 4</td>
-<td>starttls-availability.plot</td>
-<td>need output of <code>starttls-error.py </code> as an input</td>
+<td>starttls_error_stat_output</td>
+<td>-</td>
+<td><code>starttls-error.py </code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>check-incorrect-stat.py</code></td>
 <td>calcuate stats of dane validation failure reasons</td>
-<td>figure 5</td>
-<td>incorrect-percent-per-comp.plot</td>
-<td>need output of <code>check-incorrect.py</code> &amp; <code>dane-validation-stat.py</code> as inputs</td>
+<td>check_incorrect_stat_output</td>
+<td>-</td>
+<td><code>check-incorrect.py</code></td>
+<td>need output of <code>dane-validation-stat.py</code> to run, the paper used only virginia data</td>
 </tr>
 <tr>
 <td><code>superfluous-stat.py</code></td>
 <td>calculate stats of superfluous certificate chains</td>
+<td>superfluous_stat_output</td>
 <td>Section 5.5, Unsuitable Usages</td>
-<td>-</td>
-<td>need output of <code>superfluous.py</code> (virginia data) as an input</td>
+<td><code>superfluous.py</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>rollover-candidate-sub.py</code></td>
 <td>find rollover candidates (domains who changed their keys correctly)</td>
+<td>rollover_candidate_output</td>
 <td>-</td>
-<td>-</td>
-<td>need output of <code>rollover-candidate.py</code> (virginia data) as an input</td>
+<td><code>rollover-candidate.py</code></td>
+<td>the paper used only virginia data</td>
 </tr>
 <tr>
 <td><code>rollover-stat.py</code></td>
 <td>calculate stats of rollover behavior of domains</td>
+<td>rollover_stat_output</td>
 <td>Section 5.5, Key Rollover</td>
-<td>-</td>
-<td>need output of <code>rollover.py</code> (virginia data) as an input</td>
+<td><code>rollover.py</code></td>
+<td>the paper used only virginia data</td>
 </tr>
 <tr>
 <td><code>valid-dn-stat.py</code></td>
 <td>calculate stats of DANE-valid domains for each TLD</td>
-<td>figure 6</td>
-<td>4months-valid-per-tld.plot</td>
-<td>need output of <code>valid-dn.py</code> (virginia data) as an input</td>
+<td>valid_dn_stat_output</td>
+<td>-</td>
+<td><code>valid-dn.py</code></td>
+<td>the paper used only virginia data</td>
 </tr>
 <tr>
 <td><code>alexa1m-dane-stat.py</code></td>
 <td>calculate stats of Alexa domains who have TLSA records</td>
-<td>figure 2</td>
-<td>2years-tlsa-ratio-per-tld-split.plot</td>
-<td>need <code>alexa_mx_20191031</code> &amp; <code>alexa_tlsa_20191031</code> &amp; <code>alexa-top1m-2019-10-31_0900_UTC.csv</code> as inputs</td>
+<td>alexa_dane_stat_output</td>
+<td>-</td>
+<td>-</td>
+<td>need <code>alexa_mx_20191031</code>, <code>alexa_tlsa_20191031</code>, <code>alexa-top1m-2019-10-31_0900_UTC.csv</code> data to run</td>
 </tr>
 </tbody>
 </table>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-
-=======
-
+<p>Also, you can use sample output of statistics scripts as an input for related gnuplot scripts.</p>
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
-<th>Directory</th>
-<th>RIR</th>
-<th align="center">Start date</th>
-<th align="center">End date</th>
+<th>file</th>
+<th>results in the paper</th>
+<th>related stats script</th>
+<th>misc.</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
-<td><code>afrinic.tal</code></td>
-<td>AFRINIC</td>
-<td align="center">2011-01-21</td>
-<td align="center"><em>updated daily</em></td>
+<td><code>2years-tlsa-ratio-per-tld-split.plot</code></td>
+<td>figure 1</td>
+<td>-</td>
+<td>need <code>tlsa-counts.csv</code></td>
 </tr>
-
 <tr>
-<td><code>apnic-afrinic.tal</code></td>
-<td>APNIC<sup>1</sup></td>
-<td align="center">2012-10-26</td>
-<td align="center">2018-04-04</td>
+<td><code>alexa-tlsa-adoption.plot</code></td>
+<td>figure 2</td>
+<td><code>alexa1m-dane-stat.py</code></td>
+<td></td>
 </tr>
-
 <tr>
-<td><code>apnic-arin.tal</code></td>
-<td>APNIC<sup>1</sup></td>
-<td align="center">2012-10-26</td>
-<td align="center">2018-04-04</td>
+<td><code>missing-dnssec.plot</code></td>
+<td>figure 3</td>
+<td><code>dnssec-stat.py</code></td>
+<td></td>
 </tr>
-
 <tr>
-<td><code>apnic-iana.tal</code></td>
-<td>APNIC<sup>1</sup></td>
-<td align="center">2012-10-26</td>
-<td align="center">2018-04-04</td>
+<td><code>starttls-availability.plot</code></td>
+<td>figure 4</td>
+<td><code>starttls-error-stat.py</code></td>
+<td></td>
 </tr>
-
 <tr>
-<td><code>apnic-lacnic.tal</code></td>
-<td>APNIC<sup>1</sup></td>
-<td align="center">2012-10-26</td>
-<td align="center">2018-04-04</td>
+<td><code>incorrect-percent-per-comp.plot</code></td>
+<td>figure 5</td>
+<td><code>check-incorrect-stat.py</code></td>
+<td></td>
 </tr>
-
 <tr>
-<td><code>apnic-ripe.tal</code></td>
-<td>APNIC<sup>1</sup></td>
-<td align="center">2012-10-26</td>
-<td align="center">2018-04-04</td>
-</tr>
-
-<tr>
-<td><code>apnic.tal</code></td>
-<td>APNIC<sup>2</sup></td>
-<td align="center">2011-01-21</td>
-<td align="center">2012-10-25</td>
-</tr>
-
-<tr>
-<td><code>apnic.tal</code></td>
-<td>APNIC<sup>2</sup></td>
-<td align="center">2018-04-05</td>
-<td align="center"><em>updated daily</em></td>
-</tr>
-
-<tr>
-<td><code>arin.tal</code></td>
-<td>ARIN</td>
-<td align="center">2011-01-21</td>
-<td align="center"><em>updated daily</em></td>
-</tr>
-
-<tr>
-<td><code>localcert.tal</code></td>
-<td>Experimental<sup>3</sup></td>
-<td align="center">2011-08-17</td>
-<td align="center">2019-08-06</td>
-</tr>
-
-<tr>
-<td><code>ripencc.tal</code></td>
-<td>RIPE</td>
-<td align="center">2011-01-21</td>
-<td align="center"><em>updated daily</em></td>
+<td><code>4months-valid-per-tld.plot</code></td>
+<td>figure 6</td>
+<td><code>valid-dn-stat.py</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
+
 <style>
 table, th, td {
   text-align: center;
@@ -539,226 +525,6 @@ table, th, td {
 </style>
 
 
-<<<<<<< HEAD
-=======
-<p><sup>1</sup> The APNIC repository was split up into a main repository (<code>-iana</code>) and subrepositories for the other RIRs, where these specific subrepositories contain those prefixes the covering <code>/8</code> of which is allocated to another RIR in the IANA registry. This is an artefact resulting from the one-time desire to have the IPv4 &ldquo;<code>/8</code> majority&rdquo; prefixes in the IANA registry on each RIR&rsquo;s certificate. The RIRs would then sign certificates to each other for the small bits of early registration and transferred space out of such a <code>/8</code> that is registered at the other RIR. APNIC discontinued this split in 2018, and since then uses a single RPKI repository like the other RIRs do. To get the unified view for the APNIC repository over the period of the split, the various subrepositories should be merged into a single view. The Ziggy tool (more information below) does this automatically.</p>
-
-<p><sup>2</sup> This is the unified repository for APNIC as it was maintained before October 2012, and is it is currently maintained.</p>
-
-<p><sup>3</sup> This repository is produced by a RIPE NCC test environment and can be ignored.</p>
-
-<p>Each of the repository directories is further structured into year, month and day directories. The day directories contain a file called <code>repo.tar.gz</code> that contains the archived RPKI data for that repository on that day. The contents of this file are discussed in more detail below.</p>
-
-<h2 id="repository-files">Repository files</h2>
-
-<p>The <code>.tar.gz</code> files that can be downloaded for each RIR all have the same basic structure. They contain a directory with the name of the respective repository (e.g. <code>apnic.tal</code>), and inside that directory are deeper subdirectories for the year, month and day to which the archived file pertains (e.g. <code>apnic.tal/2019/08/27</code>).</p>
-
-<p>In this directory, you will typically find two files:</p>
-
-<ul>
-<li><p>The Trust Anchor certificate for the repository; this is the root of trust from which the content of the repository should be validated (typically ending in <code>.tal.cer</code>, e.g. <code>apnic.tal.cer</code>).</p></li>
-
-<li><p>A directory called <code>rta</code> which has two subdirectories called <code>validated</code> and <code>unvalidated</code>. As the names imply, <code>validated</code> only contains valid RPKI objects as validated by the <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification/tools-and-resources">RIPE NCC RPKI Validator application</a>, the <code>unvalidated</code> directory contains <em>all</em> RPKI objects regardless of validation status.</p></li>
-</ul>
-
-<p>The reason for this layout is that it is the directory structure used by the <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification/tools-and-resources">RIPE NCC RPKI Validator application</a>. Also note that this application has also fetched all data from subrepositories under the trust anchor to which the archived file belongs, so for example for the APNIC region it will also have fetched the NIR RPKI repositories for Japan and Taiwan.</p>
-
-<h2 id="notes-on-data-completeness">Notes on data completeness</h2>
-
-<p>Apart from a the odd missing day, the data is mostly complete for the entire period covering January 2011 until the present day. We note, however, that the archived <code>repo.tar.gz</code> files before March 10, 2015 miss the trust anchor certificate for the respective RIR repositories, making it harder to validate the data in these files. In addition to this, prior to early 2014, most of the data cannot be validated by modern RPKI validators as it does not comply with the current RPKI standards (e.g. because it uses smaller keys in manifest end-entity certificates than the present day standard requires).</p>
-
-<h2 id="validating-the-data-using-routinator-and-ziggy">Validating the data using Routinator and Ziggy</h2>
-
-<p>If you are interested in independently validating the data, and producing a set of VRPs for a given day, you can use the <a href="https://github.com/NLnetLabs/ziggy">Ziggy script released by NLnet Labs</a>. This script uses the <a href="https://github.com/NLnetLabs/routinator">Routinator RPKI Relying Party software</a> to validate data it downloads directly from the RIPE archive.</p>
-
-<p>Below, we provide detailed instructions on how to install Routinator and how to run Ziggy.</p>
-
-<h3 id="installing-routinator-and-rust">Installing Routinator (and Rust)</h3>
-
-<p>The first thing you&rsquo;ll need to do if you want to use Ziggy is to install Routinator. For detailed information on how to do this, we refer to the README in the Routinator repository, but we reproduce the simple approach below.</p>
-
-<h4 id="step-1-install-rust">Step 1: install Rust</h4>
-
-<p>If you have not install the Rust programming language, you&rsquo;ll need to install that first. Assuming you are on a UNIX-alike system (read: Linux, *BSD, macOS, &hellip;), the simplest way to install Rust is to run the following command from your shell prompt:</p>
-
-<pre><code>
-curl https://sh.rustup.rs -sSf | sh
-
-</code></pre>
-
-<p>Follow the instructions on your screen. The default settings are typically fine, as this will install Rust for your own user account only (also making it easy to clean stuff up if you decide you want to get rid of it). It&rsquo;ll tell you when it&rsquo;s done by saying: &ldquo;Rust is installed now. Great!&rdquo;. You&rsquo;ll need to reload your shell profile, so log out and back in or re-execute the profile like so (example is for the Bash shell):</p>
-
-<pre><code>
-. ~/.bash_profile
-
-</code></pre>
-
-<h4 id="step-2-build-and-install-routinator">Step 2: build and install Routinator</h4>
-
-<p>Rust comes with its own package management in the form of so-called &ldquo;crates&rdquo; that you can install using the &ldquo;cargo&rdquo; tool. Using cargo, installing Routinator couldn&rsquo;t be simpler. Simply execute the following command on your shell prompt and be a little patient while Routinator is compiled:</p>
-
-<pre><code>
-cargo install routinator
-
-</code></pre>
-
-<h4 id="step-3-initialise-routinator">Step 3: initialise Routinator</h4>
-
-<p>Because Rust has added itself to your path, you will now immediately be able to run Routinator from the command line. Before Routinator can do its work, you&rsquo;ll need to initialise it. Do this by invoking it from the command line as shown below:</p>
-
-<pre><code>
-routinator init
-
-</code></pre>
-
-<p>It&rsquo;ll tell you you&rsquo;ll have to agree to the ARIN Relying Party Agreement, which you can do by specifying the appropriate flag on the command line.</p>
-
-<h3 id="getting-and-running-ziggy">Getting and running Ziggy</h3>
-
-<p>Ziggy requires Python 3 to be installed, and you may optionally need to install the <code>dateutil</code> Python package (which, for example, is available for Ubuntu as the <code>python3-dateutil</code> package).</p>
-
-<h4 id="step-1-get-faketime-optional">Step 1: get <code>faketime</code> (optional)</h4>
-
-<p>In order to be able to run Routinator on old date, we&rsquo;ll need to be able to fake time. Fortunately, there is a good tool for that, called faketime. If it isn&rsquo;t installed yet, you&rsquo;ll need to install it using your package manager (e.g. <code>yum</code>, <code>apt</code> or <code>brew</code>).</p>
-
-<h4 id="step-2-get-ziggy">Step 2: get Ziggy</h4>
-
-<p>The next thing you&rsquo;ll need to do is grab Ziggy from Github:</p>
-
-<pre><code>
-git clone https://github.com/NLnetLabs/ziggy
-
-</code></pre>
-
-<h4 id="step-3-configuring-and-running-ziggy">Step 3: configuring and running Ziggy</h4>
-
-<p>Ziggy comes with a sample configuration file called <code>sample-ziggy.conf</code>, which you can actually use straightaway. So let&rsquo;s go ahead and do that, and let&rsquo;s run Ziggy for July 1st, 2019:</p>
-
-<pre><code>
-./ziggy.py -c ./sample-ziggy.conf -d 2019-07-01
-
-</code></pre>
-
-<p>This should produce output that looks like this:</p>
-
-<pre><code>
-Ziggy is processing data for 2019-07-01
-
-Got https://ftp.ripe.net/rpki/afrinic.tal/2019/07/01/repo.tar.gz
-
-No data found at https://ftp.ripe.net/rpki/apnic-afrinic.tal/2019/07/01/repo.tar.gz
-
-No data found at https://ftp.ripe.net/rpki/apnic-arin.tal/2019/07/01/repo.tar.gz
-
-No data found at https://ftp.ripe.net/rpki/apnic-iana.tal/2019/07/01/repo.tar.gz
-
-No data found at https://ftp.ripe.net/rpki/apnic-lacnic.tal/2019/07/01/repo.tar.gz
-
-No data found at https://ftp.ripe.net/rpki/apnic-ripe.tal/2019/07/01/repo.tar.gz
-
-Got https://ftp.ripe.net/rpki/apnic.tal/2019/07/01/repo.tar.gz
-
-Got https://ftp.ripe.net/rpki/arin.tal/2019/07/01/repo.tar.gz
-
-Got https://ftp.ripe.net/rpki/lacnic.tal/2019/07/01/repo.tar.gz
-
-Got https://ftp.ripe.net/rpki/ripencc.tal/2019/07/01/repo.tar.gz
-
-Cleaning out /Users/rijswijk/.rpki-cache/repository ... OK
-
-Cleaning out /Users/rijswijk/.rpki-cache/tals ... OK
-
-Ziggy is processing /tmp/afrinic.tal.tar.gz ... OK (914 objects)
-
-Moving TA to /Users/rijswijk/.rpki-cache/repository/rpki.afrinic.net/ta/ta.cer ...OK
-
-Creating a TAL for this TA ... OK
-
-Ziggy is processing /tmp/apnic.tal.tar.gz ... OK (10705 objects)
-
-Moving TA to /Users/rijswijk/.rpki-cache/repository/rpki.apnic.net/ta/ta-apnic.cer ...OK
-
-Creating a TAL for this TA ... OK
-
-Ziggy is processing /tmp/arin.tal.tar.gz ... OK (6802 objects)
-
-Moving TA to /Users/rijswijk/.rpki-cache/repository/rpki.arin.net/ta/ta.cer ...OK
-
-Creating a TAL for this TA ... OK
-
-Ziggy is processing /tmp/lacnic.tal.tar.gz ... OK (6215 objects)
-
-Moving TA to /Users/rijswijk/.rpki-cache/repository/repository.lacnic.net/ta/ta.cer ...OK
-
-Creating a TAL for this TA ... OK
-
-Ziggy is processing /tmp/ripencc.tal.tar.gz ... OK (35375 objects)
-
-Moving TA to /Users/rijswijk/.rpki-cache/repository/rpki.ripe.net/ta/ta.cer ...OK
-
-Creating a TAL for this TA ... OK
-
-Ziggy thinks the Routinator should travel back to: 2019-07-01 07:20:52
-
-Invoking the Routinator as:
-
-faketime '2019-07-01 07:20:52' ~/.cargo/bin/routinator -vv --logfile ./routinator-2019-07-01.log vrps -n -o ./vrps-2019-07-01.csv -f csvext
-
-Routinator indicated success!
-
-</code></pre>
-
-<p>Now that&rsquo;s quite a bit of output, so let&rsquo;s go over what Ziggy has told you, starting from the top:</p>
-
-<ul>
-<li>First, Ziggy will tell you which date it its running for:</li>
-</ul>
-
-<p><code>Ziggy is processing data for 2019-07-01</code></p>
-
-<ul>
-<li>Then, you&rsquo;ll see it trying to fetch data from RIPE&rsquo;s archives. It will try to fetch data for each of the five RIRs. Note that between October 2012 and April 2018, the APNIC repository had a somewhat different structure. Ziggy will automatically attempt to fetch both the &lsquo;regular&rsquo; APNIC repository as well as the structure used between those dates, so you can safely ignore messages such as the one shown below; these simply indicate that that particular layout for the APNIC data did not exist on the specified date.</li>
-</ul>
-
-<p><code>No data found at https://ftp.ripe.net/rpki/apnic-afrinic.tal/2019/07/01/repo.tar.gz</code></p>
-
-<ul>
-<li>Once Ziggy has all the data it needs, it will clean out Routinator&rsquo;s cache:</li>
-</ul>
-
-<p><code>Cleaning out /Users/rijswijk/.rpki-cache/repository ... OK</code></p>
-
-<p><code>Cleaning out /Users/rijswijk/.rpki-cache/tals ... OK</code></p>
-
-<ul>
-<li>Then, it will unpack the data for each RIR repository and attempt to reconstruct the trust root (the &ldquo;TAL&rdquo; or &ldquo;Trust Anchor Locator&rdquo;). Routinator needs this in order to know what key to use to start verifying the objects in the RIR&rsquo;s repository. The example below shows the output for the RIPE repository. First, Ziggy will show how many objects the repository contains:</li>
-</ul>
-
-<p><code>Ziggy is processing /tmp/ripencc.tal.tar.gz ... OK (35375 objects)</code></p>
-
-<p>Then, Ziggy will move the TA certificate (if it found one) to the correct location (note that this is inside the Routinator cache):</p>
-
-<p><code>Moving TA to /Users/rijswijk/.rpki-cache/repository/rpki.ripe.net/ta/ta.cer ... OK</code></p>
-
-<p>Finally, Ziggy will recreate the TAL for the repository:</p>
-
-<p><code>Creating a TAL for this TA ... OK</code></p>
-
-<ul>
-<li>Ziggy uses the timestamps in the RIR tarballs to work out the exact time of day when the dataset was collected. This time of day is then used when running Routinator. This is important because ROAs have a limited validity, and running Routinator with the wrong time of day may result in some objects not being accepted as valid yet, or as expired. For the example above, Ziggy told us the following:</li>
-</ul>
-
-<p><code>Ziggy thinks the Routinator should travel back to: 2019-07-21 07:20:52</code></p>
-
-<ul>
-<li>Finally, Ziggy will invoke Routinator and shows you exactly which command it used to do so (so you can re-run this command later on, if you want to).</li>
-</ul>
-
-<p>The output will have been written to the directory from which you executed Ziggy into a file called <code>vrps-2019-07-01.csv</code>. If you used the default configuration, the output is the extended CSV output, which lists the URI for the validated object, the associated AS number, the IP prefix, the maximum length as set in the ROA and the validity (not before, not after) of the object.</p>
-
-<p>And that&rsquo;s it, we hope these instructions have proven useful. Please reach out to one of the paper authors if you have any questions.</p>
-
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
 </footer>
