@@ -32,7 +32,11 @@
     <span class="icon-bar">&nbsp;</span>
     <span class="icon-bar">&nbsp;</span>
     </button>
+<<<<<<< HEAD
     <a class="navbar-brand" href="#">DANE Study</a>
+=======
+    <a class="navbar-brand" href="#">RPKI Study</a>
+>>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
@@ -56,6 +60,7 @@
 </noscript>
 
     <main class="container-fluid">
+<<<<<<< HEAD
       <h1 id="rpki-client-side-artifacts-code">RPKI Client-side Artifacts Code</h1>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
@@ -337,6 +342,33 @@ When validating BGP announcements, we followed the following algorithm from RFC6
 
    return (result);
 </code></pre><p>The source code, <code>spark-verify.py</code> produces the validated results with the following format (Please note that we used Spark cluster for a large-scale data processing):</p>
+=======
+      
+
+<h1 id="dane-for-smtp-client-side-artifacts-code">DANE for SMTP Client-side Artifacts Code</h1>
+
+<style>
+table, th { text-align: center;
+}
+</style>
+
+<h2 id="preliminary">Preliminary</h2>
+
+<ol>
+<li><p>To analyze determine a mail provider&rsquo;s policy, you first need to have a Bind9 and postfix running in your system.</p></li>
+
+<li></li>
+
+<li></li>
+
+<li></li>
+</ol>
+
+<h2 id="summary-of-source-codes">Summary of source codes</h2>
+
+<p>Here, we provide following source codes. The instruction and usage of the source codes are explainedbelow.</p>
+
+>>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
 
 
 
@@ -345,6 +377,7 @@ When validating BGP announcements, we followed the following algorithm from RFC6
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
+<<<<<<< HEAD
 <th>time</th>
 <th>prefix-addr</th>
 <th>prefix-len</th>
@@ -470,6 +503,25 @@ table, th, td {
 <td>getPairsOfAttack</td>
 <td>Figure 11, 12</td>
 <td>cdf-num-hijacked-ipv4-byAS, cdf-num-attacker-ipv4-byAS.plot</td>
+=======
+<th>filename</th>
+<th>Download</th>
+<th>Misc.</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><code>configuration-bind-postfix.tar.gz</code></td>
+<td><a href="/codes/configuration-bind-postfix.tar.gz">link</a></td>
+<td>Bind and postfix configuration files.</td>
+</tr>
+
+<tr>
+<td><code>generate-zone.py</code></td>
+<td><a href="/codes/generate-zone.py">script</a> <a href="/codes/security-protocol.com.yml">Example Yaml</a></td>
+<td>Generates bind zone file as per the yaml file .</td>
+>>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
 </tr>
 </tbody>
 </table>
@@ -480,6 +532,11 @@ table, th, td {
 </style>
 
 
+<<<<<<< HEAD
+=======
+<h2 id="reproducing-the-client-configuration-in-the-usenix-security-20-paper">Reproducing the client configuration in the USENIX Security&rsquo;20 paper</h2>
+
+>>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
 </footer>

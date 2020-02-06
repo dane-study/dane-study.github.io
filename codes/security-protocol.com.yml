@@ -1,0 +1,34 @@
+origin: security-protocol.com.
+ttl: 1
+
+soa:
+    ns: ns.security-protocol.com.
+    user: admin.security-protocol.com.
+
+records:
+    - type: NS
+      value: ns01.security-protocol.com.
+
+    - type: NS
+      value: ns02.security-protocol.com.
+
+
+    - type: A
+      host: 'ns01.security-protocol.com.'
+      value: 203.0.113.1
+
+    - type: A
+      host: 'ns02.security-protocol.com.'
+      value: 203.0.113.1
+
+    - type: A
+      host: 'security-protocol.com'
+      value: 203.0.113.3
+
+    - type: A
+      host: 'mail.security-protocol.com'
+      value: 203.0.113.3
+
+    - type: MX
+      priority: 10
+      value: mail.security-protocol.com.
