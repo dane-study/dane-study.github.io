@@ -225,13 +225,171 @@ table, th, td {
 
 <p>To validate the client side results presented in USENIX Security&rsquo;20 paper, you need to have a DNSSEC supported DNS server. But below explain how we used  Bind software as DNS server.</p>
 
-<h3 id="install-bind-dns-server">Install Bind DNS server</h3>
+<h3 id="install-bind9-dns-server">Install Bind9 DNS server</h3>
+
+<p>Assuming that you are using a Linux flavoured operating system. You need to install ‘bind9 bind9utils bind9-doc dnsutils’ to install BIND 9 &amp; related tools.</p>
+
+<pre><code>$ sudo apt-get install bind9 bind9utils bind9-doc dnsutils
+</code></pre>
+
+<h3 id="configure-bind9">Configure Bind9</h3>
+
+<p>One of the important configuration file for bind is <code>“/etc/bind/named.conf.options“</code>, from this file we can set the followings parameters:</p>
+
+<ul>
+<li>Allow Query to your dns from your private network (As the name suggests only the systems from your private network can query dns sever for name to ip translation and vice-versa)</li>
+<li>Allow recursive query</li>
+<li>Specify the DNS port ( 53)</li>
+
+<li><p>Forwarders (DNS query will be forwarded to the forwarders when your local DNS server is unable to resolve query)</p>
+
+<pre><code>options {
+    directory &quot;/var/cache/bind&quot;;
+
+    recursion yes;
+    allow-recursion { trusted; };
+    allow-transfer { none; };
+
+    forwarders {
+            8.8.8.8;
+            8.8.4.4;
+    };
+
+		dnssec-validation auto;
+    dnssec-enable yes;
+
+    auth-nxdomain no;    # conform to RFC1035
+    listen-on-v6 { any; };
+
+};
+
+</code></pre></li>
+</ul>
+
+<p>To support logging facility in Bind9 DNS server</p>
+
+<pre><code>logging {
+        channel named       { file &quot;named.log&quot; versions 10 size 20M; print-time yes; print-category yes; };
+        channel security    { file &quot;security.log&quot; versions 10 size 20M; print-time yes; };
+        channel query_log   { file &quot;query.log&quot; versions 10 size 20M; severity debug; print-time yes; };
+        channel query_error { file &quot;query-errors.log&quot; versions 10 size 20M; severity info; print-time yes; };
+        channel transfer    { file &quot;transfer.log&quot; versions 10 size 10M; print-time yes; };
+        channel dnssec_log  { file &quot;dnssec.log&quot;; severity debug 3; };
+
+        category dnssec     { dnssec_log; };
+        category default    { default_syslog; named; };
+        category general    { default_syslog; named; };
+        category security   { security; };
+        category queries    { query_log; };
+        category config     { named; };
+        category xfer-in    { transfer; };
+        category xfer-out   { transfer; };
+        category notify     { transfer; };
+};
+</code></pre>
 
 <h4 id="create-forward-zone-file">Create Forward Zone File</h4>
 
 <p>You can use the <code>generate-zone.py</code> script to generated a zone file automatically. Add the record type you need to represent in a zone in a YAML file as available in the <a href="/codes/security-protocol.com.yml">example Yaml</a>.</p>
 
 <p><code>Note: Do not forget to update the serial value by 1 for every change you make on to the zone.</code></p>
+
+<p>Example zone file:</p>
+
+<pre><code>;
+; BIND data file for local loopback interface
+;
+$TTL    1
+@       IN      SOA     ns01.valid.security-protocol.com. admin.valid.security-protocol.com. (
+                             27         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+; name servers - NS records
+        IN      NS      ns01.security-protocol.com.
+        IN      NS      ns02.security-protocol.com.
+
+; name servers - A records
+ns01.valid.security-protocol.com.      IN      A       34.219.137.44
+ns02.valid.security-protocol.com.      IN      A       34.219.137.44
+
+; A record
+valid.security-protocol.com.   IN      A       34.219.137.44
+
+; MX record
+
+mail.valid.security-protocol.com.      IN      A       34.219.137.44
+@       IN      MX      10 mail.valid.security-protocol.com.
+
+</code></pre>
+
+<p>We need to sign the zones created to support DNSSEC for each domains.</p>
+
+<p>Navigate to some location where you would like to store the keys. For example, we choose to store it in <code>/etc/bind/keys/&lt;domainname.com&gt;</code></p>
+
+<pre><code> $ sudo dnssec-keygen -a RSASHA256 -b 2048 -3 -f KSK -r /dev/urandom security-protocol.com
+ $ sudo dnssec-keygen -a RSASHA256 -b 2048 -3 -r /dev/urandom security-protocol.com
+</code></pre>
+
+<p>The above command helps you to generate KSK and ZSK keys. The directory will now have 4 keys - private/public pairs of ZSK and KSK. We have to add the public keys which contain the DNSKEY record to the zone file.</p>
+
+<p>Once the DNSSEC signing keys are generated, you need to sign the zones.</p>
+
+<p>Sign the zone with the <code>dnssec-signzone</code> command.</p>
+
+<pre><code>$ dnssec-signzone -3 &lt;salt&gt; -A -N INCREMENT -o &lt;zonename&gt; -t &lt;zonefilename&gt;
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>$ sudo dnssec-signzone -S -K /etc/bind/keys/security-protocol -e 20250530144500 -g -a -r /dev/random -o security-protocol.com zones/db.security-protocol.com 
+</code></pre>
+
+<p>Next configuration file is <code>“/etc/bind/named.conf.local“</code>, in this file we will define the zone files for our domain, edit the file add the following entries:</p>
+
+<p><code>Note: If your domain is DNSSEC-enabled, then you need to point the signed zone in “/etc/bind/named.conf.local“</code></p>
+
+<pre><code>zone &quot;security-protocol.com&quot; {
+        type master;
+        file &quot;/etc/bind/zones/db.security-protocol.com.signed&quot;;
+};
+
+zone &quot;security-protocol.com&quot; {
+        type master;
+        file &quot;/etc/bind/zones/db.security-protocol.com.signed&quot;;
+};
+
+zone &quot;expired-starttls-tlsa-3.security-protocol.com&quot; {
+        type master;
+        file &quot;/etc/bind/zones/db.expired-starttls-tlsa-3.security-protocol.com.signed&quot;;
+};
+
+zone &quot;expired-starttls-no-tlsa.security-protocol.com&quot; {
+        type master;
+        file &quot;/etc/bind/zones/db.expired-starttls-no-tlsa.security-protocol.com&quot;;
+};
+
+zone &quot;different-cert.security-protocol.com&quot; {
+        type master;
+        file &quot;/etc/bind/zones/db.different-cert.security-protocol.com.signed&quot;;
+};
+
+...
+
+</code></pre>
+
+<p>Save file &amp; exit. Now all we have to do is to restart the BIND service to implement the changes made,</p>
+
+<pre><code>$ sudo service bind9 restart
+$ sudo service bind9 enable 
+</code></pre>
+
+<p><code>Note:</code> In case OS firewall is running on your bind server then execute the below command to allow 53 port</p>
+
+<pre><code>$ sudo ufw allow 53
+</code></pre>
 
 <h2 id="2-setting-up-postfix-smtp-server">2. Setting up postfix SMTP server</h2>
 
