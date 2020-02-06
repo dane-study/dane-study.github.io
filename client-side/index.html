@@ -104,8 +104,14 @@ table, th { text-align: center;
 
 <tr>
 <td><code>generate-zone.py</code></td>
-<td><a href="/codes/generate-zone.py">script</a> <a href="/codes/security-protocol.com.yml">Example Yaml</a></td>
+<td><a href="/codes/generate-zone.py">script</a> and <a href="/codes/security-protocol.com.yml">example Yaml</a></td>
 <td>Generates bind zone file as per the yaml file .</td>
+</tr>
+
+<tr>
+<td><code>install-postfix.sh</code></td>
+<td><a href="/codes/install-postfix.sh">script</a></td>
+<td>Installs SNI supported postfix. Note: Run the script as <code>root</code></td>
 </tr>
 </tbody>
 </table>
@@ -213,7 +219,227 @@ table, th, td {
 </style>
 
 
-<h2 id="reproducing-the-client-configuration-in-the-usenix-security-20-paper">Reproducing the client configuration in the USENIX Security&rsquo;20 paper</h2>
+<h1 id="reproducing-the-client-configuration-in-the-usenix-security-20-paper">Reproducing the client configuration in the USENIX Security&rsquo;20 paper</h1>
+
+<h2 id="1-setting-up-bind-dns-server">1. Setting up Bind DNS server</h2>
+
+<p>To validate the client side results presented in USENIX Security&rsquo;20 paper, you need to have a DNSSEC supported DNS server. But below explain how we used  Bind software as DNS server.</p>
+
+<h3 id="install-bind-dns-server">Install Bind DNS server</h3>
+
+<h4 id="create-forward-zone-file">Create Forward Zone File</h4>
+
+<p>You can use the <code>generate-zone.py</code> script to generated a zone file automatically. Add the record type you need to represent in a zone in a YAML file as available in the <a href="/codes/security-protocol.com.yml">example Yaml</a>.</p>
+
+<p><code>Note: Do not forget to update the serial value by 1 for every change you make on to the zone.</code></p>
+
+<h2 id="2-setting-up-postfix-smtp-server">2. Setting up postfix SMTP server</h2>
+
+<p>Below, we provide detailed instructions on how to install postfix MTA. We specifically suggest to use postfix 3.4.5 or above because we needed SNI to support serving multiple certificates, which we will explain in detail later.</p>
+
+<h3 id="install-postfix-mta">Install Postfix MTA</h3>
+
+<p>You can either use the <code>install-postfix.sh</code> script to automatically install postfix or either if the script fails or would like to manually install postfix, please follow the below instruction.</p>
+
+<p>Assuming that you are using a Linux flavoured operating system.</p>
+
+<p>Download the latest version of postfix 3.4.8 from here:</p>
+
+<pre><code>ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.4.8.tar.gz
+</code></pre>
+
+<p>You also need to download and apply this specific patch as well.</p>
+
+<pre><code>http://www.linuxfromscratch.org/patches/blfs/svn/postfix-3.4.8-glibc230_fix-1.patch
+</code></pre>
+
+<p>Postfix recommended Dependencies that you should have:</p>
+
+<pre><code>Berkeley DB-5.3.28
+Cyrus SASL-2.1.27
+libnsl-1.2.0
+</code></pre>
+
+<p>Once you have all the required dependencies for postfix, you can proceed to the installation process as follows:</p>
+
+<h4 id="start-by-adding-users-and-groups">Start by Adding users and groups</h4>
+
+<p>Before you compile the program, you need to create users and groups that will be expected to be in place during the installation. Add the users and groups with the following commands issued by the root user:</p>
+
+<pre><code>groupadd -g 32 postfix &amp;&amp;
+groupadd -g 33 postdrop &amp;&amp;
+useradd -c &quot;Postfix Daemon User&quot; -d /var/spool/postfix -g postfix \
+        -s /bin/false -u 32 postfix &amp;&amp;
+chown -v postfix:postfix /var/mail
+</code></pre>
+
+<h4 id="configuring-the-build">Configuring the Build</h4>
+
+<p>The README files are formatted to be read with a pager like Less or More. If you want to use a text editor, make them legible with the following sed:</p>
+
+<pre><code>sed -i 's/.\x08//g' README_FILES/*
+</code></pre>
+
+<p>Apply a patch to allow Postfix to compile on Glibc-2.30 where some macros were dropped:</p>
+
+<pre><code>patch -Np1 -i ../postfix-3.4.8-glibc230_fix-1.patch
+</code></pre>
+
+<p><strong>Cyrus-SASL</strong></p>
+
+<p>To use Cyrus-SASL with Postfix, use the following arguments:</p>
+
+<pre><code>CCARGS='-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl'
+AUXLIBS='-lsasl2'
+</code></pre>
+
+<p><br/></p>
+
+<h4 id="database-configuration-for-postfix">Database configuration for postfix</h4>
+
+<p>You can utilse any of the database software such as sqlite, mysql or postgreSQL as below.
+<br/></p>
+
+<p><strong>Sqlite:</strong></p>
+
+<p>To use Sqlite with Postfix, use the following arguments:</p>
+
+<pre><code>CCARGS='-DHAS_SQLITE'
+AUXLIBS='-lsqlite3 -lpthread'
+</code></pre>
+
+<p><strong>MySQL:</strong></p>
+
+<p>To use MySQL with Postfix, use the following arguments:</p>
+
+<pre><code>CCARGS='-DHAS_MYSQL -I/usr/include/mysql'
+AUXLIBS='-lmysqlclient -lz -lm'
+</code></pre>
+
+<p><strong>PostgreSQL:</strong></p>
+
+<p>To use PostgreSQL with Postfix, use the following arguments:</p>
+
+<pre><code>CCARGS='-DHAS_PGSQL -I/usr/include/postgresql'
+AUXLIBS='-lpq -lz -lm'
+</code></pre>
+
+<h4 id="starttls-authentication">STARTTLS Authentication</h4>
+
+<p>To use OpenSSL with Postfix, use the following arguments:</p>
+
+<pre><code>CCARGS='-DUSE_TLS -I/usr/include/openssl/'
+AUXLIBS='-lssl -lcrypto'
+</code></pre>
+
+<p><br/></p>
+
+<h4 id="installing-postfix">Installing Postfix</h4>
+
+<p>If you have Cyrus SASL and OpenSSL installed, install Postfix by running the following commands:</p>
+
+<pre><code>make CCARGS=&quot;-DUSE_TLS -I/usr/include/openssl/                     \
+             -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl&quot; \
+     AUXLIBS=&quot;-lssl -lcrypto -lsasl2&quot;                              \
+     makefiles &amp;&amp;
+make
+</code></pre>
+
+<p>Now, as the root user:</p>
+
+<pre><code>sh postfix-install -non-interactive \
+   daemon_directory=/usr/lib/postfix \
+   manpage_directory=/usr/share/man \
+   html_directory=/usr/share/doc/postfix-3.4.8/html \
+   readme_directory=/usr/share/doc/postfix-3.4.8/readme
+</code></pre>
+
+<h3 id="3-configure-postfix">3. Configure postfix</h3>
+
+<p>In this section, you will configure the /etc/postfix/main.cf file to use the external SMTP server.</p>
+
+<p>Open the /etc/postfix/main.cf file with your favorite text editor:</p>
+
+<pre><code>sudo vim /etc/postfix/main.cf
+</code></pre>
+
+<p>Add the following parameters to the config file as to enable TLS service for your SMTP server.</p>
+
+<pre><code>smtpd_use_tls = yes
+smtpd_tls_loglevel = 2
+</code></pre>
+
+<p>If you are missing any additional parameters in the postfix setup, do checkout our example configuration files found <a href="/codes/configuration-bind-postfix.tar.gz">here</a></p>
+
+<h4 id="sni-configuration">SNI configuration</h4>
+
+<p>Unlike the usual setup to serve a single TLS certificate file and a TLS key file in the postfix SMTP MTA configuration as to initiate STARTTLS security extension support, we wanted to serve multiple certificates within the same domain as well as within the delegated domains. The configuration file specifies a very small subset of all the parameters that control the operation of the Postfix mail system.</p>
+
+<p>Run through the initial configuration after the installation of postfix from the apt package and then, upgrade postfix through the installation from source. Further, when that is done, we move on to configure SNI. We use SNI here in order to serve multiple certificates to the TLS chain on each delegated domains.</p>
+
+<p>For the SNI setup, we created a few certificate chains which were wildcard certificates for the third-level domains. This was followed by creating a hash table using <code>sudo postmap -F</code> to hold the SNI chains where the domains are denoted as:</p>
+
+<pre><code>domain1.com static:/path/to/pem1.pem 
+domain2.com static:/path/to/pem2.pem
+</code></pre>
+
+<p>Which then is referred in the <code>/etc/postfix/main.cf</code> configuration of postfix using:</p>
+
+<p><code>tls_server_sni_maps = hash:/etc/postfix/sni-chains</code></p>
+
+<p>In <code>/etc/postfix/main.cf</code> <strong>Before</strong>:</p>
+
+<pre><code>smtpd_tls_key_file = /path/to/the/key/file/smtp_tls.key
+smtpd_tls_cert_file = /path/to/the/cert/file/smtp_cert.pem
+</code></pre>
+
+<p>With this configuration parameter alone, we are only able to provide/serve single key and certificate file for the SMTP server for a specific single domain.</p>
+
+<p><strong>Now:</strong></p>
+
+<p>Our goal was to serve multiple certificates for each of the delegated domains as per the busted environment that we devised.</p>
+
+<p>First, we provide a parameter <code>smtpd_tls_chain_files</code> to the configuration file as to provide a default certificate to the SNI lookup table that is going to be created. The SNI lookup tables should also have entries for the domains that correspond to the Postfix SMTP server&rsquo;s default certificate(s). This ensures that the remote SMTP client&rsquo;s TLS SNI extension gets a positive response when it specifies one of the Postfix SMTP server&rsquo;s default  domains, and ensures that the Postfix SMTP server will not log an SNI name mismatch for such a domain. The Postfix SMTP server&rsquo;s default certificates are then only used when the client sends no SNI or when it sends SNI with a domain that the server knows no certificate(s) for.</p>
+
+<pre><code>smtpd_tls_chain_files = /etc/letsencrypt/live/security-protocol.com/privkey.pem, /etc/letsencrypt/live/security-protocol.com/cert.pem
+</code></pre>
+
+<p>Yes, having a default as such might be inconvenient for few use cases. Currently, postfix has this in place since default chain with an explicitly SNI mapping to that chain, is to suppress warnings in the logs about receiving SNI names that fail to match any entries in the table. Such warnings can be useful to identify misconfigured clients and servers. Setting up a wildcard default would completely defeat the purpose of the mismatch logging.</p>
+
+<p>That is, smtpd_tls_chain_files parameter assures the client with a positive acknowledgement, and suppresses logging of SNI mismatch. Suppressing such logs for $myhostname since default chain is the right one to use.</p>
+
+<p>Further we denote the SNI table created inside the configuration file through the parameter <code>tls_server_sni_maps</code></p>
+
+<pre><code>main.cf:
+       tls_server_sni_maps = hash:/etc/postfix/sni-chains
+</code></pre>
+
+<pre><code>sni-chains: 
+       mail.security-protocol.com	/etc/postfix/sni/domain1.example.pem 
+       mail.domain2.security-protocol.com	/etc/postfix/sni/domain2.example.pem
+</code></pre>
+
+<p>The sni-chains is a SNI lookup table created for storing certificate chains mapped to the SNI domains. In postfix, we use a postmap command to create the hash table. The syntax is:</p>
+
+<p><code>$ postmap -F hash:/etc/postfix/sni-chains</code></p>
+
+<p>Need to note that, You&rsquo;ll need to rebuild the table (again with &ldquo;postmap -F&rdquo;) whenever you want to start using new certificates, adding new certificates  even if the file names are unchanged.</p>
+
+<p>Further also note that, The sni-chain must always list the private key before the associated certificate chain. You can list a file with just the key first, and then the certificate file. An advanced use case is to list multiple files for the same domain, each with a key and certificate chain for a different algorithm.</p>
+
+<p>Example sni-chain file:</p>
+
+<pre><code>mail.security-protocol.com /etc/letsencrypt/live/security-protocol.com/privkey.pem /etc/letsencrypt/live/security-protocol.com/fullchain.pem
+mail.valid.security-protocol.com /etc/letsencrypt/live/valid.security-protocol.com/privkey.pem /etc/letsencrypt/live/valid.security-protocol.com/fullchain.pem
+mail.different-cert.security-protocol.com /etc/letsencrypt/live/security-protocol.com/privkey.pem /etc/letsencrypt/live/security-protocol.com/fullchain.pem
+</code></pre>
+
+<p>Save your changes.</p>
+
+<p>Restart Postfix:</p>
+
+<pre><code>sudo service postfix restart
+</code></pre>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
