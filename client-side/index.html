@@ -68,13 +68,13 @@ table, th { text-align: center;
 <h2 id="preliminary">Preliminary</h2>
 
 <ol>
-<li><p>To analyze and determine a mail provider&rsquo;s policy, you first need to have a Bind9 and postfix running in your system.</p></li>
+<li><p>To analyze and determine a mail provider&rsquo;s policy, you first need to have a Bind9 and postfix running in your system. This is section consists of two parts: (1) Installation of DNS and SMTP softwares and (2) configuration of DNS and SMTP softwares to reproduce the results in USENIX&rsquo;20 paper.</p></li>
 
-<li></li>
+<li><p>First we need to install and configure the DNS server using bind9. We provide script which could be used to automatically create bind zone files.</p></li>
 
-<li></li>
+<li><p>Secondly, we need to install and configure SMTP server using postfix MTA. For reproducing the client side analysis results of USENIX&rsquo;20 paper, we heavily rely on Server Name Indication(SNI) to analyse multiple mail provider&rsquo;s policy.</p></li>
 
-<li></li>
+<li><p>Once you send an email from any of the mail service providers, you can utlise a script provided by us to analyse the policy of that provider.</p></li>
 </ol>
 
 <h2 id="summary-of-source-codes">Summary of source codes</h2>
@@ -106,6 +106,103 @@ table, th { text-align: center;
 <td><code>generate-zone.py</code></td>
 <td><a href="/codes/generate-zone.py">script</a> <a href="/codes/security-protocol.com.yml">Example Yaml</a></td>
 <td>Generates bind zone file as per the yaml file .</td>
+</tr>
+</tbody>
+</table>
+<style>
+table, th, td {
+  text-align: center;
+}
+</style>
+
+
+<h2 id="summary-of-existing-scenarios-build-to-determine-a-mail-provider-s-policy">Summary of existing scenarios build to determine a mail provider&rsquo;s policy</h2>
+
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Description</th>
+<th>misc</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>valid.security-protocol.com</td>
+<td>Serves proper TLSA and STARTTLS records</td>
+<td></td>
+</tr>
+
+<tr>
+<td>wrong-signature.security-protocol.com</td>
+<td>Serves wrong RRSIG for TLSA record</td>
+<td>Change the RRSIG hash for TLSA record</td>
+</tr>
+
+<tr>
+<td>missing-signature.security-protocol.com</td>
+<td>Serves no RRSIG for TLSA record</td>
+<td>Delete the RRSIG hash for TLSA record</td>
+</tr>
+
+<tr>
+<td>expired-starttls-tlsa-3.security-protocol.com</td>
+<td>Serve expired certificate to create tlsa record with usage set to 3.</td>
+<td></td>
+</tr>
+
+<tr>
+<td>missing-ds.security-protocol.com</td>
+<td>Serve no DS record for the domain in the chain</td>
+<td></td>
+</tr>
+
+<tr>
+<td>self-signed-starttls.security-protocol.com</td>
+<td>Serve self signed leaf certificate for the domain during STARTTLS validation</td>
+<td></td>
+</tr>
+
+<tr>
+<td>cn-diff-starttls.security-protocol.com</td>
+<td>Serve a leaf certificate where the Common Name (CN) field is different.</td>
+<td></td>
+</tr>
+
+<tr>
+<td>different-cert.security-protocol.com</td>
+<td>Serve different certificates for creating a TLSA record and in the SNI chain for STARTTLS validation</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-match.security-protocol.com</td>
+<td>Serve a self-signed leaf certificate and create a valid TLSA record and just change the matching type field manually</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-selector.security-protocol.com</td>
+<td>Create a TLSA record with selector 1 and then modify the TLSA record with any busted value</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-usage-1.security-protocol.com</td>
+<td>Serves a self-signed leaf certificate and create a valid TLSA record with usage 1 (PKIX-EE) and then modify the TLSA record with “busted certificate association data”</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-usage-3.security-protocol.com</td>
+<td>Serve a CA signed leaf certificate in the chain.</td>
+<td>Domain issued certificate (and DANE-EE) which indicates a self-signed certificate to create TLSA record.</td>
 </tr>
 </tbody>
 </table>
