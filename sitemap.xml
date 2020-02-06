@@ -22,10 +22,12 @@
   
   <url>
     <loc>https://dane-study.github.io/categories/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://dane-study.github.io/tags/</loc>
+    <priority>0</priority>
   </url>
   
 </urlset>
