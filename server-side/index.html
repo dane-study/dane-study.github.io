@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    <title>DANE Study - Server-side Artifacts</title>
+    <base href="https://dane-study.github.io">
+    
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,700" rel="stylesheet">
+    
+    
+    
+    
+    
+
+    <noscript>
+      <link rel="stylesheet" type="text/css" href="./css/noscript.css">
+    </noscript>
+  </head>
+  <body class="container">
+    <nav class="container-fluid navbar navbar-default">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar">&nbsp;</span>
+    <span class="icon-bar">&nbsp;</span>
+    <span class="icon-bar">&nbsp;</span>
+    </button>
+    <a class="navbar-brand" href="#">DANE Study</a>
+  </div>
+  <div class="collapse navbar-collapse" id="navbar-collapse">
+    <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="/server-side/">Server-side Artifacts</a></li>
+        <li><a href="/client-side/">Client-side Artifacts</a></li>
+        <li><a href="/contact/">Contact</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+    </ul>
+  </div>
+</nav>
+
+    
+
+    
+    <noscript>
+  <div class="alert alert-warning" role="alert">
+    <strong>JavaScript disabled!</strong> This page requires JavaScript, you might not be able to access all content with JavaScript disabled.
+  </div>
+</noscript>
+
+    <main class="container-fluid">
+      <h1 id="dane-server-side-archive">DANE Server-side Archive</h1>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="preliminary">Preliminary</h2>
+<ol>
+<li>
+<p>This Archive consists of two parts: Collecting DANE dataset and Reproducing the figures in the USENIX&rsquo;20 paper.</p>
+</li>
+<li>
+<p>First, we provide source codes which can be used to collect raw data: TLSA records and STARTTLS certificates. We used <a href="https://nlnetlabs.nl/projects/unbound/about/">Unbound</a> to scan TLSA records and stmp package of <a href="https://golang.org/">Go</a> to collect STARTTLS certificates.</p>
+</li>
+<li>
+<p>To analyze collected DANE dataset, we provide analysis codes to process raw-dataset and to plot figures in the USNIEX&rsquo;20 paper. (For your convenience, we provide a raw-dataset which is used for the paper.)</p>
+</li>
+<li>
+<p>Due to the massive size of the datasets (3 months of hourly dataset and 2 years of daily dataset), we strongly encourage you to use distributed cluster-computing framework (we used <a href="https://spark.apache.org/">Spark</a> for large-scael data processing.)</p>
+</li>
+</ol>
+<h2 id="summary-of-source-codes">Summary of source codes</h2>
+<p>Here, we provide following source codes. The instruction and usage of the source codes are explained below.</p>
+<h3 id="1-data-scan">1. Data scan</h3>
+<p>These codes are used to scan TLSA records and STARTTLS certificates.</p>
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>filename</th>
+<th>Download</th>
+<th>Misc.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tlsa-scan.go</code></td>
+<td><a href="/codes/tlsa-scan.go">link</a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>starttls-scan.go</code></td>
+<td><a href="/codes/starttls-scan.go">link</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-data-analysis">2. Data analysis</h3>
+<p>These codes are used to analyze collected dataset.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>filename</th>
+<th>Download</th>
+<th>Misc.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>raw-merge.py</code></td>
+<td><a href="/codes/raw-merge.py">link</a></td>
+<td></td>
+</tr>
+<tr>
+<td><code>spark-codes.tar.gz</code></td>
+<td><a href="/codes/spark-codes.tar.gz">link</a></td>
+<td>include 9 python scripts</td>
+</tr>
+<tr>
+<td><code>stats-codes.tar.gz</code></td>
+<td><a href="/codes/stats-codes.tar.gz">link</a></td>
+<td>include 9 python scripts</td>
+</tr>
+<tr>
+<td><code>plotting-scripts.tar.gz</code></td>
+<td><a href="/codes/plotting-scripts.tar.gz">link</a></td>
+<td>include 6 plotting scripts</td>
+</tr>
+</tbody>
+</table>
+<h2 id="summary-of-dataset">Summary of dataset</h2>
+<p>Here, we provide our collected dataset (Daily and Hourly snapshot) and some other data need to run our scripts.</p>
+<p>You can download all data from here: <a href="https://mmlab.snu.ac.kr/~hmlee/dane/dane_data.html">Download</a></p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>filename</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dependencies.zip</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seed-files.tar</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>root-ca-list</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="collecting-tlsa-records--starttls-certificates">Collecting TLSA records &amp; STARTTLS certificates</h2>
+<h3 id="1-set-up-environment">1. Set up environment</h3>
+<p>To use the scanning scripts, you need to install some dependencies.</p>
+<ol>
+<li>
+<p><a href="https://nlnetlabs.nl/projects/unbound/about/">Unbound</a> and its go language <a href="https://github.com/miekg/unbound">wrapper</a>.</p>
+</li>
+<li>
+<p><a href="https://nlnetlabs.nl/projects/ldns/about/">ldns</a></p>
+</li>
+</ol>
+<h3 id="2-scan-tlsa-records">2. Scan TLSA records</h3>
+<p>The script <code>tlsa-scan.go</code> will read <code>seed file</code> and collect TLSA record. We will call collected data as &lsquo;raw data&rsquo;. An output is following format.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>TLSA-base-domain</th>
+<th>location-of-the-scanning-server</th>
+<th>DNSSEC-validation</th>
+<th>TLSA-record</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_25._tcp.mail.ietf.org.</td>
+<td>Virginia</td>
+<td>Secure</td>
+<td>AACBoAABAAIAB&hellip;</td>
+</tr>
+<tr>
+<td>_25._tcp.mail.tutanota.de.</td>
+<td>Virginia</td>
+<td>Secure</td>
+<td>AACBoAABAAIA&hellip;</td>
+</tr>
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+</tbody>
+</table>
+<p><!-- raw HTML omitted -->1<!-- raw HTML omitted --> location-of-the-scanning-server: a tag of a scanning server. For example, we used 5 vantage points in Virginia, Oregon, and etc. Thus, this value is one of them.</p>
+<p><!-- raw HTML omitted -->2<!-- raw HTML omitted --> DNSSEC-validation-result: a result of DNSSEC validation result of Unbound. (Secure: a domain can be validated. Insecure: a domain cannot be validated because it does not have a DS record. Bogus: a domain cannot be validated because it has invalid DNSSEC records such as expired RRSIGs.)</p>
+<p><!-- raw HTML omitted -->3<!-- raw HTML omitted --> TLSA-record: DNS wire-format and Base64 encoded.</p>
+<h3 id="3-scan-starttls-certificates">3. Scan STARTTLS certificates</h3>
+<p>The script <code>starttls-scan.go</code> will read <code>seed file</code> and collect STARTTLS certificates. We will call collected data as &lsquo;raw data&rsquo;. An output is following format.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>domain-name</th>
+<th>port</th>
+<th>location-of-the-scanning-server</th>
+<th>does-collected</th>
+<th>#-of-STARTTLS-certificates</th>
+<th>STARTTLS-certificates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mail.ietf.org</td>
+<td>25</td>
+<td>Virginia</td>
+<td>Success</td>
+<td>4</td>
+<td>LS0RUaAB&hellip;, WjGdVBWYi&hellip;, 0s3FTFRuZ1&hellip;, eFKdDRBO&hellip;</td>
+</tr>
+<tr>
+<td>mail.tutanota.de.</td>
+<td>25</td>
+<td>Virginia</td>
+<td>Success</td>
+<td>4</td>
+<td>LSSf7JanC&hellip;, ODlF4NEF&hellip;, SA3S29K&hellip;, Z1RstKS&hellip;</td>
+</tr>
+<tr>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+</tbody>
+</table>
+<p><!-- raw HTML omitted -->1<!-- raw HTML omitted --> does-collected: If a STARTTLS certificate is crawled, value is &lsquo;SUCCESS&rsquo; else &lsquo;False&rsquo;.</p>
+<p><!-- raw HTML omitted -->2<!-- raw HTML omitted --> #-of-STARTTLS-certificates: the number of certificates in the chain.</p>
+<p><!-- raw HTML omitted -->3<!-- raw HTML omitted --> STARTTLS-certificates: PEM format and Base64 encoded. Multiple certificates are comma seperated.</p>
+<h2 id="reproducing-the-figures-in-the-usenix20-paper">Reproducing the figures in the USENIX&rsquo;20 paper</h2>
+<h3 id="1-process-raw-dataset">1. Process raw-dataset</h3>
+<p>Beacause we collect two forms of raw data (TLSA records and STARTTLS certificates), we first merge them to process it efficiently using Spark. The script <code>raw-merge.py</code> will read each raw data and generate output of json format. Merged data are used for all other analysis.</p>
+<pre><code>// This json data is an example of merged output
+
+{
+  &quot;domain&quot;: &quot;mail.ietf.org.&quot;,
+  &quot;port&quot;: &quot;25&quot;,
+  &quot;time&quot;: &quot;20191031 9&quot;,
+  &quot;city&quot;: &quot;virginia&quot;, 
+  &quot;tlsa&quot;: {
+  	    &quot;dnssec&quot;: &quot;Secure&quot;, // DNSSEC validation result
+  	    &quot;record_raw&quot;: &quot;AACBoAABAAIABwABA18yNQRfdGNwBG1haWwEaWV0ZgNvcmcAADQAAQNfMjUEX3...&quot; // DNS wire-format TLSA record, Base64 Encoded
+  	    },
+
+  &quot;starttls&quot;: {
+  	    &quot;certs&quot;: &quot;[&quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUdWekNDQlQrZ0F3SUJBZ...&quot;, // PEM format certificate, Base64 Encoded
+  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZBRENDQStpZ0F3SUJBZ...&quot;,
+  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVvRENDQTRpZ0F3SUJBZ...&quot;]
+  }
+}
+</code></pre><p>You can download <code>raw-dataset</code> and use it to test the script.</p>
+<h3 id="2-analyze-merged-data">2. Analyze merged data</h3>
+<p>To get meaningful results, merged data go through 2 steps: Running Spark script to get intermediary results and Extracting statistics from the results</p>
+<h4 id="21-run-spark-script">2.1 Run Spark script</h4>
+<p>Because we have to deal with massive size of data, we used <code>Spark</code> to process data. The <code>analysis-spark-codes.tar.gz</code> contains 9 analysis scripts that run on the Spark cluster. These scripts take the merged data as an input and return intermediary results. Intermediary results are aggregated to extract statistics in the next step.</p>
+<p>Some scripts need <a href="http://www.dnspython.org/">dns</a> python package to run, but this package is not standard package. Thus, you have to explictliy include this package when you execute the scripts by using <code>--py-files</code> option. For convenience, we upload the package <code>dependencies.zip</code> and you can use it directly. You can run the scripts as follows:</p>
+<pre><code>
+spark-submit --py-files=/path/to/dependencies.zip example.py
+
+</code></pre><p>The below table describes each script and related statistics scripts.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>file</th>
+<th>description</th>
+<th>misc.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dane-validation.py</code></td>
+<td>validate dane results</td>
+<td>need output of <code>chain-validation.py</code> to run</td>
+</tr>
+<tr>
+<td><code>chain-validation.py</code></td>
+<td>verify starttls chain in advance, outputs are used as input for other scripts</td>
+<td>need <code>root-ca-list</code> &amp; <a href="http://manpages.ubuntu.com/manpages/trusty/man1/faketime.1.html">faketime</a> path to run</td>
+</tr>
+<tr>
+<td><code>dnssec.py</code></td>
+<td>validate dnssec results</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>starttls-error.py</code></td>
+<td>classify the reasons of starttls scanning error</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>check-incorrect.py</code></td>
+<td>classify the reasons of dane validation failure (related to certificates)</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>superfluous.py</code></td>
+<td>check if domains have superfluous certificate chain</td>
+<td>need output of <code>chain-validation.py</code> to run</td>
+</tr>
+<tr>
+<td><code>rollover-candidate.py</code></td>
+<td>extract target domains for rollover evaluation</td>
+<td>need <code>seed-files</code> data to run</td>
+</tr>
+<tr>
+<td><code>rollover.py</code></td>
+<td>evaluate rollover behavior of domains</td>
+<td>need output of <code>rollover-candidate-sub.py</code> to run (ex. rollover-candidate-virginia.txt)</td>
+</tr>
+<tr>
+<td><code>valid-dn.py</code></td>
+<td>count the number of domains associated to mail servers which have valid TLSA record</td>
+<td>need <code>tlsa-with-mxcount</code> data to run</td>
+</tr>
+</tbody>
+</table>
+<h4 id="22-extract-statistics">2.2 Extract statistics</h4>
+<p>After get outputs from the spark scripts, you need to extract statistics from the outputs. <code>stats-codes.tar.gz</code> contains 9 analysis scripts for this purpose. Also, <code>plotting-scripts.tar.gz</code> contains 6 plotting scripts which generate the figures in the paper.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>file</th>
+<th>description</th>
+<th>results in the paper</th>
+<th>related gnuplot script</th>
+<th>misc.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dane-validation-stats.py</code></td>
+<td>calculate stats of dane validation results</td>
+<td>-</td>
+<td>-</td>
+<td>need output of <code>dane-validatation.py</code> as an input</td>
+</tr>
+<tr>
+<td><code>dnssec-stat.py</code></td>
+<td>calculate stats of dnssec validation results</td>
+<td>figure 3</td>
+<td>missing-dnssec.plot</td>
+<td>need output of <code>dnssec.py</code> as an input</td>
+</tr>
+<tr>
+<td><code>starttls-error-stat.py</code></td>
+<td>calculate stats of starttls crawl errors</td>
+<td>figure 4</td>
+<td>starttls-availability.plot</td>
+<td>need output of <code>starttls-error.py </code> as an input</td>
+</tr>
+<tr>
+<td><code>check-incorrect-stat.py</code></td>
+<td>calcuate stats of dane validation failure reasons</td>
+<td>figure 5</td>
+<td>incorrect-percent-per-comp.plot</td>
+<td>need output of <code>check-incorrect.py</code> &amp; <code>dane-validation-stat.py</code> as inputs</td>
+</tr>
+<tr>
+<td><code>superfluous-stat.py</code></td>
+<td>calculate stats of superfluous certificate chains</td>
+<td>Section 5.5, Unsuitable Usages</td>
+<td>-</td>
+<td>need output of <code>superfluous.py</code> (virginia data) as an input</td>
+</tr>
+<tr>
+<td><code>rollover-candidate-sub.py</code></td>
+<td>find rollover candidates (domains who changed their keys correctly)</td>
+<td>-</td>
+<td>-</td>
+<td>need output of <code>rollover-candidate.py</code> (virginia data) as an input</td>
+</tr>
+<tr>
+<td><code>rollover-stat.py</code></td>
+<td>calculate stats of rollover behavior of domains</td>
+<td>Section 5.5, Key Rollover</td>
+<td>-</td>
+<td>need output of <code>rollover.py</code> (virginia data) as an input</td>
+</tr>
+<tr>
+<td><code>valid-dn-stat.py</code></td>
+<td>calculate stats of DANE-valid domains for each TLD</td>
+<td>figure 6</td>
+<td>4months-valid-per-tld.plot</td>
+<td>need output of <code>valid-dn.py</code> (virginia data) as an input</td>
+</tr>
+<tr>
+<td><code>alexa1m-dane-stat.py</code></td>
+<td>calculate stats of Alexa domains who have TLSA records</td>
+<td>figure 2</td>
+<td>2years-tlsa-ratio-per-tld-split.plot</td>
+<td>need <code>alexa_mx_20191031</code> &amp; <code>alexa_tlsa_20191031</code> &amp; <code>alexa-top1m-2019-10-31_0900_UTC.csv</code> as inputs</td>
+</tr>
+</tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+<style>
+table, th, td {
+  text-align: center;
+}
+</style>
+
+
+    </main>
+    <footer class="container-fluid page-footer" style="display: flex; align-items: center">
+</footer>
+
+    
+<script type="text/javascript">
+var sc_project=11603023; 
+var sc_invisible=1; 
+var sc_security="a906280a"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="Web Analytics"
+href="http://statcounter.com/" target="_blank"><img
+class="statcounter"
+src="//c.statcounter.com/11603023/0/a906280a/1/" alt="Web
+Analytics"></a></div></noscript>
+
+
+    
+    <script src="js/jquery.1.12.4.min.js"></script>
+    
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
