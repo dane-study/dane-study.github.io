@@ -32,11 +32,7 @@
     <span class="icon-bar">&nbsp;</span>
     <span class="icon-bar">&nbsp;</span>
     </button>
-<<<<<<< HEAD
-    <a class="navbar-brand" href="#">DANE Study</a>
-=======
     <a class="navbar-brand" href="#">RPKI Study</a>
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
   </div>
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
@@ -60,289 +56,6 @@
 </noscript>
 
     <main class="container-fluid">
-<<<<<<< HEAD
-      <h1 id="rpki-client-side-artifacts-code">RPKI Client-side Artifacts Code</h1>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h2 id="preliminary">Preliminary</h2>
-<ol>
-<li>
-<p>To analyze validated BGP announcements, you first need to have two datasets: <a href="/rpki-archive">RPKI historical objects</a> and <a href="/rpki-archive/">public BGP datasets.</a></p>
-</li>
-<li>
-<p>Due to the massive size of the datasets (46 <em>billion</em> BGP announcements and 8-years RPKI objects), we strongly encourage you to use distributed cluster-computing framework (we used <a href="https://spark.apache.org/">Spark</a> for large-scale data processing. For your information, it took more than 3 days to verify all 46 billion BGP announcements with RPKI by utilizing ~700 cores and ~4 TB RAMs. )</p>
-</li>
-<li>
-<p>During the validation process, we also use two additional datasets to infer (1) the relationship between an AS who originated the BGP announcement and an AS that actually owns the announced IP prefix (i.e., ASN in the ROA), and (2) ISP and country information from the ASN from <a href="http://www.caida.org/home/">CAIDA</a>: <a href="http://data.caida.org/datasets/as-organizations">as-organization</a>, <a href="http://data.caida.org/datasets/as-relationships/">as-relationship</a>.</p>
-</li>
-<li>
-<p>Lastly, we also used <a href="https://www.nro.net/about/rirs/statistics/">NRO (Number Resource Organization)</a> to infer who allocated and assigned the IP prefixes advertised through BGP.</p>
-</li>
-</ol>
-<h2 id="summary-of-source-codes">Summary of source codes</h2>
-<p>Here, we provide following source codes. The instruction and usage of the source codes are explainedbelow.</p>
-
-
-
-
-
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>filename</th>
-<th>Download</th>
-<th>Misc.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>produce-vrps.py</code></td>
-<td><a href="/codes/produce-vrps.py">link</a></td>
-<td>You can use <a href="/rpki-archive">Ziggy</a> to produce a set of VRPs.</td>
-</tr>
-<tr>
-<td><code>data-pruning.py</code></td>
-<td><a href="/codes/data-pruning.py">link</a></td>
-<td></td>
-</tr>
-<tr>
-<td><code>spark-verify.py</code></td>
-<td><a href="/codes/spark-verify.py">link</a></td>
-<td>This code runs on a Spark cluster.</td>
-</tr>
-<tr>
-<td><code>analysis-codes.tar.gz</code></td>
-<td><a href="/codes/analysis-codes.tar.gz">link</a></td>
-<td></td>
-</tr>
-<tr>
-<td><code>plotting-script.tar.gz</code></td>
-<td><a href="/codes/plotting-script.tar.gz">link</a></td>
-<td>Gnuplot scripts.</td>
-</tr>
-</tbody>
-</table>
-<style>
-table, th, td {
-  text-align: center;
-}
-</style>
-
-<h2 id="reproducing-the-figures-in-the-imc19-paper">Reproducing the figures in the IMC&rsquo;19 paper</h2>
-<h3 id="1-generate-validated-roa-payloads-vrps-from-roas">1. Generate Validated ROA Payloads (VRPs) from ROAs.</h3>
-<p>Among the historical RPKI objects, we specifically focus on ROAs to generate VRPs. 
-A structure of ROA is defined at <a href="https://tools.ietf.org/html/rfc6482">RFC 6482</a>.
-The script <code>produce-vrps.py</code> will generate VRPs from each of the ROAs in the following format, which will be used to validate the IP prefixes from BGP announcements. (We used a python third-party library, <a href="https://github.com/dragonresearch/rpki.net">rpki.net</a>, to parse ROA objects.)</p>
-
-
-
-
-
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>time</th>
-<th>prefix</th>
-<th>prefix-len</th>
-<th>max-len</th>
-<th>ASN</th>
-<th>num-covered-ip-addresses</th>
-<th>country code</th>
-<th>TAL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>20170601</td>
-<td>103.205.38.0</td>
-<td>24</td>
-<td>24</td>
-<td>64076</td>
-<td>256</td>
-<td>N/A</td>
-<td>apnic</td>
-</tr>
-<tr>
-<td>20170601</td>
-<td>101.101.96.0</td>
-<td>22</td>
-<td>24</td>
-<td>45932</td>
-<td>1024</td>
-<td>N/A</td>
-<td>apnic</td>
-</tr>
-<tr>
-<td>20170601</td>
-<td>103.1.156.0</td>
-<td>22</td>
-<td>24</td>
-<td>45932</td>
-<td>1024</td>
-<td>N/A</td>
-<td>apnic</td>
-</tr>
-<tr>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-</tbody>
-</table>
-<style>
-table, th, td {
-  text-align: center;
-}
-</style>
-
-<h3 id="2-obtain-daily-unique-bgp-prefixes-from-each-of-the-bgp-datasets">2. Obtain daily unique BGP prefixes from each of the BGP Datasets.</h3>
-<p>After obtaining BGP datasets, we need to remove duplicate IP prefixes announcement to reduce the size of the datasets and to make validation process faster. 
-The script, <code>data-pruning.py</code>, removes duplicated entries and outputs in the following format:</p>
-
-
-
-
-
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>vantage point</th>
-<th>type</th>
-<th>time</th>
-<th>flag</th>
-<th>peer-ip</th>
-<th>peer-as</th>
-<th>prefix</th>
-<th>as-path</th>
-<th>protocol</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:02:51</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>0.0.0.0/0</td>
-<td>45896 3356</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:03:52</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>100.0.0.0/16</td>
-<td>45896 3356 701</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:03:44</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>1.0.0.0/24</td>
-<td>45896 3356 6762 13335 13335</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:03:52</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>100.10.0.0/16</td>
-<td>45896 3356 701</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:03:52</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>100.1.0.0/16</td>
-<td>45896 3356 701</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>rrc00</td>
-<td>BGP4MP</td>
-<td>05/28/18 07:03:52</td>
-<td>A</td>
-<td>111.91.233.1</td>
-<td>45896</td>
-<td>100.11.0.0/16</td>
-<td>45896 3356 701</td>
-<td>IGP</td>
-</tr>
-<tr>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-</tbody>
-</table>
-<style>
-table, th, td {
-  text-align: center;
-}
-</style>
-
-<h3 id="3-validate-bgp-datasets-obtained-from-2-against-vrp-obtained-from-1">3. Validate BGP Datasets (obtained from 2) against VRP (obtained from 1).</h3>
-<p>Now you are ready to validate BGP announcements (obtained from 2) using VRPs (obtained from 1). 
-When validating BGP announcements, we followed the following algorithm from RFC6811.<br>
-(For those who are interested in the details of how VRPs are used to verify BGP announcement, please refer <a href="https://tools.ietf.org/html/rfc6811">BGP Prefix Origin Validation (RFC6811)</a>)</p>
-<pre><code>   // This Pseudo-Code is an excerpt from RFC6811.
-
-   result = BGP_PFXV_STATE_NOT_FOUND;
-
-   //Iterate through all the Covering entries in the local VRP
-   //database, pfx_validate_table.
-   entry = next_lookup_result(pfx_validate_table, route_prefix);
-
-   while (entry != NULL) {
-     prefix_exists = TRUE;
-
-     if (route_prefix_length &lt;= entry-&gt;max_length) {
-       if (route_origin_as != NONE
-           &amp;&amp; entry-&gt;origin_as != 0
-           &amp;&amp; route_origin_as == entry-&gt;origin_as) {
-         result = BGP_PFXV_STATE_VALID;
-         return (result);
-       }
-     }
-     entry = next_lookup_result(pfx_validate_table, input.prefix);
-   }
-
-   //If one or more VRP entries Covered the route prefix, but
-   //none Matched, return &quot;Invalid&quot; validation state.
-   if (prefix_exists == TRUE) {
-     result = BGP_PFXV_STATE_INVALID;
-   }
-
-   return (result);
-</code></pre><p>The source code, <code>spark-verify.py</code> produces the validated results with the following format (Please note that we used Spark cluster for a large-scale data processing):</p>
-=======
       
 
 <h1 id="dane-for-smtp-client-side-artifacts-code">DANE for SMTP Client-side Artifacts Code</h1>
@@ -355,20 +68,19 @@ table, th { text-align: center;
 <h2 id="preliminary">Preliminary</h2>
 
 <ol>
-<li><p>To analyze determine a mail provider&rsquo;s policy, you first need to have a Bind9 and postfix running in your system.</p></li>
+<li><p>To analyze and determine a mail provider&rsquo;s policy, you first need to have a Bind9 and postfix running in your system. This is section consists of two parts: (1) Installation of DNS and SMTP softwares and (2) configuration of DNS and SMTP softwares to reproduce the results in USENIX&rsquo;20 paper.</p></li>
 
-<li></li>
+<li><p>First we need to install and configure the DNS server using bind9. We provide script which could be used to automatically create bind zone files.</p></li>
 
-<li></li>
+<li><p>Secondly, we need to install and configure SMTP server using postfix MTA. For reproducing the client side analysis results of USENIX&rsquo;20 paper, we heavily rely on Server Name Indication(SNI) to analyse multiple mail provider&rsquo;s policy.</p></li>
 
-<li></li>
+<li><p>Once you send an email from any of the mail service providers, you can utlise a script provided by us to analyse the policy of that provider.</p></li>
 </ol>
 
 <h2 id="summary-of-source-codes">Summary of source codes</h2>
 
 <p>Here, we provide following source codes. The instruction and usage of the source codes are explainedbelow.</p>
 
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
 
 
 
@@ -377,133 +89,6 @@ table, th { text-align: center;
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
-<<<<<<< HEAD
-<th>time</th>
-<th>prefix-addr</th>
-<th>prefix-len</th>
-<th>origin</th>
-<th>origin-isp</th>
-<th>origin-country</th>
-<th>Verified Information<!-- raw HTML omitted -->1<!-- raw HTML omitted --></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>20181227</td>
-<td>99.108.0.0</td>
-<td>14</td>
-<td>7018</td>
-<td>AT&amp;T Services  Inc.</td>
-<td>US</td>
-<td>1,7018,AT&amp;T Services  Inc.,US,None,99.108.0.0/14-14</td>
-</tr>
-<tr>
-<td>20181227</td>
-<td>99.112.0.0</td>
-<td>12</td>
-<td>7018</td>
-<td>AT&amp;T Services  Inc.</td>
-<td>US</td>
-<td>1,7018,AT&amp;T Services  Inc.,US,None,99.112.0.0/12-12</td>
-</tr>
-<tr>
-<td>20181227</td>
-<td>99.192.128.0</td>
-<td>17</td>
-<td>27589</td>
-<td>MOJOHOST</td>
-<td>US</td>
-<td>1,27589,MOJOHOST,US,None,99.192.128.0/17-24</td>
-</tr>
-<tr>
-<td>20181227</td>
-<td>99.32.0.0</td>
-<td>12</td>
-<td>7018</td>
-<td>AT&amp;T Services  Inc.</td>
-<td>US</td>
-<td>1,7018,AT&amp;T Services  Inc.,US,None,99.32.0.0/12-12</td>
-</tr>
-</tbody>
-</table>
-<style>
-table, th, td {
-  text-align: center;
-}
-</style>
-
-<p><!-- raw HTML omitted -->1<!-- raw HTML omitted --> Verified information is a list of the validated result of a given BGP announcement from its covered ROA, which contains a list of (validation-index, ASN of the covered ROA, ISP of the covered ROA, country code of the covered ROA, relationship between the origin ASN of the BGP and ASN of the covered ROA, and covered IP prefix) tuples; the details of validation-index can be found in the source code.</p>
-<h3 id="4-analyze-validated-bgp-announcements">4. Analyze Validated BGP announcements</h3>
-<p>The <code>analysis-codes.gz</code> and <code>plotting-script.gz</code> contain three analysis scripts and 10 plotting scripts which generate the figures in the paper. The below table describes each of the functions in the code that generates the dataset and plotting gnuplot scripts.</p>
-
-
-
-
-
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>file</th>
-<th>function</th>
-<th>figures in the paper</th>
-<th>gnuplot script</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>spark-rpki-object-validation.py</td>
-<td>runSparkROAsIPCnt, runSparkROAsIPPercentage, runSparkPercentageASesInROAs</td>
-<td>Figure 2</td>
-<td>num-vrps-as-ip-ipv4-byIRR.plot</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkCalcRPKIEnabledAdv</td>
-<td>Figure 3</td>
-<td>percentage-rpki-enabled-adv-ipv4.plot</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkValidationUniquePrefix, runSparkValidationUniquePrefixAllPrefix</td>
-<td>Figure 4, Figure 5</td>
-<td>percentage-rpki-uniq-prefix-asn-invalid-ipv4-merge.plot, percentage-rpki-uniq-prefix-asn-invalid-ipv4-focus.plot</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkValidationUniquePrefix</td>
-<td>Figure 6</td>
-<td>num-rpki-uniq-prefix-asn-invalid-adv-reasoning-ipv4.plot</td>
-</tr>
-<tr>
-<td>spark-rpki-object-validation.py</td>
-<td>runSparkNumPrefixWithMaxlen</td>
-<td>Figure 7</td>
-<td>percentage-ipprefix-with-maxlen-ipv4.plot (a), percentage-rpki-uniq-prefix-asn-merge-adv-hasMaxLen-ipv4.plot (b)</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkClassifyHijackingUniquePrefix</td>
-<td>Figure 8</td>
-<td>num-rpki-uniq-prefix-classify-hijack-ipv4.plot</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkClassifyHijackingUniquePrefixDuration</td>
-<td>Figure 9</td>
-<td>cdf-num-attack-duration.plot</td>
-</tr>
-<tr>
-<td>spark-analysis.py</td>
-<td>runSparkClassifyHijackingUniquePrefix</td>
-<td>Figure 10</td>
-<td>percentage-rpki-uniq-prefix-asn-invalid-suspicious-ipv4.plot</td>
-</tr>
-<tr>
-<td>hijack-analysis.py</td>
-<td>getPairsOfAttack</td>
-<td>Figure 11, 12</td>
-<td>cdf-num-hijacked-ipv4-byAS, cdf-num-attacker-ipv4-byAS.plot</td>
-=======
 <th>filename</th>
 <th>Download</th>
 <th>Misc.</th>
@@ -521,7 +106,6 @@ table, th, td {
 <td><code>generate-zone.py</code></td>
 <td><a href="/codes/generate-zone.py">script</a> <a href="/codes/security-protocol.com.yml">Example Yaml</a></td>
 <td>Generates bind zone file as per the yaml file .</td>
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
 </tr>
 </tbody>
 </table>
@@ -532,11 +116,105 @@ table, th, td {
 </style>
 
 
-<<<<<<< HEAD
-=======
+<h2 id="summary-of-existing-scenarios-build-to-determine-a-mail-provider-s-policy">Summary of existing scenarios build to determine a mail provider&rsquo;s policy</h2>
+
+
+
+
+
+
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Description</th>
+<th>misc</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>valid.security-protocol.com</td>
+<td>Serves proper TLSA and STARTTLS records</td>
+<td></td>
+</tr>
+
+<tr>
+<td>wrong-signature.security-protocol.com</td>
+<td>Serves wrong RRSIG for TLSA record</td>
+<td>Change the RRSIG hash for TLSA record</td>
+</tr>
+
+<tr>
+<td>missing-signature.security-protocol.com</td>
+<td>Serves no RRSIG for TLSA record</td>
+<td>Delete the RRSIG hash for TLSA record</td>
+</tr>
+
+<tr>
+<td>expired-starttls-tlsa-3.security-protocol.com</td>
+<td>Serve expired certificate to create tlsa record with usage set to 3.</td>
+<td></td>
+</tr>
+
+<tr>
+<td>missing-ds.security-protocol.com</td>
+<td>Serve no DS record for the domain in the chain</td>
+<td></td>
+</tr>
+
+<tr>
+<td>self-signed-starttls.security-protocol.com</td>
+<td>Serve self signed leaf certificate for the domain during STARTTLS validation</td>
+<td></td>
+</tr>
+
+<tr>
+<td>cn-diff-starttls.security-protocol.com</td>
+<td>Serve a leaf certificate where the Common Name (CN) field is different.</td>
+<td></td>
+</tr>
+
+<tr>
+<td>different-cert.security-protocol.com</td>
+<td>Serve different certificates for creating a TLSA record and in the SNI chain for STARTTLS validation</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-match.security-protocol.com</td>
+<td>Serve a self-signed leaf certificate and create a valid TLSA record and just change the matching type field manually</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-selector.security-protocol.com</td>
+<td>Create a TLSA record with selector 1 and then modify the TLSA record with any busted value</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-usage-1.security-protocol.com</td>
+<td>Serves a self-signed leaf certificate and create a valid TLSA record with usage 1 (PKIX-EE) and then modify the TLSA record with “busted certificate association data”</td>
+<td></td>
+</tr>
+
+<tr>
+<td>dane-diff-usage-3.security-protocol.com</td>
+<td>Serve a CA signed leaf certificate in the chain.</td>
+<td>Domain issued certificate (and DANE-EE) which indicates a self-signed certificate to create TLSA record.</td>
+</tr>
+</tbody>
+</table>
+<style>
+table, th, td {
+  text-align: center;
+}
+</style>
+
+
 <h2 id="reproducing-the-client-configuration-in-the-usenix-security-20-paper">Reproducing the client configuration in the USENIX Security&rsquo;20 paper</h2>
 
->>>>>>> a2fc872780f363809f9c9c64f8ada95259b6001e
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
 </footer>
