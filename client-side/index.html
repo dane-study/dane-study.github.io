@@ -240,31 +240,32 @@ table, th, td {
 <li>Allow Query to your dns from your private network (As the name suggests only the systems from your private network can query dns sever for name to ip translation and vice-versa)</li>
 <li>Allow recursive query</li>
 <li>Specify the DNS port ( 53)</li>
+<li>Forwarders (DNS query will be forwarded to the forwarders when your local DNS server is unable to resolve query)</li>
+</ul>
 
-<li><p>Forwarders (DNS query will be forwarded to the forwarders when your local DNS server is unable to resolve query)</p>
+<p><code>Note:</code> Make sure you do have a registrar to point to your correct nameserver.</p>
 
 <pre><code>options {
-    directory &quot;/var/cache/bind&quot;;
+        directory &quot;/var/cache/bind&quot;;
 
-    recursion yes;
-    allow-recursion { trusted; };
-    allow-transfer { none; };
+        recursion yes;
+        allow-recursion { trusted; };
+        allow-transfer { none; };
 
-    forwarders {
-            8.8.8.8;
-            8.8.4.4;
-    };
+        forwarders {
+                8.8.8.8;
+                8.8.4.4;
+        };
 
 		dnssec-validation auto;
-    dnssec-enable yes;
+        dnssec-enable yes;
 
-    auth-nxdomain no;    # conform to RFC1035
-    listen-on-v6 { any; };
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
 
 };
 
-</code></pre></li>
-</ul>
+</code></pre>
 
 <p>To support logging facility in Bind9 DNS server</p>
 
@@ -598,6 +599,110 @@ mail.different-cert.security-protocol.com /etc/letsencrypt/live/security-protoco
 
 <pre><code>sudo service postfix restart
 </code></pre>
+
+<h3 id="3-testing-and-client-side-dane-results">3. Testing and client side DANE results</h3>
+
+<p>After the installation of Bind9 DNS server software and compiling custom version of Postfix. We can start testing and see how to reproduce the client side table in the paper.</p>
+
+<p><br/></p>
+
+<p>Step 1: Create an account in any of email service provider you want to analyse.</p>
+
+<p><br/></p>
+
+<p>Step 2: Check the DNS logs using <code>tail -n 50 -f /var/cache/bind/query.log</code></p>
+
+<p><br/></p>
+
+<p>Example DNS log for a valid scenario with DNSSEC and DANE TLSA support</p>
+
+<p><br/></p>
+
+<pre><code>07-Feb-2020 19:55:54.593 client @0x7fc2c80e0720 74.208.114.131#31068 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.469 client @0x7fc2c80e0720 74.208.114.131#29440 (valid.security-protocol.com): query: valid.security-protocol.com IN MX -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.530 client @0x7fc2c80e0720 74.208.114.131#45210 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.591 client @0x7fc2c80e0720 74.208.114.131#52183 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.651 client @0x7fc2c80e0720 74.208.114.131#25687 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.712 client @0x7fc2c80e0720 74.208.114.131#29666 (valid.security-protocol.com): query: valid.security-protocol.com IN MX -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.770 client @0x7fc2c80e0720 74.208.114.131#44412 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:55.891 client @0x7fc2c88a5900 74.208.114.131#39670 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)TD (172.31.27.143)
+07-Feb-2020 19:55:55.954 client @0x7fc2c80e0720 74.208.114.131#45964 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.075 client @0x7fc2c8053140 74.208.114.131#36114 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)TD (172.31.27.143)
+07-Feb-2020 19:55:56.133 client @0x7fc2c80e0720 74.208.114.131#23476 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.189 client @0x7fc2c80e0720 74.208.114.131#22369 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.250 client @0x7fc2c80e0720 74.208.114.130#2351 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.307 client @0x7fc2c80e0720 74.208.114.130#1782 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.365 client @0x7fc2c80e0720 74.208.114.130#64954 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.483 client @0x7fc2c890b590 74.208.114.130#36227 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)TD (172.31.27.143)
+07-Feb-2020 19:55:56.545 client @0x7fc2c80e0720 74.208.114.131#36696 (mail.valid.security-protocol.com): query: mail.valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.601 client @0x7fc2c80e0720 74.208.114.131#7328 (mail.valid.security-protocol.com): query: mail.valid.security-protocol.com IN A -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.662 client @0x7fc2c80e0720 74.208.114.131#27867 (mail.valid.security-protocol.com): query: mail.valid.security-protocol.com IN AAAA -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.723 client @0x7fc2c80e0720 74.208.114.130#47107 (mail.valid.security-protocol.com): query: mail.valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.784 client @0x7fc2c80e0720 74.208.114.130#43212 (mail.valid.security-protocol.com): query: mail.valid.security-protocol.com IN AAAA -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.843 client @0x7fc2c80e0720 74.208.114.131#4486 (_tcp.mail.valid.security-protocol.com): query: _tcp.mail.valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.901 client @0x7fc2c80e0720 74.208.114.131#36775 (_25._tcp.mail.valid.security-protocol.com): query: _25._tcp.mail.valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:56.957 client @0x7fc2c80e0720 74.208.114.131#32013 (_25._tcp.mail.valid.security-protocol.com): query: _25._tcp.mail.valid.security-protocol.com IN TLSA -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.017 client @0x7fc2c80e0720 74.208.114.131#23719 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.084 client @0x7fc2c80e0720 74.208.114.131#8302 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.144 client @0x7fc2c80e0720 74.208.114.131#54218 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.204 client @0x7fc2c80e0720 74.208.114.131#26564 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.324 client @0x7fc2c874e1e0 74.208.114.131#38430 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)TD (172.31.27.143)
+07-Feb-2020 19:55:57.385 client @0x7fc2c80e0720 74.208.114.130#53045 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.444 client @0x7fc2c80e0720 74.208.114.130#17783 (security-protocol.com): query: security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.505 client @0x7fc2c80e0720 74.208.114.130#61317 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)D (172.31.27.143)
+07-Feb-2020 19:55:57.623 client @0x7fc2c8510e40 74.208.114.130#45243 (valid.security-protocol.com): query: valid.security-protocol.com IN DNSKEY -E(0)TD (172.31.27.143)
+</code></pre>
+
+<p><br/></p>
+
+<p>Step 3: Check the SMTP log using <code>tail -n 50 -f /var/log/mail.log</code></p>
+
+<p><br/></p>
+
+<p>Example SMTP log if email recieved by the server showcasing STARTTLS support.</p>
+
+<p><br/></p>
+
+<pre><code>
+Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: initializing the server-side TLS engine
+Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: connect from mout.gmx.com[74.208.4.200]
+Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: setting up TLS connection from mout.gmx.com[74.208.4.200]
+Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: mout.gmx.com[74.208.4.200]: TLS cipher list &quot;aNULL:-aNULL:HIGH:MEDIUM:+RC4:@STRENGTH&quot;
+Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: SSL_accept:before SSL initialization
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:before SSL initialization
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS read client hello
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS write server hello
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS write change cipher spec
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:TLSv1.3 write encrypted extensions
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS write certificate
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:TLSv1.3 write server certificate verify
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS write finished
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:TLSv1.3 early data
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:TLSv1.3 early data
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS read finished
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: mout.gmx.com[74.208.4.200]: Issuing session ticket, key expiration: 1581107157
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: mout.gmx.com[74.208.4.200]: save session 763355DD0A89B45CB12D0E068A71F3ED0F960F5D974F66011CAC5BCBE405332D&amp;s=smtp&amp;l=269488143 to smtpd cache
+Feb  7 19:55:58 security-protocol postfix/tlsmgr[23489]: put smtpd session id=763355DD0A89B45CB12D0E068A71F3ED0F960F5D974F66011CAC5BCBE405332D&amp;s=smtp&amp;l=269488143 [data 173 bytes]
+Feb  7 19:55:58 security-protocol postfix/tlsmgr[23489]: write smtpd TLS cache entry 763355DD0A89B45CB12D0E068A71F3ED0F960F5D974F66011CAC5BCBE405332D&amp;s=smtp&amp;l=269488143: time=1581105358 [data 173 bytes]
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: SSL_accept:SSLv3/TLS write session ticket
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: Anonymous TLS connection established from mout.gmx.com[74.208.4.200] to mail.valid.security-protocol.com: TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits) server-signature RSA-PSS (2048 bits)
+Feb  7 19:55:58 security-protocol postfix/smtpd[17916]: A2EAD42046: client=mout.gmx.com[74.208.4.200]
+Feb  7 19:55:59 security-protocol postfix/cleanup[17920]: A2EAD42046: message-id=&lt;trinity-72da751b-5cb4-4d3b-a1b4-64957a1e3074-1581105354301@3c-app-mailcom-lxa05&gt;
+Feb  7 19:55:59 security-protocol postfix/qmgr[23485]: A2EAD42046: from=&lt;dane-test@mail.com&gt;, size=2532, nrcpt=1 (queue active)
+Feb  7 19:55:59 security-protocol postfix/local[17921]: A2EAD42046: to=&lt;ubuntu@valid.security-protocol.com&gt;, relay=local, delay=0.57, delays=0.55/0.02/0/0, dsn=2.0.0, status=sent (delivered to maildir)
+Feb  7 19:55:59 security-protocol postfix/qmgr[23485]: A2EAD42046: removed
+Feb  7 19:55:59 security-protocol postfix/smtpd[17916]: disconnect from mout.gmx.com[74.208.4.200] ehlo=2 starttls=1 mail=1 rcpt=1 data=1 quit=1 commands=7
+Feb  7 19:57:17 security-protocol postfix/smtpd[17916]: connect from unknown[185.234.218.145]
+Feb  7 19:57:18 security-protocol postfix/smtpd[17916]: lost connection after AUTH from unknown[185.234.218.145]
+Feb  7 19:57:18 security-protocol postfix/smtpd[17916]: disconnect from unknown[185.234.218.145] ehlo=1 auth=0/1 commands=1/2
+</code></pre>
+
+<p><br/>
+Step 4: Once recieved the logs, do check the <code>Maildir/</code> to see the received email that you send.</p>
+
+<p><br/></p>
+
+<p>Hence the procedure validates and analyses the email providers(Client&rsquo;s) DANE implementation on different multitudes like semanatics and much more.</p>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
