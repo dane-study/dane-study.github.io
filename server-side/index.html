@@ -87,6 +87,7 @@
 <thead>
 <tr>
 <th>filename</th>
+<th>descrption</th>
 <th>Download</th>
 <th>Misc.</th>
 </tr>
@@ -94,16 +95,20 @@
 <tbody>
 <tr>
 <td><code>tlsa-scan.go</code></td>
+<td>scan tlsa records</td>
 <td><a href="/codes/tlsa-scan.go">link</a></td>
 <td></td>
 </tr>
 <tr>
 <td><code>starttls-scan.go</code></td>
+<td>collect starttls certificates</td>
 <td><a href="/codes/starttls-scan.go">link</a></td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<p>Because we provide 4 months of raw dataset which is used for our paper, <strong>you don&rsquo;t have to run scanning code actually.</strong></p>
+<p>But if you want to know how to run scanning codes, please see the Appendix below.</p>
 <h3 id="2-data-analysis">2. Data analysis</h3>
 <p>These codes are used to analyze the collected dataset.</p>
 <table class="table table-dark table-striped table-bordered">
@@ -137,63 +142,561 @@
 </tr>
 </tbody>
 </table>
-<h2 id="summary-of-dataset">Summary of dataset</h2>
+<h2 id="summary-of-data">Summary of data</h2>
 <p>Here, we provide our collected raw dataset (Hourly snapshot) and some other data need to run our scripts.
-We also provide intermediary data which is the output of our scripts for your convenience.</p>
-<p>What about Daily dataset? Because the Daily dataset was crawled using zone files that are given under agreement with registries, we cannot make them just publicly available. Instead, we provide intermediary results (e.g. <code>tlsa-counts.csv</code>) extracted from the Daily dataset to run our scripts.</p>
-<p>You can download all data from here: <a href="https://mmlab.snu.ac.kr/~hmlee/dane/dane_data.html">Download</a>  (All data are compressed with tar.gz)</p>
-<h3 id="1-auxiliary-data">1. Auxiliary data</h3>
-<p>Files need to run our scripts.</p>
+We also provide sample output of our scripts for your convenience.</p>
+<p>What about Daily dataset? Because the Daily dataset was collected using zone files that are given under agreement with registries, we cannot make them just publicly available. Instead, we provide intermediary data (e.g. <code>tlsa-counts.csv</code>) extracted from the Daily dataset which is needed to run our scripts.</p>
+<p>You have to download all data to run our codes. All data are compressed with tar.gz.</p>
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
 <th>filename</th>
+<th>Download</th>
 <th>description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>dependencies.zip</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/dependencies.tar.gz">LINK</a></td>
 <td>include python <code>dns</code> package, used for Spark scripts</td>
 </tr>
 <tr>
 <td><code>root-ca-list</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/root-ca-list.tar.gz">LINK</a></td>
 <td>contain root CA&rsquo;s certificates, used for some Spark scripts</td>
 </tr>
 <tr>
 <td><code>seed-files</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/seed-files.tar.gz">LINK</a></td>
 <td>TLSA base domain data, used for scanning codes &amp; <code>rollover-candidate.py</code> script</td>
 </tr>
 <tr>
 <td><code>tlsa-counts.csv</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/tlsa-counts.tar.gz">LINK</a></td>
 <td>the number of domains with MX reocrds that has a corresponding TLSA records</td>
 </tr>
 <tr>
 <td><code> tlsa-with-mxcount</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/tlsa-counts.tar.gz">LINK</a></td>
 <td>the number of domains corresponding to TLSA base domain for each TLD</td>
 </tr>
 <tr>
 <td><code>alexa_mx_20191031</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/alexa_mx_20191031.tar.gz">LINK</a></td>
 <td>alexa domains which have MX records</td>
 </tr>
 <tr>
 <td><code>alexa_tlsa_20191031</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/alexa_tlsa_20191031.tar.gz">LINK</a></td>
 <td>alexa domains which have TLSA records</td>
 </tr>
 <tr>
 <td><code>alexa-top1m-2019-10-31_0900_UTC.csv</code></td>
+<td><a href="https://toplists.net.in.tum.de/archive/alexa/alexa-top1m-2019-10-31_0900_UTC.csv.xz">LINK</a></td>
 <td>alexa rank file</td>
+</tr>
+<tr>
+<td><code>Raw-dataset (Hourly snapshot)</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/raw.html">LINK</a></td>
+<td>tlsa records &amp; starttls records collected for 4 month(July ~ October 2019) in 5 vantage points (VIrginia, Oregon, Paris, Sydney, and Sao Paulo)</td>
+</tr>
+<tr>
+<td><code>Sample outputs</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/dane_data.html">LINK</a></td>
+<td>output of spark scripts and stats scripts, you can use this data as input for scripts</td>
 </tr>
 </tbody>
 </table>
-<h3 id="2-raw-dataset">2. Raw-dataset</h3>
-<p>Hourly snapshot for 5 vantage points (Virginia, Oregon, Paris, Sydney, and Sao Paulo).</p>
-<p>Each vantage points contain 2 datasets: TLSA and STARTTLS.</p>
-<h3 id="3-intermediary-data">3. Intermediary data</h3>
-<p>We also provide output for each script for your convenience.</p>
+<h3 id="what-is-intermediary-outputs">What is Intermediary outputs?</h3>
 <p>Example 1) you can use dane_validation_output (output of spark script <code>dane-validation.py</code>) to run <code>dane-validation-stat.py</code>.</p>
 <p>Example 2) you can use alexa_dane_stat_output (output of stats script <code>alexa1m-dane-stat.py</code>) to run <code>alexa-tlsa-adoption.plot</code> which plots figure 2 in the paper.</p>
-<h2 id="collecting-tlsa-records--starttls-certificates">Collecting TLSA records &amp; STARTTLS certificates</h2>
+<h2 id="reproducing-the-results-in-the-usenix-security20-paper">Reproducing the results in the USENIX Security&rsquo;20 paper</h2>
+<p><strong>It will take quite a lot of time to complete Step 1 and  Step 2.1.</strong> Thus, we provide a sample output as a shortcut. If you do not want to spend a lot of time, just skip Step 1 &amp; 2.1 and go to Step 2.2 directly. You can extract statistics and draw figures from there.</p>
+<p>But it would be better to read Step 1 and 2.1 even if you do not run scripts, because it will be helpful to understand how our scripts are working.</p>
+<h3 id="overview">Overview</h3>
+<ol>
+<li>Merge raw data</li>
+<li>Run spark codes to get intermediary output</li>
+<li>Run stats codes to get meaningful statistics</li>
+<li>Plot figures</li>
+</ol>
+<p>The output of each step is used as input for the next step. You can skip 1, 2 because we provide intermediary data (sample output).</p>
+<h3 id="step-1-process-raw-dataset">Step 1. Process raw-dataset</h3>
+<p>Because we collect two forms of raw data (TLSA records and STARTTLS certificates), you <strong>must</strong> merge them first to process it efficiently using Spark. The script <code>raw-merge.py</code> will read each raw data and generate an output of JSON format. Merged data are used for all other analysis.</p>
+<p>After downloading <code>Hourly snapshot</code> dataset, make directories for each city first. And extract each city&rsquo;s rawdata at that directory. For example,</p>
+<pre><code>mkdir raw_dataset
+mv raw_dataset/
+mkdir virginia
+cd virginia/
+mkdir tlsa
+cd tlsa/
+tar -xvzf raw-tlsa-virginia-jul.tar.gz 
+tar -xvzf raw-tlsa-virginia-aug.tar.gz 
+tar -xvzf raw-tlsa-virginia-sep.tar.gz 
+tar -xvzf raw-tlsa-virginia-oct.tar.gz
+cd ../
+mkdir starttls
+cd starttls/
+tar -xvzf raw-starttls-virginia-jul.tar.gz 
+tar -xvzf raw-starttls-virginia-aug.tar.gz 
+tar -xvzf raw-starttls-virginia-sep.tar.gz 
+tar -xvzf raw-starttls-virginia-oct.tar.gz
+</code></pre><p>Then, make an output directory for each city. For example,</p>
+<pre><code>mkdir merged_output
+cd merged_output/
+mkdir virginia
+</code></pre><p>To run <code>raw-merge.py</code> you have to set an input path and output path (<em>global variable</em> in the script). For example,</p>
+<pre><code>inputPath = &quot;/path/to/raw_dataset/virginia/&quot;
+outputPath = &quot;/path/to/merged_output/virginia/&quot;
+</code></pre><p>Now you can run <code>raw-merge.py</code></p>
+<pre><code>python3 raw-merge.py 190711 191031 
+</code></pre><p>After execution, merged outputs are placed in the merged_output/virginia directory</p>
+<p>You <strong>must</strong> repeat the above process for all cities (Virginia, Oregon, Paris, Sydney, and Sao Paulo).</p>
+<p>Below JSON data is an example of a merged output.</p>
+<pre><code>...
+{
+  &quot;domain&quot;: &quot;mail.ietf.org.&quot;,
+  &quot;port&quot;: &quot;25&quot;,
+  &quot;time&quot;: &quot;20191031 9&quot;,
+  &quot;city&quot;: &quot;virginia&quot;, 
+  &quot;tlsa&quot;: {
+  	    &quot;dnssec&quot;: &quot;Secure&quot;, // DNSSEC validation result
+  	    &quot;record_raw&quot;: &quot;AACBoAABAAIABwABA18yNQRfdGNwBG1haWwEaWV0ZgNvcmcAADQAAQNfMjUEX3...&quot; // DNS wire-format TLSA record, Base64 Encoded
+  	    },
+
+  &quot;starttls&quot;: {
+  	    &quot;certs&quot;: &quot;[&quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUdWekNDQlQrZ0F3SUJBZ...&quot;, // PEM format certificate, Base64 Encoded
+  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZBRENDQStpZ0F3SUJBZ...&quot;,
+  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVvRENDQTRpZ0F3SUJBZ...&quot;]
+  }
+}
+...
+</code></pre><p>Now you are ready to run the spark scripts.</p>
+<h3 id="step-2-analyze-merged-data">Step 2. Analyze merged data</h3>
+<p>To get results in the paper, merged data go through 2 steps.</p>
+<ol>
+<li>Running Spark script to get intermediary results.</li>
+<li>Extracting statistics from the intermediary results.</li>
+</ol>
+<p>The below table describes each result in the paper and related scripts to reproduce it.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>result</th>
+<th>spark script</th>
+<th>stats script</th>
+<th>gnuplot script</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>figure 1</td>
+<td>-</td>
+<td>-</td>
+<td><code>2years-tlsa-ratio-per-tld-split.plot</code></td>
+</tr>
+<tr>
+<td>figure 2</td>
+<td>-</td>
+<td><code>alexa1m-dane-stat.py</code></td>
+<td><code>alexa-tlsa-adoption.plot</code></td>
+</tr>
+<tr>
+<td>figure 3</td>
+<td><code>dnssec.py	</code></td>
+<td><code>dnssec-stat.py</code></td>
+<td><code>missing-dnssec.plot</code></td>
+</tr>
+<tr>
+<td>figure 4</td>
+<td><code>starttls-error.py	</code></td>
+<td><code>starttls-error-stat.py</code></td>
+<td><code>starttls-availability.plot</code></td>
+</tr>
+<tr>
+<td>figure 5</td>
+<td><code>check-incorrect.py</code></td>
+<td><code>check-incorrect-stat.py</code></td>
+<td><code>incorrect-percent-per-comp.plot</code></td>
+</tr>
+<tr>
+<td>figure 6</td>
+<td><code>valid-dn.py</code></td>
+<td><code>valid-dn-stat.py</code></td>
+<td><code>4months-valid-per-tld.plot</code></td>
+</tr>
+<tr>
+<td>Section 5.5, Unsuitable Usages</td>
+<td><code>superfluous.py</code></td>
+<td><code>superfluous-stat.py</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Section 5.5, Key Rollover</td>
+<td><code>rollover.py</code></td>
+<td><code>rollover-stat.py</code></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to draw figure 3, run spark script <code>dnssec.py</code> using merged data. And next, run stats script <code>dnssec-stat.py</code> using the output of <code>dnssec.py</code> as input. Finally, you can draw figure 3 with <code>missing-dnssec.plot</code> script using the output of <code>dnssec-stat.py</code>.</p>
+<h4 id="21-run-spark-script">2.1 Run Spark script</h4>
+<p>Because we have to deal with the massive size of data, we used <code>Spark</code> to process data. The <code>spark-codes.tar.gz</code> contains 9 scripts that run on the Spark machine. These scripts take the <strong>merged data</strong> as input and return results. These results are intermediary results which are used to extract statistics in step 2.2.</p>
+<p>Some scripts need <a href="http://www.dnspython.org/">dns</a> python package to run, but this package is not a python standard package. Thus, you have to explicitly include this package when you execute the scripts by using <code>--py-files</code> option. For convenience, we upload the package as <code>dependencies.zip</code> and you can use it directly.</p>
+<p>Also you have to set <em>global variable</em> in spark scripts like as follows.</p>
+<pre><code>dependency_path = &quot;/path/to/dependencies.zip&quot;
+</code></pre><p>And then you can run scripts like this.</p>
+<pre><code>spark-submit --py-files=/path/to/dependencies.zip [spark_script.py]
+</code></pre><p>The below table describes each script.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>file</th>
+<th>description</th>
+<th>input</th>
+<th>sample output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>chain-validation.py</code></td>
+<td>verify starttls chain in advance, outputs are used as input for other scripts</td>
+<td><code>root-ca-list</code> &amp; <a href="http://manpages.ubuntu.com/manpages/trusty/man1/faketime.1.html">faketime</a> path (ex. /usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1)</td>
+<td>chain_validation_output</td>
+</tr>
+<tr>
+<td><code>dane-validation.py</code></td>
+<td>validate dane results</td>
+<td>output of <code>chain-validation.py</code>(ex. chain_validation_output)</td>
+<td>dane_validation_output</td>
+</tr>
+<tr>
+<td><code>dnssec.py</code></td>
+<td>validate dnssec results</td>
+<td>-</td>
+<td>dnssec_output</td>
+</tr>
+<tr>
+<td><code>starttls-error.py</code></td>
+<td>classify the reasons of starttls scanning error</td>
+<td>-</td>
+<td>starttls_error_output</td>
+</tr>
+<tr>
+<td><code>check-incorrect.py</code></td>
+<td>classify the reasons of dane validation failure (related to certificates)</td>
+<td>-</td>
+<td>check_incorrect_output</td>
+</tr>
+<tr>
+<td><code>superfluous.py</code></td>
+<td>check if domains have a superfluous certificate chain</td>
+<td>output of <code>chain-validation.py</code>(ex. chain_validation_output)</td>
+<td>superfluous_output</td>
+</tr>
+<tr>
+<td><code>rollover-candidate.py</code></td>
+<td>extract target domains for rollover evaluation</td>
+<td><code>seed-files</code></td>
+<td>rollover_cand_output</td>
+</tr>
+<tr>
+<td><code>rollover.py</code></td>
+<td>evaluate rollover behavior of domains</td>
+<td>output of <code>rollover-candidate-sub.py</code>(ex. rollover_cand_merged_output)</td>
+<td>rollover_output</td>
+</tr>
+<tr>
+<td><code>valid-dn.py</code></td>
+<td>count the number of domains associated with mail servers which have valid TLSA record</td>
+<td>output of <code>dane-validation.py</code>(ex. dane_validation_output) &amp; <code>tlsa-with-mxcount</code></td>
+<td>valid_dn_output</td>
+</tr>
+</tbody>
+</table>
+<p>e.g. To run <code>dane-validation.py</code>, you need output of <code>chain-validation.py</code>. But because we provide intermediary output, &lsquo;chain_valid_output&rsquo; in this case, you can just use it.</p>
+<h4 id="examples">Examples</h4>
+<h5 id="example-1-running-dnssecpy">Example 1) Running <code>dnssec.py</code></h5>
+<ol>
+<li>Open <code>dnssec.py</code> script and set input &amp; output path (<em>global vairable</em> in the script). For instance,</li>
+</ol>
+<pre><code># we use virignia data in this example.
+
+dependency_path = &quot;/path/to/dependencies.zip&quot;
+input_path = &quot;/path/to/merged_output/virginia/&quot;   # if you upload data to spark machine, this is a path to the data in spark machine 
+output_path = &quot;/path/to/dnssec_output_virginia/&quot;   # you can set any path you want
+</code></pre><ol start="2">
+<li>Run spark script</li>
+</ol>
+<pre><code>spark-submit --py-files=/path/to/dependencies.zip dnssec.py
+</code></pre><ol start="3">
+<li>Done! It will take quite a lot of time to complete. But if you <strong>do not want to wait much time</strong>, stop running this script! You can just use &lsquo;dnssec_output&rsquo; which is the sample out of this script for the next step</li>
+</ol>
+<h5 id="example-2-running-rolloverpy">Example 2) Running <code>rollover.py</code></h5>
+<ol>
+<li>Open <code>rollover.py</code> script and set input &amp; output path (<em>global variable</em> in the script). For instance,</li>
+</ol>
+<pre><code># we use virignia data in this example.
+
+target_dn_path = &quot;/path/to/rollover-cand-merged-virginia.txt&quot;   # if you extract 'rollover_cand_merged_output', you can get 'rollover-cand-merged-virginia.txt'
+dependency_path = &quot;/path/to/dependencies.zip&quot;
+input_path = &quot;/path/to/merged_output/virginia/&quot;   # if you upload data to spark machine, this is a path to the data in spark machine
+output_path = &quot;/path/to/rollover_output_virginia/&quot;   # you can set any path you want
+</code></pre><p>To run <code>rollover.py</code> you need output of <code>rollover-candidate-sub.py</code>, &lsquo;rollover-cand-merged-virginia.txt&rsquo; in this example.
+Thus, you need to run <code>rollover-candidate.py</code> and <code>rollover-candidate-sub.py</code> before running <code>rollover.py</code>. But as you know, you can get this output by just extracting sample output &lsquo;rollover_cand_merged_output&rsquo;. In other words, you don&rsquo;t have to execute <code>rollover-candidate.py</code> and <code>rollover-candidate-sub.py</code> for this example.</p>
+<ol start="2">
+<li>Run spark script</li>
+</ol>
+<pre><code>spark-submit --py-files=/path/to/dependencies.zip rollover.py
+</code></pre><h5 id="example-3-running-dane-validationpy">Example 3) Running <code>dane-validation.py</code></h5>
+<ol>
+<li>Open <code>dane-validation.py</code> script and set input &amp; output path (<em>global variable</em> in the script). For instance,</li>
+</ol>
+<pre><code># we use virginia data in this example.
+
+chain_path = &quot;/path/to/chain_output_virginia/&quot;  # if you extract 'chain_validation_output' you can get 'chain_output_virginia'
+dependency_path = &quot;/path/to/dependencies.zip&quot;
+input_path = &quot;/path/to/merged_output/virginia/&quot;   # if you upload data to spark machine, this is a path to the data in spark machine 
+output_path = &quot;/path/to/dane_output_virginia/&quot;   # you can set any path you want
+</code></pre><p>To run <code>dane-validation.py</code>, you need output of <code>chain-validation.py</code>, &lsquo;chain_output_virginia&rsquo; in this example. Thus, you have to run <code>chain-validation.py</code> before following this example. But we provide sample output, thus you can just use &lsquo;chain_output_virginia&rsquo;. (You can get &lsquo;chain_output_virginia&rsquo; by extracting sample output &lsquo;chain_validation_output&rsquo;.)</p>
+<ol start="2">
+<li>Run spark script</li>
+</ol>
+<pre><code>spark-submit --py-files=/path/to/dependencies.zip dane-validation.py
+</code></pre><p>You can execute all other scripts like these examples but keep in mind to set path properly.</p>
+<p>Also, as I mentioned above, if you want to skip this step, you can just use the <strong>sample output</strong> of each script for the next step.</p>
+<h4 id="22-extract-statistics">2.2 Extract statistics</h4>
+<p>After getting outputs from the spark scripts, you can get statistics from the outputs. <code>stats-codes.tar.gz</code> contains 9 analysis scripts for this purpose.</p>
+<p>You can use the sample outputs of 2.1 as input for the below stats scripts.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>file</th>
+<th>description</th>
+<th>input</th>
+<th>sample output</th>
+<th>result in the paper</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dane-validation-stat.py</code></td>
+<td>calculate stats of dane validation results</td>
+<td>output of <code>dane-validation.py</code>(ex. dane_validation_output)</td>
+<td>dane_valid_stat_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>dnssec-stat.py</code></td>
+<td>calculate stats of dnssec validation results</td>
+<td>output of <code>dnssec.py</code>(ex. dnssec_output)</td>
+<td>dnssec_stat_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>starttls-error-stat.py</code></td>
+<td>calculate stats of starttls crawl errors</td>
+<td>output of <code>starttls-error.py</code>(ex. starttls_error_output)</td>
+<td>starttls_error_stat_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>check-incorrect-stat.py</code></td>
+<td>calcuate stats of dane validation failure reasons</td>
+<td>output of <code>check-incorrect.py</code>(ex. check_incorrect_output)</td>
+<td>check_incorrect_stat_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>superfluous-stat.py</code></td>
+<td>calculate stats of superfluous certificate chains</td>
+<td>output of <code>superfluous.py</code>(ex. superfluous_output)</td>
+<td>superfluous_stat_output</td>
+<td>Section 5.5, Unsuitable Usages</td>
+</tr>
+<tr>
+<td><code>rollover-candidate-sub.py</code></td>
+<td>find rollover candidates (domains who changed their keys)</td>
+<td>output of <code>rollover-candidate.py</code>(ex. rollover_cand_output)</td>
+<td>rollover_cand_merged_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>rollover-stat.py</code></td>
+<td>calculate stats of rollover behavior of domains</td>
+<td>output of <code>rollover.py</code>(ex. rollover_output)</td>
+<td>rollover_stat_output</td>
+<td>Section 5.5, Key Rollover</td>
+</tr>
+<tr>
+<td><code>valid-dn-stat.py</code></td>
+<td>calculate stats of DANE-valid domains for each TLD</td>
+<td>output of <code>valid-dn.py</code>(ex. valid_dn_output)</td>
+<td>valid_dn_stat_output</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>alexa1m-dane-stat.py</code></td>
+<td>calculate stats of Alexa domains who have TLSA records</td>
+<td><code>alexa_mx_20191031</code>, <code>alexa_tlsa_20191031</code>, <code>alexa-top1m-2019-10-31_0900_UTC.csv</code></td>
+<td>alexa_dane_stat_output</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="examples-1">Examples</h4>
+<h5 id="example-1-running-dnssec-statpy">Example 1) Running <code>dnssec-stat.py</code></h5>
+<ol>
+<li>Open <code>dnssec-stat.py</code> and input &amp; output path (<em>global variable</em> in the script). For instance,</li>
+</ol>
+<pre><code># we use virignia data in this example.
+
+input_path = &quot;/path/to/dnssec_output_virginia/&quot;   # if you extract 'dnssec_otuput', you can get 'dnssec_output_virginia`
+output_path = &quot;./dnssec-stat-virginia.txt&quot;   # you can set any path you want
+</code></pre><p>You need &lsquo;dnssec_output_virginia&rsquo; which is an output of spark script <code>dnssec.py</code>. Thus, you need to run <code>dnssec.py</code> first. But now you know that you have sample output &lsquo;dnssec_output&rsquo; and you can get &lsquo;dnssec_output_virginia&rsquo; after extracting it.</p>
+<ol start="2">
+<li>Run stats script</li>
+</ol>
+<pre><code>python3 dnssec-stat.py
+</code></pre><ol start="3">
+<li>Check output</li>
+</ol>
+<p>Finally, the output is generated. This output is used to draw figure 3 in the next step.</p>
+<pre><code>#time, totalDoamin, failed-to-fetch, secure, wo-rrisg-wo-ds, w-rrsig-wo-ds, bogus, signatureexpried, ...
+20190711 16,11299,79,7317,2260,1594,49,34,14,0,0,0,0,0,0,1,0,0,0,0
+20190711 17,11299,78,7317,2261,1595,48,33,15,0,0,0,0,0,0,0,0,0,0,0
+20190711 18,11299,87,7329,2248,1585,50,36,14,0,0,0,0,0,0,0,0,0,0,0
+20190711 19,11299,87,7321,2246,1595,50,35,15,0,0,0,0,0,0,0,0,0,0,0
+...
+</code></pre><h5 id="example-2-running-rollover-statpy">Example 2) Running <code>rollover-stat.py</code></h5>
+<ol>
+<li>Open <code>rollover-stat.py</code> and input &amp; output path (global variable in the script). For instance,</li>
+</ol>
+<pre><code># we use virignia data in this example.
+
+input_path = &quot;/path/to/rollover_output_virginia/&quot;   # if you extract 'rollover_output', you can get 'rollover_output_virginia'
+output_path =  &quot;./rollover_stat_virginia.txt&quot;   # you can set any path you want
+</code></pre><p>Yes, you can use sample output &lsquo;rollover_output&rsquo;.</p>
+<ol start="2">
+<li>Run stats script</li>
+</ol>
+<pre><code>python3 rollover-stat.py
+</code></pre><ol start="3">
+<li>Check output</li>
+</ol>
+<p>The output contains values used in Section 5.5, Key Rollover in the paper.</p>
+<pre><code>Total: 14287
+Taget: 3048
+BothKeyInvalid: 367, 12.04
+NotRollover: 327, 10.73
+ShortTTL: 809, 26.54
+CannotKnow: 85, 2.79
+
+AllTimeValid: 187, 6.14
+Invalid: 1273, 41.77
+...
+</code></pre><h5 id="example-3-running-alexa1m-dane-statpy">Example 3) Running <code>alexa1m-dane-stat.py</code></h5>
+<ol>
+<li>Open <code>alexa1m-dane-stat.py</code> and input &amp; output path (global variable in the script). For instance,</li>
+</ol>
+<pre><code>mx_path = &quot;/path/to/alexa_mx_20191031&quot;
+tlsa_path = &quot;/path/to/alexa_tlsa_20191031&quot;
+alexa_path = &quot;/path/to/alexa-top1m-2019-10-31_0900_UTC.csv&quot;
+output_path = &quot;./alexa1m-dane-stat.txt&quot;   # you can set any path you want
+</code></pre><p>You can download <code>alexa_mx_20191031</code>, <code>alexa_tlsa_20191031</code>, and <code>alexa-top1m-2019-10-31_0900_UTC.csv</code> from the above download link.</p>
+<ol start="2">
+<li>Run stats script</li>
+</ol>
+<pre><code>python3 alexa1m-dane-stat.py
+</code></pre><ol start="3">
+<li>Check output
+This output is used to draw figure 2 in the next step.</li>
+</ol>
+<pre><code>#bin, num of domains with MX, num of domains with MX and TLSA
+0,8481,38
+1,8247,41
+2,8230,29
+3,8083,40
+4,7735,35
+</code></pre><h4 id="23-draw-figures">2.3 Draw figures</h4>
+<p>Finally, you are here. Now you can plot figures in the paper. <code>plotting-scripts.tar.gz</code> contains 6 plotting scripts which generate the figures in the paper.</p>
+<p>You can use the sample output of Step 2.2 to draw figures.</p>
+<table class="table table-dark table-striped table-bordered">
+<thead>
+<tr>
+<th>file</th>
+<th>results in the paper</th>
+<th>related stats script</th>
+<th>data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>2years-tlsa-ratio-per-tld-split.plot</code></td>
+<td>figure 1</td>
+<td>-</td>
+<td>tlsa-counts.csv</td>
+</tr>
+<tr>
+<td><code>alexa-tlsa-adoption.plot</code></td>
+<td>figure 2</td>
+<td><code>alexa1m-dane-stat.py</code></td>
+<td>alexa_dane_stat_output</td>
+</tr>
+<tr>
+<td><code>missing-dnssec.plot</code></td>
+<td>figure 3</td>
+<td><code>dnssec-stat.py</code></td>
+<td>dnssec_stat_output</td>
+</tr>
+<tr>
+<td><code>starttls-availability.plot</code></td>
+<td>figure 4</td>
+<td><code>starttls-error-stat.py</code></td>
+<td>starttls_error_stat_output</td>
+</tr>
+<tr>
+<td><code>incorrect-percent-per-comp.plot</code></td>
+<td>figure 5</td>
+<td><code>check-incorrect-stat.py</code></td>
+<td>check_incorrect_stat_output</td>
+</tr>
+<tr>
+<td><code>4months-valid-per-tld.plot</code></td>
+<td>figure 6</td>
+<td><code>valid-dn-stat.py</code></td>
+<td>valid_dn_stat_output</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example">Example</h4>
+<ul>
+<li>Plotting figure 3</li>
+</ul>
+<ol>
+<li>open <code>missing-dnssec.plot</code> and set data path.</li>
+</ol>
+<pre><code>&quot;/path/to/dnssec-stat-oregon.txt&quot; u 1:(100 * ( ($6) / ($4 + $6) )) w st linestyle 2 lw 3 title &quot;Oregon&quot;,\
+&quot;/path/to/dnssec-stat-paris.txt&quot; u 1:(100 * ( ($6) / ($4 + $6) )) w st linestyle 3 lw 3 title &quot;Paris&quot;,\
+&quot;/path/to/dnssec-stat-sydney.txt&quot; u 1:(100 * ( ($6) / ($4 + $6) )) w st linestyle 4 lw 3 title &quot;Sydney&quot;,\
+&quot;/path/to/dnssec-stat-saopaulo.txt&quot; u 1:(100 * ( ($6) / ($4 + $6) )) w st linestyle 5 lw 3 title &quot;Sao-Paulo&quot;,\
+</code></pre><p>You can get dnssec-stat-[city].txt by extracting sample output &lsquo;dnssec_stat_output&rsquo;.</p>
+<ol start="2">
+<li>Run plotting script</li>
+</ol>
+<pre><code>gnuplot missing-dnssec.plot	
+</code></pre><p>If you want to get pdf file, you need to set an output path in the script.</p>
+<pre><code>set output 'figure2.pdf'
+</code></pre><h3 id="summary">Summary</h3>
+<ol>
+<li>Merge raw data</li>
+<li>Run spark codes to get intermediary output</li>
+<li>Run stats codes to get meaningful statistics</li>
+<li>Plot figures</li>
+</ol>
+<p>The output of each step is used as input for the next step. You can skip 1, 2 because we provide intermediary data (sample output).</p>
+<h2 id="appendix-collecting-tlsa-records--starttls-certificates">Appendix. Collecting TLSA records &amp; STARTTLS certificates</h2>
 <h3 id="1-set-up-environment">1. Set up environment</h3>
 <p>To use the scanning scripts, you need to install some dependencies.</p>
 <ol>
@@ -282,242 +785,6 @@ We also provide intermediary data which is the output of our scripts for your co
 <p><!-- raw HTML omitted -->1<!-- raw HTML omitted --> does-collected: If a STARTTLS certificate is crawled, the value is &lsquo;SUCCESS&rsquo;, otherwise &lsquo;False&rsquo;.</p>
 <p><!-- raw HTML omitted -->2<!-- raw HTML omitted --> #-of-STARTTLS-certificates: the number of certificates in the chain.</p>
 <p><!-- raw HTML omitted -->3<!-- raw HTML omitted --> STARTTLS-certificates: PEM format and Base64 encoded. Multiple certificates are comma seperated.</p>
-<h2 id="reproducing-the-results-in-the-usenix-security20-paper">Reproducing the results in the USENIX Security&rsquo;20 paper</h2>
-<h3 id="1-process-raw-dataset">1. Process raw-dataset</h3>
-<p>Because we collect two forms of raw data (TLSA records and STARTTLS certificates), you must merge them first to process it efficiently using Spark. The script <code>raw-merge.py</code> will read each raw data and generate an output of JSON format. Merged data are used for all other analyses.</p>
-<pre><code>// This json data is an example of a merged output
-
-{
-  &quot;domain&quot;: &quot;mail.ietf.org.&quot;,
-  &quot;port&quot;: &quot;25&quot;,
-  &quot;time&quot;: &quot;20191031 9&quot;,
-  &quot;city&quot;: &quot;virginia&quot;, 
-  &quot;tlsa&quot;: {
-  	    &quot;dnssec&quot;: &quot;Secure&quot;, // DNSSEC validation result
-  	    &quot;record_raw&quot;: &quot;AACBoAABAAIABwABA18yNQRfdGNwBG1haWwEaWV0ZgNvcmcAADQAAQNfMjUEX3...&quot; // DNS wire-format TLSA record, Base64 Encoded
-  	    },
-
-  &quot;starttls&quot;: {
-  	    &quot;certs&quot;: &quot;[&quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUdWekNDQlQrZ0F3SUJBZ...&quot;, // PEM format certificate, Base64 Encoded
-  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZBRENDQStpZ0F3SUJBZ...&quot;,
-  	    	       &quot;LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVvRENDQTRpZ0F3SUJBZ...&quot;]
-  }
-}
-</code></pre><!-- raw HTML omitted -->
-<h3 id="2-analyze-merged-data">2. Analyze merged data</h3>
-<p>To get meaningful results, merged data go through 2 steps: Running Spark script to get intermediary results and Extracting statistics from the results</p>
-<h4 id="21-run-spark-script">2.1 Run Spark script</h4>
-<p>Because we have to deal with the massive size of data, we used <code>Spark</code> to process data. The <code>spark-codes.tar.gz</code> contains 9 analysis scripts that run on the Spark cluster. These scripts take the merged data as an input and return intermediary results. Intermediary results are aggregated to extract statistics in the next step.</p>
-<p>Some scripts need <a href="http://www.dnspython.org/">dns</a> python package to run, but this package is not a standard package. Thus, you have to explicitly include this package when you execute the scripts by using <code>--py-files</code> option. For convenience, we upload the package <code>dependencies.zip</code> and you can use it directly. You can run the scripts as follows:</p>
-<pre><code>
-spark-submit --py-files=/path/to/dependencies.zip example.py
-
-</code></pre><p>The below table describes each script and related statistics scripts. You can download sample outputs from the above Download link.</p>
-<p>As we mentioned earlier, merged data should be provided as input.</p>
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>file</th>
-<th>description</th>
-<th>sample output</th>
-<th>misc.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dane-validation.py</code></td>
-<td>validate dane results</td>
-<td>dane_validation_output</td>
-<td>need output of <code>chain-validation.py</code> to run</td>
-</tr>
-<tr>
-<td><code>chain-validation.py</code></td>
-<td>verify starttls chain in advance, outputs are used as input for other scripts</td>
-<td>chain_validation_output</td>
-<td>need <code>root-ca-list</code> &amp; <a href="http://manpages.ubuntu.com/manpages/trusty/man1/faketime.1.html">faketime</a> path to run</td>
-</tr>
-<tr>
-<td><code>dnssec.py</code></td>
-<td>validate dnssec results</td>
-<td>dnssec_output</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>starttls-error.py</code></td>
-<td>classify the reasons of starttls scanning error</td>
-<td>starttls_error_output</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>check-incorrect.py</code></td>
-<td>classify the reasons of dane validation failure (related to certificates)</td>
-<td>check_incorrect_output</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>superfluous.py</code></td>
-<td>check if domains have a superfluous certificate chain</td>
-<td>superfluous_output</td>
-<td>need output of <code>chain-validation.py</code> to run</td>
-</tr>
-<tr>
-<td><code>rollover-candidate.py</code></td>
-<td>extract target domains for rollover evaluation</td>
-<td>rollover_cand_output</td>
-<td>need <code>seed-files</code> data to run</td>
-</tr>
-<tr>
-<td><code>rollover.py</code></td>
-<td>evaluate rollover behavior of domains</td>
-<td>rollover_output</td>
-<td>need output of <code>rollover-candidate-sub.py</code> to run (ex. rollover-candidate-virginia.txt)</td>
-</tr>
-<tr>
-<td><code>valid-dn.py</code></td>
-<td>count the number of domains associated with mail servers which have valid TLSA record</td>
-<td>valid_dn_output</td>
-<td>need output of <code>dane-validation.py</code> &amp; <code>tlsa-with-mxcount</code> data to run</td>
-</tr>
-</tbody>
-</table>
-<h4 id="22-extract-statistics">2.2 Extract statistics</h4>
-<p>After get outputs from the spark scripts, you need to extract statistics from the outputs. <code>stats-codes.tar.gz</code> contains 9 analysis scripts for this purpose. Also, <code>plotting-scripts.tar.gz</code> contains 6 plotting scripts which generate the figures in the paper.</p>
-<p>You can use the sample outputs in 2.1 as input for the below statistics scripts.</p>
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>file</th>
-<th>description</th>
-<th>sample output</th>
-<th>results in the paper</th>
-<th>related spark script</th>
-<th>misc.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>dane-validation-stat.py</code></td>
-<td>calculate stats of dane validation results</td>
-<td>dane_valid_stat_output</td>
-<td>-</td>
-<td><code>dane-validatation.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>dnssec-stat.py</code></td>
-<td>calculate stats of dnssec validation results</td>
-<td>dnssec_stat_output</td>
-<td>-</td>
-<td><code>dnssec.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>starttls-error-stat.py</code></td>
-<td>calculate stats of starttls crawl errors</td>
-<td>starttls_error_stat_output</td>
-<td>-</td>
-<td><code>starttls-error.py </code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>check-incorrect-stat.py</code></td>
-<td>calcuate stats of dane validation failure reasons</td>
-<td>check_incorrect_stat_output</td>
-<td>-</td>
-<td><code>check-incorrect.py</code></td>
-<td>need output of <code>dane-validation-stat.py</code> to run, the paper used only virginia data</td>
-</tr>
-<tr>
-<td><code>superfluous-stat.py</code></td>
-<td>calculate stats of superfluous certificate chains</td>
-<td>superfluous_stat_output</td>
-<td>Section 5.5, Unsuitable Usages</td>
-<td><code>superfluous.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>rollover-candidate-sub.py</code></td>
-<td>find rollover candidates (domains who changed their keys)</td>
-<td>rollover_cand_merged_output</td>
-<td>-</td>
-<td><code>rollover-candidate.py</code></td>
-<td>the paper used only virginia data</td>
-</tr>
-<tr>
-<td><code>rollover-stat.py</code></td>
-<td>calculate stats of rollover behavior of domains</td>
-<td>rollover_stat_output</td>
-<td>Section 5.5, Key Rollover</td>
-<td><code>rollover.py</code></td>
-<td>the paper used only virginia data</td>
-</tr>
-<tr>
-<td><code>valid-dn-stat.py</code></td>
-<td>calculate stats of DANE-valid domains for each TLD</td>
-<td>valid_dn_stat_output</td>
-<td>-</td>
-<td><code>valid-dn.py</code></td>
-<td>the paper used only virginia data</td>
-</tr>
-<tr>
-<td><code>alexa1m-dane-stat.py</code></td>
-<td>calculate stats of Alexa domains who have TLSA records</td>
-<td>alexa_dane_stat_output</td>
-<td>-</td>
-<td>-</td>
-<td>need <code>alexa_mx_20191031</code>, <code>alexa_tlsa_20191031</code>, <code>alexa-top1m-2019-10-31_0900_UTC.csv</code> data to run</td>
-</tr>
-</tbody>
-</table>
-<p>Also, you can use the sample output of statistics scripts as input for related gnuplot scripts.</p>
-<table class="table table-dark table-striped table-bordered">
-<thead>
-<tr>
-<th>file</th>
-<th>results in the paper</th>
-<th>related stats script</th>
-<th>misc.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>2years-tlsa-ratio-per-tld-split.plot</code></td>
-<td>figure 1</td>
-<td>-</td>
-<td>need <code>tlsa-counts.csv</code></td>
-</tr>
-<tr>
-<td><code>alexa-tlsa-adoption.plot</code></td>
-<td>figure 2</td>
-<td><code>alexa1m-dane-stat.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>missing-dnssec.plot</code></td>
-<td>figure 3</td>
-<td><code>dnssec-stat.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>starttls-availability.plot</code></td>
-<td>figure 4</td>
-<td><code>starttls-error-stat.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>incorrect-percent-per-comp.plot</code></td>
-<td>figure 5</td>
-<td><code>check-incorrect-stat.py</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>4months-valid-per-tld.plot</code></td>
-<td>figure 6</td>
-<td><code>valid-dn-stat.py</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 
 <style>
 table, th, td {

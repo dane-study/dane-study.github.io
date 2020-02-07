@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 import sys
 import datetime
+import os
 from os import listdir
 import json
-from multiprocessing import Process
 
-inputPath = "" # ex) /home/ubuntu/raw_dataset/
-outputPath = "" # ex) /home/ubuntu/aggregated/
+inputPath = "" # ex) /home/ubuntu/raw_dataset/virginia/
+outputPath = "" # ex) /home/ubuntu/aggregated/virginia/
 
 
 def getTLSA(filename, time, dnMap):
@@ -59,7 +59,6 @@ def getSTLS(filename, dnMap):
 
         if not (name in dnMap):
             print(line)
-            input("Wrong!!")
 
         dnMap[name]["starttls"] = {}
         if line[3] == "Success":
@@ -80,52 +79,40 @@ def writeDnMap(dnMap, fOut):
         fOut.write("\n")
         
 
-def aggregateAux(dates, city):
+def aggregateAux(dates):
 
     for date in dates:
         print(date)
-        prefix = inputPath + city
-        tlsaHours = listdir(prefix + "/tlsa/" + date)
-        stlsHours = listdir(prefix + "/starttls/" + date)
+        prefix = inputPath
+        tlsaHours = listdir(os.path.join(prefix, "tlsa", date))
+        stlsHours = listdir(os.path.join(prefix, "starttls", date))
 
         hours = list(set(tlsaHours) & set(stlsHours))
 
         for hour in hours:
-            fOut = open(outputPath + city + "/" + date + "_" + hour + ".txt", "w")
+            fOut = open(os.path.join(outputPath, date + "_" + hour + ".txt"), "w")
             dnMap = {}
-            files = listdir(prefix + "/tlsa/" + date + "/" + hour)
+            files = listdir(os.path.join(prefix, "tlsa", date, hour))
             for filename in files:
-                dnMap = getTLSA(prefix + "/tlsa/" + date + "/" + hour + "/" + filename, "20"+date + " " + hour, dnMap)
+                dnMap = getTLSA(os.path.join(prefix, "tlsa", date, hour, filename), "20"+date+" " + hour, dnMap)
                 
-            files = listdir(prefix + "/starttls/" + date + "/" + hour)
+            files = listdir(os.path.join(prefix, "starttls", date, hour))
             for filename in files:
-                dnMap = getSTLS(prefix + "/starttls/" + date + "/" + hour + "/" + filename, dnMap)
+                dnMap = getSTLS(os.path.join(prefix, "starttls", date, hour, filename), dnMap)
             
             writeDnMap(dnMap, fOut)
             fOut.close()
 
 
-def aggregate(dates, cities):
-
-    procs = []
-    for city in cities:
-        proc = Process(target=aggregateAux, args=(dates, city,))
-        procs.append(proc)
-        proc.start()
-    for proc in procs:
-        proc.join()
-
 
 if __name__ == "__main__":
     start = sys.argv[1] # first date
     end = sys.argv[2] # last date
-    # ex) python3 raw-aggregate.py 190714 191031
+    # ex) python3 raw-merge.py 190711 191031 virginia
 
     start = datetime.datetime.strptime(start, "%y%m%d")
     end = datetime.datetime.strptime(end, "%y%m%d")
 
     dates = [(start+datetime.timedelta(days=x)).strftime("%y%m%d") for x in range(0, (end-start).days+1)]
 
-    cities = ["incheon", "virginia", "oregon", "paris", "sydney", "saopaulo"]
-
-    aggregate(dates, cities)
+    aggregateAux(dates)
