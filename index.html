@@ -40,7 +40,6 @@
         <li class="active"><a href="/">Home</a></li>
         <li><a href="/server-side/">Server-side Artifacts</a></li>
         <li><a href="/client-side/">Client-side Artifacts</a></li>
-        <li><a href="/contact/">Contact</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -64,9 +63,10 @@
 
 <div class="jumbotron">
       <div class="container">
+
           <h2 align='right'><br>A Longitudinal and Comprehensive Study of the DANE Ecosystem in Email</h2>
         <h3 align='right'>
-            
+        <!--      
             <a href="https://mmlab.snu.ac.kr/~hmlee/">Hyeonmin Lee<sup>†</sup></a>,
             <a href="https://anikethgireesh.me/">Aniketh Girish<sup>*</sup></a>,
             <a href="https://wwwhome.ewi.utwente.nl/~rijswijkrm/">Roland van Rijswijk-Deij<sup>‡</sup></a>,<br>
@@ -78,6 +78,8 @@
             <sup>*</sup>Amrita Vishwa Vidyapeetham,<br>
             <sup>‡</sup>NLNetLabs and University of Twente,
             <sup>§</sup>Rochester Institute of Technology
+        </h5>
+        -->
       </div>
     </div>
 
@@ -86,6 +88,16 @@
 <p>The DNS-based Authentication of Named Entities (DANE) standard allows clients and servers to establish a TLS connection without relying on trusted third parties like CAs by publishing Transport Layer Security Authentication (TLSA) records. DANE uses the Domain Name System’s Security Extensions (DNSSEC) PKI to achieve the integrity and authenticity. However, DANE can only work correctly if each of the principals in its PKI properly performs its duty: through their DNSSEC-aware DNS servers, DANE servers (e.g., SMTP servers) must publish their TLSA records, which are consistent with their certificates. Similarly, DANE clients (e.g., SMTP clients) must verify the DANE servers’ TLSA records, which are also used to validate the fetched certificates.
 This paper performs a large-scale, longitudinal, and comprehensive measurement study on how well the DANE standard and its relevant protocols are deployed and managed. We collect the dataset from all the second-level domains under .com, .org, .net, .nl, and .se TLDs over a period of 24 months to analyze the server-side deployment and management. For the client-side deployment and management analysis, we investigated 30 popular email service providers, and four popular MTA and 10 DNS software programs.
 Our study reveals the prevalent mismanagement in the DANE ecosystem. For instance, we found that 36% of TLSA records cannot be validated due to missing or incorrect DNSSEC records, and 14.17% of them are inconsistent with their certificates. We also found that only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking Certificate Usage in TLSA records. On the bright side, the administrators of email servers can leverage open source MTA and DNS programs to support DANE correctly.</p>
+
+<h1 id="about-the-artifacts">About the Artifacts.</h1>
+
+<p>The artifacts are largely composed of the two parts:</p>
+
+<ul>
+<li><p>Server-side artifacts, which focus on (1) how we collect the data (i.e., measurement codes), (2) how we analyze the collected data (i.e., analysis codes) &mdash; Section 4 and 5 in the paper.</p></li>
+
+<li><p>Client-side artifacts, which focus on (1) how we infer the mail server provider&rsquo;s DANE policy. &mdash; Section 6 in the paper.</p></li>
+</ul>
 
 <p><b><center> This paper will be published at USENIX Security&rsquo;20</b></center></p>
 

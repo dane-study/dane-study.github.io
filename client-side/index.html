@@ -39,7 +39,6 @@
         <li><a href="/">Home</a></li>
         <li><a href="/server-side/">Server-side Artifacts</a></li>
         <li class="active"><a href="/client-side/">Client-side Artifacts</a></li>
-        <li><a href="/contact/">Contact</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -58,14 +57,12 @@
     <main class="container-fluid">
       
 
-<h1 id="dane-for-smtp-client-side-artifacts-code">DANE for SMTP Client-side Artifacts Code</h1>
+<h1 id="q-how-to-reproduce-table-2-in-the-paper-in-other-words-how-can-we-know-if-a-mail-server-provider-supports-dane-and-correctly">Q: How to reproduce Table 2 in the paper? &mdash; In other words, how can we know if a mail server provider supports DANE (and correctly?)</h1>
 
 <style>
 table, th { text-align: center;
 }
 </style>
-
-<h2 id="how-can-we-know-if-a-mail-server-provider-supports-dane-and-correctly">How can we know if a mail server provider supports DANE (and correctly?)</h2>
 
 <p>Our basic idea is to setup many different mail servers (SMTP servers), which have an unique domain name and its corresponding MX record. We configure each of them with a different combination of DNSSEC, STARTTLS, and DANE misconfigurations as well as one with correctly configured settings.
 After that we send emails from a mail provider that we want to test to each of our mail servers to throughly understand what protocols the mail provider (correctly) support.</p>
@@ -73,7 +70,7 @@ After that we send emails from a mail provider that we want to test to each of o
 <h2 id="preliminary">Preliminary</h2>
 
 <ol>
-<li><p>You need to set up your own mail server with DNS sever; we used postfix and Bind9. For the reproducibility, we provide (1) how to install Bind9 and Postfix software as we did for our research and (2) how to generate each of the scenarios that are correctly and misconfigured using Bind9 so that you can test a mail provider by simply sending an email from the provider and checking the logs in your mail server.</p></li>
+<li><p>You need to set up your own mail server with a DNS server; we used postfix and Bind9. For the reproducibility, we provide (1) how to install Bind9 and Postfix software as we did for our research and (2) how to generate each of the scenarios that are correctly and misconfigured using Bind9 so that you can test a mail provider by simply sending an email from the provider and checking the logs in your mail server.</p></li>
 
 <li><p>First, we need to install and configure the DNS server using Bind9; we provide a script, which automatically create Bind zone files.</p></li>
 
@@ -673,10 +670,7 @@ Feb  7 19:57:18 security-protocol postfix/smtpd[17916]: disconnect from unknown[
 
 <p>Step 4: Once recieved the logs, do check the <code>Maildir/</code> to see if you have received email that you sent.</p>
 
-<h1 id="repeat-this-process-by-sending-multiple-emails-to-each-different-subdomains-to-infer-the-the-dnssec-and-correct-dane-support-of-the-target-mail-provider">Repeat this process by sending multiple emails to each different subdomains to infer the the DNSSEC and (correct-) DANE support of the target mail provider.</h1>
-
-<p>```
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 7323dd7b1e835241d3867c32e51fe52f389decb9</p>
+<p>Repeat the above steps by sending multiple emails to each different subdomain to infer the DNSSEC and (correct-) DANE support of the target mail provider.</p>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">
