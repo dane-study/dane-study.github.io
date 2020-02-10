@@ -19,5 +19,5 @@ set key center right
 #time, totalDn, noData, bogus, wrongChain, usage2, usage3, undefined, selector, matchingType, notmatch-tlsa-certificate
 #TLSA Errors: Wrong usage,  selector, undefined
 plot \
-"data/check-incorrect-stat-virginia.txt" u 1:(100*$4/($2-$3)) w  st linestyle 1 lw 3  title "DNSSEC",\
-"data/check-incorrect-stat-virginia.txt" u 1:(100*($5+$6+$7+$8+$9+$10+$11)/($2-$3)) w  st linestyle 2 lw 3  title "Certificate"
+"data/check_incorrect_stat_output_virginia.txt" u 1:(100*$4/($2-$3)) w  st linestyle 1 lw 3  title "DNSSEC",\
+"data/check_incorrect_stat_output_virginia.txt" u 1:(100*($5+$6+$7+$8+$9+$10+$11)/($2-$3)) w  st linestyle 2 lw 3  title "Certificate"

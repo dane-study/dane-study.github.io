@@ -12,4 +12,4 @@ set ylabel "{/Helvetica-Bold % of domains with}\n{/Courier-Bold MX }{/Helvetica-
 set xtics ("0" 0, "200k" 20, "400k" 40, "600k" 60, "800k" 80, "1M" 100)
 
 plot \
-"data/alexa1m-dane-stat.txt" u ($1+1):(100*($3/$2)) w st linestyle 1 lw 3 title ""
+"data/alexa_dane_stat_output.txt" u ($1+1):(100*($3/$2)) w st linestyle 1 lw 3 title ""

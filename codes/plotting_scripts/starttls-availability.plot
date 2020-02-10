@@ -24,11 +24,11 @@ set yrange [0:1.2]
 set ytics 0.3
 
 set label "{/Helvetica-Bold TLS Handshake Errors}" at "20190713 01", 0.15
-plot "data/starttls-error-stat-virginia.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 1 lw 3  title "Virginia",\
-"data/starttls-error-stat-oregon.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 2 lw 3  title "Oregon",\
-"data/starttls-error-stat-paris.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 3 lw 3  title "Paris",\
-"data/starttls-error-stat-saopaulo.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 4 lw 3  title "Sao-Paulo",\
-"data/starttls-error-stat-sydney.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 5 lw 3  title "Sydney",\
+plot "data/starttls_error_stat_output_virginia.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 1 lw 3  title "Virginia",\
+"data/starttls_error_stat_output_oregon.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 2 lw 3  title "Oregon",\
+"data/starttls_error_stat_output_paris.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 3 lw 3  title "Paris",\
+"data/starttls_error_stat_output_saopaulo.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 4 lw 3  title "Sao-Paulo",\
+"data/starttls_error_stat_output_sydney.txt" u 1:(100 * ($9)/($2 - $8 - $13 - $7)) w st linestyle 5 lw 3  title "Sydney",\
 
 set yrange [0:1]
 set ytics 0.2
@@ -40,9 +40,9 @@ set xlabel ""
 set ylabel ""
 set format x ""
 set label "{/Helvetica-Bold Unimplemented STARTTLS}" at "20190713 01", 0.9
-plot "data/starttls-error-stat-virginia.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 1 lw 3  title "",\
-"data/starttls-error-stat-oregon.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 2 lw 3  title "",\
-"data/starttls-error-stat-paris.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 3 lw 3  title "",\
-"data/starttls-error-stat-saopaulo.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 4 lw 3  title "",\
-"data/starttls-error-stat-sydney.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 5 lw 3  title "",\
+plot "data/starttls_error_stat_output_virginia.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 1 lw 3  title "",\
+"data/starttls_error_stat_output_oregon.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 2 lw 3  title "",\
+"data/starttls_error_stat_output_paris.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 3 lw 3  title "",\
+"data/starttls_error_stat_output_saopaulo.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 4 lw 3  title "",\
+"data/starttls_error_stat_output_sydney.txt" u 1:(100 * ($6)/($2 - $8 - $13 - $7)) w st linestyle 5 lw 3  title "",\
 
