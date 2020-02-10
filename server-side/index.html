@@ -215,7 +215,7 @@ After executing the analysis scripts you may use those output files as inputs to
 <tr>
 <td><code>Intermediary data</code></td>
 <td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/intermediary_data.html">link</a></td>
-<td>Intermediary datasets which are output of Spark scripts and also can be used as input for analysis scripts</td>
+<td>Intermediary datasets which are outputs of Spark scripts and also can be used as an input for analysis scripts</td>
 </tr>
 </tbody>
 </table>
@@ -274,8 +274,7 @@ table, th, td {
 To use DANE correctly, these two objects have to be matched; thus, we read these two datasets using <code>raw-mergy.py</code> and generates the output as a JSON format.
 After downloading the <code>hourly snapshots</code>, configure the input and output path (global variable in the script) for a city <!-- raw HTML omitted -->(e.g., virginia) you want to merge and run <code>raw-merge.py</code>.</p>
 <pre><code>python3 raw-merge.py 190711 191031 
-</code></pre><p>After execution, merged outputs are placed in the <code>merged_output/virginia</code> directory
-Repeat the above process for all the cities (Virginia, Oregon, Paris, Sydney, and São Paulo).</p>
+</code></pre><p>After execution, merged outputs are placed in the <code>merged_output/[city]/</code> directory.</p>
 <p>Below JSON data is an example of a merged output.</p>
 <pre><code>...
 {
@@ -298,7 +297,7 @@ Repeat the above process for all the cities (Virginia, Oregon, Paris, Sydney, an
 </code></pre><p>Now you are ready to run the Spark scripts.</p>
 <h3 id="2-analyzing-the-merged-datasets">(2) Analyzing the merged datasets</h3>
 <p>Apache Spark is specialized for big data processing using multiple cores at the same time. However, it may not work efficiently when the datasets have many dependencies between themselves. Thus, we first use Spark to extract the information that we are interested in from our raw datasets and we run a (analysis) python script to analyze them in depth.</p>
-<p>The below table shows which Spark, Analysis</p>
+<p>The below table shows which Spark, analysis, and gnuplot scripts are used to get results in the paper.</p>
 
 
 
@@ -374,7 +373,7 @@ table, th, td {
 <h4 id="running-spark-scripts">Running Spark scripts</h4>
 <p>The <code>spark-codes.tar.gz</code> file contains nine Spark scripts that run on a Spark machine. Please note that these scripts take the <em>merged data</em> as an input.
 We use a third-party library that we crafted, <a href="http://www.dnsypython.org">dns</a>. You may want to install this library on the Spark machine or you can pass this library to the machine when you run the Spark code by using the <code>--py-files</code> option. For the sake of simplicity, we have provided a package, <code>dependencies.zip</code>.</p>
-<pre><code>spark-submit --py-files=/path/to/dependencies.zip [Spark_script.py]
+<pre><code>spark-submit --py-files=/path/to/dependencies.zip [spark_script.py]
 </code></pre><p>The below table describes each of the Spark script that we use for the analyses.</p>
 
 
