@@ -151,14 +151,15 @@ Of course more than just the four reported providers support outbound DANE. Some
 
 <p>It is always hard to make a &ldquo;clear&rdquo; and &ldquo;objective&rdquo; list. As it is practically impossible to estimate the market share of the email service providers, we referred to <a href="https://www.nytimes.com/2013/10/04/technology/adobe-announces-security-breach.html">Adobe&rsquo;s leaked user email database from 2013</a> to rank the email domains based on popularity and choose the top 25 providers.</p>
 
-<p>#applied the same methdology as on <a href="https://www.usenix.org/conference/usenixsecurity18/presentation/hu">End-to-End Measurements of Email Spoofing Attacks</a>, which
-&gt; &ldquo;<i> …the complexity of DANE leads to many opportunities for mismanagement… TLSA records may have DNSSEC errors such as expired signatures…</i>:
+<!--#applied the same methdology as on [End-to-End Measurements of Email Spoofing Attacks](https://www.usenix.org/conference/usenixsecurity18/presentation/hu), which -->
+
+<blockquote>
+<p>&ldquo;<i> …the complexity of DANE leads to many opportunities for mismanagement… TLSA records may have DNSSEC errors such as expired signatures…</i>:
 True, but actually very rare. When automatic zone resigning fails, it rarely fails for just the TLSA records. More typically the DNSKEY RRset signature would also expire, and the entire zone becomes “bogus”.
 DNSSEC failure is not DANE-specific. All DNS resolution for the domain fails for users behind validating DNS resolvers, such as the popular public resolvers at 8.8.8.8, 1.1.1.1, 9.9.9.9, etc.
 Out of ~10.8 million domains in the DANE/DNSSEC survey operated by the authors of this document, ~60 thousand have DNSSEC resolution issues, with the majority of those being long-standing breakage for parked domains where nobody cares whether they’re working or not, and so the problems are ignored.
 Working DNS (including DNSSEC) is required for DANE, and though DNS servvice outages do happen for some domains some of the time, this is not a significant problem.</p>
 
-<blockquote>
 <p>&ldquo;<i>… or the certificates may be inconsistent with published TLSA records</i>&ldquo;: As already explained, this is not a significant problem in practice, when properly weighted by impact. Also, since email is store-and-forward, a transient mismatch that is promptly corrected generally does not result in loss of email.</p>
 </blockquote>
 
