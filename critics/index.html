@@ -108,9 +108,11 @@ This is not correct, just DNSSEC support is sufficient. Neither authoritative se
 
 <p>We have updated the sentence: &ldquo;<i>the software of their DNS servers must be able to support DNSSEC to validate DNS responses</i>&rdquo; and added the following footnote: &ldquo;<i>Only the application that uses TLSA records needs to understand TLSA records; for example, the authoritative DNS server can publish a TLSA record as a generic record (with TYPE52 instead of TLSA) [37]&rdquo;</i></p>
 
+<!--
 <blockquote>
 <p>&ldquo;<i>… buggy TLS applications do not bother to check the validity of certificates&rdquo;</i>: This is wrong. The authors of the paper failed to note that in SMTP with DANE-EE(3), per RFC7672 both the expiration date and all names in the certificate MUST be ignored.</p>
 </blockquote>
+-->
 
 <p>We acknowledged that DANE-EE must ignore the expiration date and names, and we actually verified the cert per RFC7672. We have clarified this in the text.</p>
 
