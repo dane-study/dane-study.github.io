@@ -5,38 +5,9 @@ import os
 from os import listdir
 import json
 
-inputPath = "" # ex) /home/ubuntu/raw_dataset/, raw_dataset directory must include each city's data separately. you can follow below instruction.
-'''
-# How to configure inputPath?
-$ mkdir raw_dataset
-$ cd raw_dataset/
-$ mkdir virginia
-$ cd virginia/
-$ mkdir tlsa starttls
-$ cd tlsa/
-$ tar -xvzf /path/to/raw-tlsa-virginia-jul.tar.gz
-$ tar -xvzf /path/to/raw-tlsa-virginia-aug.tar.gz
-$ tar -xvzf /path/to/raw-tlsa-virginia-sep.tar.gz
-$ tar -xvzf /path/to/raw-tlsa-virginia-oct.tar.gz
-$ cd ../
-$ cd starttls/
-$ tar -xvzf /path/to/raw-starttls-virginia-jul.tar.gz
-$ tar -xvzf /path/to/raw-starttls-virginia-aug.tar.gz
-$ tar -xvzf /path/to/raw-starttls-virginia-sep.tar.gz
-$ tar -xvzf /path/to/raw-starttls-virginia-oct.tar.gz
-# Now you can run raw-merge.py
-'''
+inputPath = "" # ex) /home/ubuntu/raw_dataset/virginia/
+outputPath = "" # ex) /home/ubuntu/aggregated/virginia/
 
-outputPath = "./merged_output/" # output will be generated in this directory automatically, you can change it.
-
-cities = ["virginia", "oregon", "paris", "sydney", "saopaulo"]
-
-def mkdir(path):
-    if not os.path.isdir(path):
-        os.system("mkdir " + path)
-    else:
-        print("\nError: outputPath already exists! " + outputPath + "\n")
-        exit()
 
 def getTLSA(filename, time, dnMap):
     f = open(filename, "r")
@@ -108,20 +79,18 @@ def writeDnMap(dnMap, fOut):
         fOut.write("\n")
         
 
-def aggregateAux(dates, city):
+def aggregateAux(dates):
 
     for date in dates:
         print(date)
-        prefix = os.path.join(inputPath, city)
+        prefix = inputPath
         tlsaHours = listdir(os.path.join(prefix, "tlsa", date))
         stlsHours = listdir(os.path.join(prefix, "starttls", date))
 
         hours = list(set(tlsaHours) & set(stlsHours))
 
-        cityOutputPath = os.path.join(outputPath, city)
-        mkdir(cityOutputPath)
         for hour in hours:
-            fOut = open(os.path.join(cityOutputPath, date + "_" + hour + ".txt"), "w")
+            fOut = open(os.path.join(outputPath, date + "_" + hour + ".txt"), "w")
             dnMap = {}
             files = listdir(os.path.join(prefix, "tlsa", date, hour))
             for filename in files:
@@ -146,6 +115,4 @@ if __name__ == "__main__":
 
     dates = [(start+datetime.timedelta(days=x)).strftime("%y%m%d") for x in range(0, (end-start).days+1)]
 
-    mkdir(outputPath)
-    for city in cities:
-        aggregateAux(dates, city)
+    aggregateAux(dates)
