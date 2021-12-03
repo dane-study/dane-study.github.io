@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-	<meta name="generator" content="Hugo 0.89.4" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     
-    <title>DANE Study</title>
+    <title>DANE Study - Abstract</title>
     <base href="https://dane-study.github.io">
     
     
@@ -75,30 +74,9 @@
       <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101238267);</script>
 <script async src="//static.getclicky.com/js"></script>
 <p><noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101238267ns.gif" /></p></noscript></p>
-<h1 align='left'>- How many domains and clients support DANE?</h2>
-<div class="jumbotron">
-	<div class="container"> 
-        <h3 align='right'><i>USENIX Security 2020</i></h3>
-        <h2 align='right'>A Longitudinal and Comprehensive Study of the DANE Ecosystem in Email</h2>
-        <h3 align='right'>
-            <a href="https://mmlab.snu.ac.kr/~hmlee/">Hyeonmin Lee<sup>†</sup></a>,
-            <a href="https://anikethgireesh.me/">Aniketh Girish<sup>*</sup></a>,
-            <a href="https://wwwhome.ewi.utwente.nl/~rijswijkrm/">Roland van Rijswijk-Deij<sup>‡</sup></a>,<br>
-            <a href="https://mmlab.snu.ac.kr/~tk/">Taekyoung "Ted" Kwon<sup>†</sup></a>,
-            <a href="https://taejoong.github.io">Taejoong "Tijay" Chung<sup>§</sup></a>,
-        </h3>
-        <h5 align='right'>
-            <sup>†</sup>Seoul National University,
-            <sup>*</sup>Amrita Vishwa Vidyapeetham,<br>
-            <sup>‡</sup>NLNetLabs and University of Twente,
-            <sup>§</sup>Virginia Tech 
-        </h5>
-    </div>
-</div>
-<h1 align='left'>- Are they support DANE correctly? If not, why?</h2>
 <div class="jumbotron">
 	<div class="container">
-		<h3 align='right'><i>USENIX Security 2022</i></h3>
+        <h3 align='right'><i>USENIX Security 2022</i></h3>
         <h2 align='right'>Under the Hood of DANE Mismanagement in SMTP</h2>
         <h3 align='right'>
             <a href="https://mmlab.snu.ac.kr/~hmlee/">Hyeonmin Lee<sup>†</sup></a>,
@@ -116,28 +94,24 @@
         </h5>
     </div>
 </div>
-<!--
-# About This Study
-
-The DNS-based Authentication of Named Entities (DANE) standard allows clients and servers to establish a TLS connection without relying on trusted third parties like CAs by publishing Transport Layer Security Authentication (TLSA) records. DANE uses the Domain Name System’s Security Extensions (DNSSEC) PKI to achieve the integrity and authenticity. However, DANE can only work correctly if each of the principals in its PKI properly performs its duty: through their DNSSEC-aware DNS servers, DANE servers (e.g., SMTP servers) must publish their TLSA records, which are consistent with their certificates. Similarly, DANE clients (e.g., SMTP clients) must verify the DANE servers’ TLSA records, which are also used to validate the fetched certificates.
-This paper performs a large-scale, longitudinal, and comprehensive measurement study on how well the DANE standard and its relevant protocols are deployed and managed. We collect the dataset from all the second-level domains under .com, .org, .net, .nl, and .se TLDs over a period of 24 months to analyze the server-side deployment and management. For the client-side deployment and management analysis, we investigated 30 popular email service providers, and four popular MTA and 10 DNS software programs.
-Our study reveals the prevalent mismanagement in the DANE ecosystem. For instance, we found that 36% of TLSA records cannot be validated due to missing or incorrect DNSSEC records, and 14.17% of them are inconsistent with their certificates. We also found that only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking Certificate Usage in TLSA records. On the bright side, the administrators of email servers can leverage open source MTA and DNS programs to support DANE correctly.
-
-# About the Artifacts
-The artifacts are largely composed of the two parts: 
-
-* Server-side artifacts, which focus on (1) how we collect the data (i.e., measurement codes), (2) how we analyze the collected data (i.e., analysis codes) --- Section 4 and 5 in the paper.
-
-* Client-side artifacts, which focus on (1) how we infer the mail server provider's DANE policy. --- Section 6 in the paper.
-
-<b><center> This paper will be published at USENIX Security'20 and has passed the artifact evaluation process.</b></center>
-<b><center> The paper has been updated and is available <a href="https://taejoong.github.io/pubs/publications/lee-2020-dane.pdf">here</a></b></center>
- 
-# About Criticism
-After the paper was published, we have received many feedback from the DANE community; especially, the two authors of RFC7671, Viktor Dukhovni and Wes Hardaker, helped us a lot improve the quality of the paper. Our response is available <a href="https://dane-study.github.io/criticism/">here</a>.
-
-<div><center><img src="figure/usenix_artifact_evaluation_passed_new.png"></div></center>
--->
+<h1 id="about-this-study">About This Study</h1>
+<p>The DNS-based Authentication of Named Entities (DANE) is an Internet security protocol that enables a TLS connection without relying on trusted third parties like CAs by introducing a new DNS record type, TLSA. DANE leverages DNSSEC PKI to provide the integrity and authenticity of TLSA records. As DANE can solve security challenges in SMTP, such as STARTTLS downgrade attacks and receiver authentication, it has been increasingly deployed surpassing more than 1 M domains with SMTP servers that have TLSA records. A recent study, however, reported that there are prevalent misconfigurations on DANE SMTP servers, which hinders DANE from being proliferated.
+In this paper, we investigate the reasons why it is hard to deploy and manage DANE correctly. Our study uses largescale, longitudinal measurements to study DANE adoption and management, coupled with a survey of DANE operators, some of which serve more than 100 K domains. Overall, we find that keeping the TLSA records from a name server and certificates from an SMTP server synchronized is not straightforward even when the same entity manages the two servers. Furthermore, many of the certificates are configured to be reissued automatically, which may result in invalid TLSA records. From surveying 39 mail server operators, we also learn that the majority keeps using CA-issued certificates, despite this no longer being required with DANE, since they are worried about their certificates not being trusted by clients that have not deployed DANE. Having identified several operational challenges for correct DANE management, we release automated tools and shed light on unsolved challenges.</p>
+<h1 id="about-the-artifacts">About the Artifacts</h1>
+<p>The artifacts contains data and codes, which focus on:</p>
+<ul>
+<li>
+<p>How we collect the data (i.e., measurement codes)</p>
+</li>
+<li>
+<p>How we analyze the collected data (i.e., analysis codes)</p>
+</li>
+</ul>
+<p>We also provide the questionnaire which was used for the DANE survey (Section 7 in the paper) &mdash; [<a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2022/security22-dane-questionnaire.pdf">here</a>]</p>
+<p><b><center> This paper will be published at USENIX Security'22.</b></center></p>
+<!--<b><center> The paper has been updated and is available <a href="https://www.usenix.org/conference/usenixsecurity22/presentation/lee">here</a></b></center>
+ -->
+ </br>
 
     </main>
     <footer class="container-fluid page-footer" style="display: flex; align-items: center">

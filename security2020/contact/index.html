@@ -37,11 +37,24 @@
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/security2020/">USENIX Security 2020</a></li>
-        <li><a href="/security2020/server-side/">Server-side Artifacts</a></li>
-        <li><a href="/client-side/">Client-side Artifacts</a></li>
-        <li class="active"><a href="/contact/">Contact</a></li>
-        <li><a href="/critics/">Critics</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2020<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2020/security2020-abstract">Abstract</a></li>
+            <li><a href="/security2020/server-side">Server-side Artifacts</a></li>
+            <li><a href="/security2020/client-side">Client-side Artifacts</a></li>
+            <li><a href="/security2020/critics">Critics</a></li>
+            <li><a href="/security2020/contact">Contact</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2022<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2022/security2022-abstract">Abstract</a></li>
+            <li><a href="/security2022/measurement">Measurement Artifacts</a></li>
+            <li><a href="/security2022/contact">Contact</a></li>
+          </ul>
+        </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -59,8 +72,7 @@
 
     <main class="container-fluid">
       <style>
-table, th { text-align: center;
-}
+  table, th { text-align: center; }
 </style>
 <h2 id="if-you-have-any-questions-regarding-our-paper-datasets-or-analysis-tools-please-contact-to">If you have any questions regarding our paper, datasets, or analysis tools please contact to:</h2>
 
@@ -71,18 +83,18 @@ table, th { text-align: center;
 <table class="table table-dark table-striped table-bordered">
 <thead>
 <tr>
-<th align="left">Datasets and Tools</th>
-<th align="right">Contact (email address)</th>
+<th style="text-align:left">Datasets and Tools</th>
+<th style="text-align:right">Contact (email address)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left"><code>Server-side Artifacts</code></td>
-<td align="right"><a href="mailto:hmlee@mmlab.snu.ac.kr">Hyeonmin Lee</a></td>
+<td style="text-align:left"><code>Server-side Artifacts</code></td>
+<td style="text-align:right"><a href="mailto:hmlee@mmlab.snu.ac.kr">Hyeonmin Lee</a></td>
 </tr>
 <tr>
-<td align="left"><code>Client-side Artifacts</code></td>
-<td align="right"><a href="mailto:anikethgireesh@gmail.com">Aniketh Girish</a></td>
+<td style="text-align:left"><code>Client-side Artifacts</code></td>
+<td style="text-align:right"><a href="mailto:anikethgireesh@gmail.com">Aniketh Girish</a></td>
 </tr>
 </tbody>
 </table>

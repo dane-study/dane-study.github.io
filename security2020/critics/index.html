@@ -37,11 +37,24 @@
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/security2020/">USENIX Security 2020</a></li>
-        <li><a href="/security2020/server-side/">Server-side Artifacts</a></li>
-        <li><a href="/client-side/">Client-side Artifacts</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li class="active"><a href="/critics/">Critics</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2020<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2020/security2020-abstract">Abstract</a></li>
+            <li><a href="/security2020/server-side">Server-side Artifacts</a></li>
+            <li><a href="/security2020/client-side">Client-side Artifacts</a></li>
+            <li><a href="/security2020/critics">Critics</a></li>
+            <li><a href="/security2020/contact">Contact</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2022<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2022/security2022-abstract">Abstract</a></li>
+            <li><a href="/security2022/measurement">Measurement Artifacts</a></li>
+            <li><a href="/security2022/contact">Contact</a></li>
+          </ul>
+        </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -63,15 +76,15 @@
 <blockquote>
 <p>The text on “Unsuitable Usages” in Section 5.5 of the paper is a muddle.</p>
 </blockquote>
-<p>We have removed the subsection, Unsuitable Usage, as our previous claims (written below) were wrong: &ldquo;<i>If the domain owner has a certificate issued by a CA, but serves a TLSA record with the DANE-EE or DANE-TA usage, they do not benefit fully from the security measures that DANE provides (instead, they should use the PKIX-EE or PKIX-TA Certificate Usage) &hellip;  Therefore, a domain name owner should avoid setting their TLSA records with the DANE-EE or DANE-TA usage when they serve a certificate issued by a CA &hellip;  Consequently, these records could have used PKIX-EE or PKIX-TA Certificate Usages, thus having the additional benefit of certificate validation through two independent mechanisms (DANE and PKIX)&ldquo;</i></p>
+<p>We have removed the subsection, Unsuitable Usage, as our previous claims (written below) were wrong: &ldquo;<i>If the domain owner has a certificate issued by a CA, but serves a TLSA record with the DANE-EE or DANE-TA usage, they do not benefit fully from the security measures that DANE provides (instead, they should use the PKIX-EE or PKIX-TA Certificate Usage) &hellip;  Therefore, a domain name owner should avoid setting their TLSA records with the DANE-EE or DANE-TA usage when they serve a certificate issued by a CA &hellip;  Consequently, these records could have used PKIX-EE or PKIX-TA Certificate Usages, thus having the additional benefit of certificate validation through two independent mechanisms (DANE and PKIX)&quot;</i></p>
 <blockquote>
-<p>&ldquo;<i>buggy TLS applications do not bother to check the validity of certificates</i>&rdquo;: This is wrong. The authors of the paper failed to note that in SMTP with DANE-EE(3), per RFC7672 both the expiration date and all names in the certificate MUST be ignored.</p>
+<p>&ldquo;<i>buggy TLS applications do not bother to check the validity of certificates</i>&quot;: This is wrong. The authors of the paper failed to note that in SMTP with DANE-EE(3), per RFC7672 both the expiration date and all names in the certificate MUST be ignored.</p>
 </blockquote>
 <p>We acknowledged that DANE-EE must ignore the expiration date and names, and we actually verified the cert per RFC7672; however, for the clarification, we have updated the paper.</p>
 <blockquote>
 <p>DANE-TA(2) description is not correct; These are not necessarily root CAs in the usual sense of top-level certification authority self-signed certificates. Nor are the leaf certificates necessarily directly signed by the DANE-TA(2) trust-anchor. The verification of a certificate chain via a DANE-TA(2) trust anchor is still PKIX validation, it just employs the DANE-supplied trust anchor, rather than one of the (typically CA/B Forum WebPKI) CAs pre-configured on the client.</p>
 </blockquote>
-<p>The reason why it looked misleading was that we didn&rsquo;t put <em>ultimately</em> on the text. Thus, we have updated the paper as following:  `a trust anchor (i.e., a root certificate), thus permitting any leaf certificates as long as they are <em>ultimately</em> signed by the trust anchor (DANE-TA)&rsquo;</p>
+<p>The reason why it looked misleading was that we didn&rsquo;t put <em>ultimately</em> on the text. Thus, we have updated the paper as following:  `a trust anchor (i.e., a root certificate), thus permitting any leaf certificates as long as they are <em>ultimately</em> signed by the trust anchor (DANE-TA)'</p>
 <blockquote>
 <p>Because the SMTP protocol can use three possible port numbers (25, 465, and 587), we send three TLSA record requests for each MX record
 This is a mistake. The SMTP protocol, two different services, SMTP (MTA-to-MTA) and SUBMIT (MUA-to-MTA). MX records are only defined for SMTP, and NOT for SUBMIT. There is no expectation that the same hosts are both the inbound SMTP servers and the outbound submission servers for a given domain.
@@ -85,14 +98,14 @@ MUAs do not perform MX lookups to find their submission servers. And since no MU
 <blockquote>
 <p>Finally, we observe that 9 out of 29 mail service providers use DNS resolvers outside their own network, which makes them vulnerable to man-in-the-middle attacks As mentioned above, this conclusion is not necessarily valid, a validating forwarding resolver avoids the issue, while taking advantage of an upstream cache. This is likely to become more common as more resolvers add support for DoH, and more users (wisely or otherwise) configure their resolvers to use it.</p>
 </blockquote>
-<p>We have added a footnote: <i>&quot;However, if they use DNS-over-Encryption protocols such as DNS- over-HTTPS or DNS-over-TLS, such attacks can be mitigated.&lsquo;&lsquo;</i></p>
+<p>We have added a footnote: <i>&ldquo;However, if they use DNS-over-Encryption protocols such as DNS- over-HTTPS or DNS-over-TLS, such attacks can be mitigated.''</i></p>
 <blockquote>
-<p><i>&quot;If email service providers wish to support DANE, the software of their DNS servers and DNS resolvers must be able to understand TLSA records and to support DNSSEC to validate DNS responses.&rdquo;
+<p><i>&ldquo;If email service providers wish to support DANE, the software of their DNS servers and DNS resolvers must be able to understand TLSA records and to support DNSSEC to validate DNS responses.&rdquo;
 This is not correct, just DNSSEC support is sufficient. Neither authoritative servers, nor especially iterative resolvers need any special knowledge of TLSA records.  Only the application consuming the DNS response needs to understand TLSA records. The primary authoritative server for a zone needs to provide some mechanism to insert TLSA records to its database, but this too can often be done generically,</p>
 </blockquote>
-<p>We have updated the sentence: &ldquo;<i>the software of their DNS servers must be able to support DNSSEC to validate DNS responses</i>&rdquo; and added the following footnote: &ldquo;<i>Only the application that uses TLSA records needs to understand TLSA records; for example, the authoritative DNS server can publish a TLSA record as a generic record (with TYPE52 instead of TLSA) [37]&ldquo;</i></p>
+<p>We have updated the sentence: &ldquo;<i>the software of their DNS servers must be able to support DNSSEC to validate DNS responses</i>&rdquo; and added the following footnote: &ldquo;<i>Only the application that uses TLSA records needs to understand TLSA records; for example, the authoritative DNS server can publish a TLSA record as a generic record (with TYPE52 instead of TLSA) [37]&quot;</i></p>
 <blockquote>
-<p>&ldquo;<i>… buggy TLS applications do not bother to check the validity of certificates&quot;</i>: This is wrong. The authors of the paper failed to note that in SMTP with DANE-EE(3), per RFC7672 both the expiration date and all names in the certificate MUST be ignored.</p>
+<p>&ldquo;<i>… buggy TLS applications do not bother to check the validity of certificates&rdquo;</i>: This is wrong. The authors of the paper failed to note that in SMTP with DANE-EE(3), per RFC7672 both the expiration date and all names in the certificate MUST be ignored.</p>
 </blockquote>
 <p>We acknowledged that DANE-EE must ignore the expiration date and names, and we actually verified the cert per RFC7672. We have clarified this in the text.</p>
 <blockquote>
@@ -113,11 +126,11 @@ As outbound deployment grows making any misconfiguration more readily apparent t
 </blockquote>
 <p>We acknowledged that having at least one TLSA record matched with certificates is enough; we will look into it.</p>
 <blockquote>
-<p><i>&quot;14.17% of them (TLSA records) are inconsistent with their certificates&quot;</i>: This is misleading, because it fails to weight the TLSA RRsets by the number of affected domains2. A problem with the TLSA records of an MX host for a vanity domain hosting the email of single hobbyist is less significant than a problem with a professionally operated MX host that supports thousands of domains or millions of user mailboxes.  We also take issue with the number, in a more comprehensive survey, covering all signed TLDs, we find 301 TLSA RRsets not consistent with their certificates (including cases where the MX host does not consistently offer STARTTLS) out of 8370 SMTP servers with TLSA RRs.  This shows that only 3.58% of SMTP servers with TLSA records have the reported issues, but as mentioned above, this is not the most relevant metric.  The number of affected domains is 462, as compared with 1.84 million domains with DANE-enabled SMTP servers. This shows that operator error is largely confined to a small number of SOHO domains.</p>
+<p><i>&ldquo;14.17% of them (TLSA records) are inconsistent with their certificates&rdquo;</i>: This is misleading, because it fails to weight the TLSA RRsets by the number of affected domains2. A problem with the TLSA records of an MX host for a vanity domain hosting the email of single hobbyist is less significant than a problem with a professionally operated MX host that supports thousands of domains or millions of user mailboxes.  We also take issue with the number, in a more comprehensive survey, covering all signed TLDs, we find 301 TLSA RRsets not consistent with their certificates (including cases where the MX host does not consistently offer STARTTLS) out of 8370 SMTP servers with TLSA RRs.  This shows that only 3.58% of SMTP servers with TLSA records have the reported issues, but as mentioned above, this is not the most relevant metric.  The number of affected domains is 462, as compared with 1.84 million domains with DANE-enabled SMTP servers. This shows that operator error is largely confined to a small number of SOHO domains.</p>
 </blockquote>
 <p>We partially agreed; however, we clearly specified that we consider only &ldquo;TLSA records&rdquo; in the methodology section.</p>
 <blockquote>
-<p><i>&quot;only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking the Certificate Usage in TLSA records&quot;</i>:
+<p><i>&ldquo;only four email service providers support DANE for both outgoing and incoming emails, but two of them have drawbacks of not checking the Certificate Usage in TLSA records&rdquo;</i>:
 Of course more than just the four reported providers support outbound DANE. Some of the early adopters not mentioned are posteo.de, mailbox.org, kabelmail.de and udmedia.de. In addition to web.de, 1&amp;1 also operate gmx.de (with millions of email users between them), both domains are DANE-enabled inbound and outbound. There are many more, though admittedly most and especially the largest providers such as gmail.com, outlook.com and yahoo.com are not yet on board.</p>
 </blockquote>
 <p>It is always hard to make a &ldquo;clear&rdquo; and &ldquo;objective&rdquo; list. As it is practically impossible to estimate the market share of the email service providers, we referred to <a href="https://www.nytimes.com/2013/10/04/technology/adobe-announces-security-breach.html">Adobe&rsquo;s leaked user email database from 2013</a> to rank the email domains based on popularity and choose the top 25 providers.</p>
@@ -130,16 +143,16 @@ Out of ~10.8 million domains in the DANE/DNSSEC survey operated by the authors o
 Working DNS (including DNSSEC) is required for DANE, and though DNS servvice outages do happen for some domains some of the time, this is not a significant problem.</p>
 </blockquote>
 <blockquote>
-<p>&ldquo;<i>… or the certificates may be inconsistent with published TLSA records</i>&rdquo;: As already explained, this is not a significant problem in practice, when properly weighted by impact. Also, since email is store-and-forward, a transient mismatch that is promptly corrected generally does not result in loss of email.</p>
+<p>&ldquo;<i>… or the certificates may be inconsistent with published TLSA records</i>&quot;: As already explained, this is not a significant problem in practice, when properly weighted by impact. Also, since email is store-and-forward, a transient mismatch that is promptly corrected generally does not result in loss of email.</p>
 </blockquote>
 <p>We are not arguing that DANE is mis-designed nor intrinsically vulnerable. In fact, there are many potential opportunities that a single mistake can make DANE validation failure, which we observed.</p>
 <blockquote>
-<p>&ldquo;<i> … On the client side, DNS resolvers may not validate TLSA records properly&quot;</i>:
+<p>&ldquo;<i> … On the client side, DNS resolvers may not validate TLSA records properly&rdquo;</i>:
 This is speculative. No evidence of this being an actual problem for sites implementing outbound DANE is presented.</p>
 </blockquote>
 <p>We found that mail.com and tutanota.com did not check the usage field correctly on Table 3.</p>
 <blockquote>
-<p>&ldquo;<i>In this paper, we present a comprehensive study of the entire DANE ecosystem for SMTP</i>&rdquo;:
+<p>&ldquo;<i>In this paper, we present a comprehensive study of the entire DANE ecosystem for SMTP</i>&quot;:
 But in fact only the top three (by DANE domain count) TLDs nl, se and com, plus numbers 12 and 15 (net and org).</p>
 </blockquote>
 <p>Here, the “entire” ecosystem does not mean we studied &ldquo;all domains on the earth&rdquo;. We focused on all possible angles (DNS, SMTP, DANE) that contribute to the DANE ecosystem and we believe that this is comprehensive.</p>
@@ -152,7 +165,7 @@ But in fact only the top three (by DANE domain count) TLDs nl, se and com, plus 
 </blockquote>
 <p>We still think it is an operational error regardless if it is intended or not as having DS records are not optional specs to deploy DANE correctly.</p>
 <blockquote>
-<p><i>&quot;However, we observe that mail.com, tutanota.com do not check whether the Certificate Usage value of the TLSA record is consistent with the certificate. Given that self-signed certificates can never be PKIX valid, they should have rejected the invalid certificates during the TLS handshake.&ldquo;</i>: As explained above, this is normal expected behaviour from Postfix 2.11–3.1. The PKIX-EE(1) usage is treated as though it were DANE-EE(1), and no harm is done. Since the benefit of this work-around proved miniscule, it was withdrawn in Postfix 3.2.  So with some confidence we can guess that these providers were using Postfix in that version range.</p>
+<p><i>&ldquo;However, we observe that mail.com, tutanota.com do not check whether the Certificate Usage value of the TLSA record is consistent with the certificate. Given that self-signed certificates can never be PKIX valid, they should have rejected the invalid certificates during the TLS handshake.&quot;</i>: As explained above, this is normal expected behaviour from Postfix 2.11–3.1. The PKIX-EE(1) usage is treated as though it were DANE-EE(1), and no harm is done. Since the benefit of this work-around proved miniscule, it was withdrawn in Postfix 3.2.  So with some confidence we can guess that these providers were using Postfix in that version range.</p>
 </blockquote>
 <p>We explained this behavior: &ldquo;they might (1) ignore a TLSA record whose Certificate Usage is either PKIX-TA or PKIX-EE (as these usages are not recommended [27]), or (2) skip the PKIX certificate validation except for checking the Certificate Association Data.&rdquo;</p>
 

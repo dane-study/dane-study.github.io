@@ -2,36 +2,61 @@
   
   <url>
     <loc>https://dane-study.github.io/</loc>
-    <lastmod>2020-08-03T03:00:10+01:00</lastmod>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dane-study.github.io/security2020/</loc>
-    <lastmod>2021-11-30T00:00:00+00:00</lastmod>
+    <loc>https://dane-study.github.io/security2020/security2020-abstract/</loc>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dane-study.github.io/security2020/server-side/</loc>
-    <lastmod>2020-08-03T03:00:10+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dane-study.github.io/client-side/</loc>
-    <lastmod>2020-08-03T03:00:10+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dane-study.github.io/contact/</loc>
-    <lastmod>2020-08-03T03:00:10+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://dane-study.github.io/critics/</loc>
-    <lastmod>2020-08-03T03:00:10+01:00</lastmod>
+    <loc>https://dane-study.github.io/security2022/security2022-abstract/</loc>
+    <lastmod>2021-12-02T16:46:28+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://dane-study.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2020/client-side/</loc>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2020/contact/</loc>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2022/contact/</loc>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2020/critics/</loc>
+    <lastmod>2021-12-02T10:25:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2022/measurement/</loc>
+    <lastmod>2021-12-02T16:41:22+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2020/</loc>
+    <lastmod>2021-12-02T16:41:22+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2022/</loc>
+    <lastmod>2021-12-02T16:46:28+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://dane-study.github.io/security2020/server-side/</loc>
+    <lastmod>2021-12-02T16:41:22+09:00</lastmod>
   </url>
   
   <url>

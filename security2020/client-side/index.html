@@ -37,11 +37,24 @@
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/security2020/">USENIX Security 2020</a></li>
-        <li><a href="/security2020/server-side/">Server-side Artifacts</a></li>
-        <li class="active"><a href="/client-side/">Client-side Artifacts</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/critics/">Critics</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2020<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2020/security2020-abstract">Abstract</a></li>
+            <li><a href="/security2020/server-side">Server-side Artifacts</a></li>
+            <li><a href="/security2020/client-side">Client-side Artifacts</a></li>
+            <li><a href="/security2020/critics">Critics</a></li>
+            <li><a href="/security2020/contact">Contact</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2022<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2022/security2022-abstract">Abstract</a></li>
+            <li><a href="/security2022/measurement">Measurement Artifacts</a></li>
+            <li><a href="/security2022/contact">Contact</a></li>
+          </ul>
+        </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -195,7 +208,7 @@ table, th, td {
 <h2 id="1-setting-up-a-bind9-dns-server">1. Setting up a Bind9 DNS server</h2>
 <!-- Note: As DANE assumes your domain name supports DANE, your DNS server must support DNSSEC. -->
 <h3 id="install-a-bind9-dns-server-in-ubuntu">Install a Bind9 DNS server in Ubuntu</h3>
-<pre><code>$ sudo apt-get install bind9 bind9utils bind9-doc dnsutils
+<pre tabindex="0"><code>$ sudo apt-get install bind9 bind9utils bind9-doc dnsutils
 </code></pre><h3 id="configure-bind9">Configure Bind9</h3>
 <h4 id="1-enabling-bind9-log-options">(1) Enabling BIND9 log options.</h4>
 <!--
@@ -230,7 +243,7 @@ options {
 
 -->
 <p>We need to log all incoming DNS queries to see if they do support DNSSEC (by checking EDNS0 and D0 bit) and have requested DNSKEY/DS/TLSA records.</p>
-<pre><code>logging {
+<pre tabindex="0"><code>logging {
         channel named       { file &quot;named.log&quot; versions 10 size 20M; print-time yes; print-category yes; };
         channel security    { file &quot;security.log&quot; versions 10 size 20M; print-time yes; };
         channel query_log   { file &quot;query.log&quot; versions 10 size 20M; severity debug; print-time yes; };
@@ -253,7 +266,7 @@ options {
 <!-- Add the record type you need to represent in a zone in a YAML file as available in the [example Yaml](/codes/security-protocol.com.yml).  -->
 <p><code> Note: update the serial value (in the SOA record) whenever you update your zone file.</code></p>
 <p>Example zone file:</p>
-<pre><code>;
+<pre tabindex="0"><code>;
 ; BIND data file for local loopback interface
 ;
 $TTL    1
@@ -282,16 +295,16 @@ mail.valid.security-protocol.com.      IN      A       34.219.137.44
 
 </code></pre><p>We need to sign the zones to support DNSSEC for each domains.
 You can type the following commands to sign your zones in the directory that contains (private) key files (such as /etc/bind/keys/&lt;domainname.com&gt;),</p>
-<pre><code> $ sudo dnssec-keygen -a RSASHA256 -b 2048 -3 -f KSK -r /dev/urandom security-protocol.com
+<pre tabindex="0"><code> $ sudo dnssec-keygen -a RSASHA256 -b 2048 -3 -f KSK -r /dev/urandom security-protocol.com
  $ sudo dnssec-keygen -a RSASHA256 -b 2048 -3 -r /dev/urandom security-protocol.com
 </code></pre><p>The directory will have four keys - private/public pairs of ZSK and KSK. We have to serve those public keys as a DNSKEY record.</p>
 <p>Sign the zone with the <code>dnssec-signzone</code> command.</p>
-<pre><code>$ dnssec-signzone -3 &lt;salt&gt; -A -N INCREMENT -o &lt;zonename&gt; -t &lt;zonefilename&gt;
+<pre tabindex="0"><code>$ dnssec-signzone -3 &lt;salt&gt; -A -N INCREMENT -o &lt;zonename&gt; -t &lt;zonefilename&gt;
 </code></pre><p>Example:</p>
-<pre><code>$ sudo dnssec-signzone -S -K /etc/bind/keys/security-protocol -e 20250530144500 -g -a -r /dev/random -o security-protocol.com zones/db.security-protocol.com 
+<pre tabindex="0"><code>$ sudo dnssec-signzone -S -K /etc/bind/keys/security-protocol -e 20250530144500 -g -a -r /dev/random -o security-protocol.com zones/db.security-protocol.com 
 </code></pre><p>Next configuration file is <code>/etc/bind/named.conf.local</code>, in this file we will define the zone files for our domain, edit the file add the following entries:</p>
 <p><code>Note: If your domain is DNSSEC-enabled, then you need to point the signed zone in “/etc/bind/named.conf.local“</code></p>
-<pre><code>zone &quot;security-protocol.com&quot; {
+<pre tabindex="0"><code>zone &quot;security-protocol.com&quot; {
         type master;
         file &quot;/etc/bind/zones/db.security-protocol.com.signed&quot;;
 };
@@ -319,10 +332,10 @@ zone &quot;different-cert.security-protocol.com&quot; {
 ...
 
 </code></pre><p>Save file &amp; exit. Now all we have to do is to restart the BIND service to implement the changes made,</p>
-<pre><code>$ sudo service bind9 restart
+<pre tabindex="0"><code>$ sudo service bind9 restart
 $ sudo service bind9 enable 
 </code></pre><p><code>Note:</code> Please execute the below command to allow 53 port if your firewall is blocking the port.</p>
-<pre><code>$ sudo ufw allow 53
+<pre tabindex="0"><code>$ sudo ufw allow 53
 </code></pre><h2 id="2-setting-up-postfix-smtp-server">2. Setting up postfix SMTP server</h2>
 <p>Below, we provide detailed instructions on how to install postfix MTA. We strongly recommend to use postfix 3.4.5 or above because they support SNI to serve multiple certificates.</p>
 <h3 id="install-postfix-mta">Install Postfix MTA</h3>
@@ -330,58 +343,58 @@ $ sudo service bind9 enable
 <p>You can either use the <code>install-postfix.sh</code> script to automatically install postfix. However, if the script fails or would like to manually install postfix, please follow the below instruction.</p>
 <p>Assuming that you are using a Linux flavoured operating system.</p>
 <p>Download the latest version of postfix 3.4.8 from here:</p>
-<pre><code>ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.4.8.tar.gz
+<pre tabindex="0"><code>ftp://ftp.porcupine.org/mirrors/postfix-release/official/postfix-3.4.8.tar.gz
 </code></pre><p>You also need to download and apply this specific patch as well.</p>
-<pre><code>http://www.linuxfromscratch.org/patches/blfs/svn/postfix-3.4.8-glibc230_fix-1.patch
+<pre tabindex="0"><code>http://www.linuxfromscratch.org/patches/blfs/svn/postfix-3.4.8-glibc230_fix-1.patch
 </code></pre><p>Postfix recommends the following dependencies</p>
-<pre><code>Berkeley DB-5.3.28
+<pre tabindex="0"><code>Berkeley DB-5.3.28
 Cyrus SASL-2.1.27
 libnsl-1.2.0
 </code></pre><p>Once you have all the required dependencies for postfix, you can proceed to the installation process as follows:</p>
 <h4 id="2-adding-users-and-groups">(2) Adding users and groups</h4>
 <p>Before you compile the program, you need to create users and groups that will be expected to be in place during the installation. Add the users and groups with the following commands issued by the root user:</p>
-<pre><code>groupadd -g 32 postfix &amp;&amp;
+<pre tabindex="0"><code>groupadd -g 32 postfix &amp;&amp;
 groupadd -g 33 postdrop &amp;&amp;
 useradd -c &quot;Postfix Daemon User&quot; -d /var/spool/postfix -g postfix \
         -s /bin/false -u 32 postfix &amp;&amp;
 chown -v postfix:postfix /var/mail
 </code></pre><h4 id="3-configuring-the-build">(3) Configuring the Build</h4>
 <p>The README files are formatted to be read with a pager like Less or More. If you want to use a text editor, make them legible with the following sed:</p>
-<pre><code>sed -i 's/.\x08//g' README_FILES/*
+<pre tabindex="0"><code>sed -i 's/.\x08//g' README_FILES/*
 </code></pre><p>Apply a patch to allow Postfix to compile on Glibc-2.30 where some macros were dropped:</p>
-<pre><code>patch -Np1 -i ../postfix-3.4.8-glibc230_fix-1.patch
+<pre tabindex="0"><code>patch -Np1 -i ../postfix-3.4.8-glibc230_fix-1.patch
 </code></pre><p><strong>Cyrus-SASL:</strong></p>
 <p>To use Cyrus-SASL with Postfix, use the following arguments:</p>
-<pre><code>CCARGS='-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl'
+<pre tabindex="0"><code>CCARGS='-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl'
 AUXLIBS='-lsasl2'
 </code></pre><h4 id="4-configuring-the-database-for-postfix">(4) Configuring the database for postfix</h4>
 <p>You can utilse any of the database software such as sqlite, mysql or postgreSQL as below.
 <br/></p>
 <p><strong>Sqlite:</strong></p>
 <p>To use Sqlite with Postfix, use the following arguments:</p>
-<pre><code>CCARGS='-DHAS_SQLITE'
+<pre tabindex="0"><code>CCARGS='-DHAS_SQLITE'
 AUXLIBS='-lsqlite3 -lpthread'
 </code></pre><p><strong>MySQL:</strong></p>
 <p>To use MySQL with Postfix, use the following arguments:</p>
-<pre><code>CCARGS='-DHAS_MYSQL -I/usr/include/mysql'
+<pre tabindex="0"><code>CCARGS='-DHAS_MYSQL -I/usr/include/mysql'
 AUXLIBS='-lmysqlclient -lz -lm'
 </code></pre><p><strong>PostgreSQL:</strong></p>
 <p>To use PostgreSQL with Postfix, use the following arguments:</p>
-<pre><code>CCARGS='-DHAS_PGSQL -I/usr/include/postgresql'
+<pre tabindex="0"><code>CCARGS='-DHAS_PGSQL -I/usr/include/postgresql'
 AUXLIBS='-lpq -lz -lm'
 </code></pre><h4 id="5-enabling-the-starttls-authentication">(5) Enabling the STARTTLS authentication</h4>
 <p>To use OpenSSL with Postfix, use the following arguments:</p>
-<pre><code>CCARGS='-DUSE_TLS -I/usr/include/openssl/'
+<pre tabindex="0"><code>CCARGS='-DUSE_TLS -I/usr/include/openssl/'
 AUXLIBS='-lssl -lcrypto'
 </code></pre><h4 id="6-installing-postfix">(6) Installing Postfix</h4>
 <p>If you have Cyrus SASL and OpenSSL installed, now install Postfix by running the following commands:</p>
-<pre><code>make CCARGS=&quot;-DUSE_TLS -I/usr/include/openssl/                     \
+<pre tabindex="0"><code>make CCARGS=&quot;-DUSE_TLS -I/usr/include/openssl/                     \
              -DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl&quot; \
      AUXLIBS=&quot;-lssl -lcrypto -lsasl2&quot;                              \
      makefiles &amp;&amp;
 make
 </code></pre><p>Now, as the root user:</p>
-<pre><code>sh postfix-install -non-interactive \
+<pre tabindex="0"><code>sh postfix-install -non-interactive \
    daemon_directory=/usr/lib/postfix \
    manpage_directory=/usr/share/man \
    html_directory=/usr/share/doc/postfix-3.4.8/html \
@@ -389,33 +402,33 @@ make
 </code></pre><h3 id="3-configure-postfix">3. Configure Postfix</h3>
 <p>In this section, you will configure the <code>/etc/postfix/main.cf</code> file to serve it as an external SMTP server.</p>
 <p>Open the <code>/etc/postfix/main.cf</code> file with your favorite text editor:</p>
-<pre><code>sudo vim /etc/postfix/main.cf
+<pre tabindex="0"><code>sudo vim /etc/postfix/main.cf
 </code></pre><p>Add the following parameters to the config file to enable STARTTLS.</p>
-<pre><code>smtpd_use_tls = yes
+<pre tabindex="0"><code>smtpd_use_tls = yes
 smtpd_tls_loglevel = 2
 </code></pre><p>If you are missing any additional parameters in the postfix setup, do checkout our example configuration files found <a href="/codes/configuration-bind-postfix.tar.gz">here</a></p>
 <h4 id="1-sni-configuration">(1) SNI configuration</h4>
 <p>Unlike the usual setup to serve a single TLS certificate file and a TLS key file in the postfix SMTP MTA configuration as to initiate STARTTLS security extension support, we wanted to serve multiple certificates in the same machine (w/ a single IP address) for simplicity sake. The configuration file specifies a very small subset of all the parameters that control the operation of the Postfix mail system.</p>
 <!-- Run through the initial configuration after the installation of postfix from the apt package and then, upgrade postfix through the installation from source. Further, when its is done, move on to configure SNI. -->
 <p>For the SNI setup, we created a few certificate chains. This was followed by creating a hash table using <code>sudo postmap -F</code> to hold the SNI chains where the domains are denoted as:</p>
-<pre><code>domain1.com static:/path/to/pem1.pem 
+<pre tabindex="0"><code>domain1.com static:/path/to/pem1.pem 
 domain2.com static:/path/to/pem2.pem
 </code></pre><p>Which then is referred in the <code>/etc/postfix/main.cf</code> configuration of postfix using:</p>
 <p><code>tls_server_sni_maps = hash:/etc/postfix/sni-chains</code></p>
 <p>In <code>/etc/postfix/main.cf</code> <strong>Before</strong>:</p>
-<pre><code>smtpd_tls_key_file = /path/to/the/key/file/smtp_tls.key
+<pre tabindex="0"><code>smtpd_tls_key_file = /path/to/the/key/file/smtp_tls.key
 smtpd_tls_cert_file = /path/to/the/cert/file/smtp_cert.pem
 </code></pre><p>With this configuration parameter alone, we are only able to provide/serve single key and certificate file for the SMTP server for a specific single domain.</p>
 <p><strong>Now:</strong></p>
 <p>Our goal was to serve multiple certificates for each of the delegated domains as per the busted environment that we devised.</p>
 <p>First, we provide a parameter <code> smtpd_tls_chain_files</code> to the configuration file as to provide a default certificate to the SNI lookup table that is going to be created. The SNI lookup tables should also have entries for the domains that correspond to the Postfix SMTP server&rsquo;s default certificate(s). This ensures that the remote SMTP client&rsquo;s TLS SNI extension gets a positive response when it specifies one of the Postfix SMTP server&rsquo;s default  domains, and ensures that the Postfix SMTP server will not log an SNI name mismatch for such a domain. The Postfix SMTP server&rsquo;s default certificates are then only used when the client sends no SNI or when it sends SNI with a domain that the server knows no certificate(s) for.</p>
-<pre><code>smtpd_tls_chain_files = /etc/letsencrypt/live/security-protocol.com/privkey.pem, /etc/letsencrypt/live/security-protocol.com/cert.pem
+<pre tabindex="0"><code>smtpd_tls_chain_files = /etc/letsencrypt/live/security-protocol.com/privkey.pem, /etc/letsencrypt/live/security-protocol.com/cert.pem
 </code></pre><p>Yes, having a default as such might be inconvenient for few use cases. Currently, postfix has this in place since default chain with an explicitly SNI mapping to that chain, is to suppress warnings in the logs about receiving SNI names that fail to match any entries in the table. Such warnings can be useful to identify misconfigured clients and servers. Setting up a wildcard default would completely defeat the purpose of the mismatch logging.</p>
 <p>That is, smtpd_tls_chain_files parameter assures the client with a positive acknowledgement, and suppresses logging of SNI mismatch. Suppressing such logs for $myhostname since default chain is the right one to use.</p>
 <p>Further we denote the SNI table created inside the configuration file through the parameter <code>tls_server_sni_maps</code></p>
-<pre><code>main.cf:
+<pre tabindex="0"><code>main.cf:
        tls_server_sni_maps = hash:/etc/postfix/sni-chains
-</code></pre><pre><code>sni-chains: 
+</code></pre><pre tabindex="0"><code>sni-chains: 
        mail.security-protocol.com	/etc/postfix/sni/domain1.example.pem 
        mail.domain2.security-protocol.com	/etc/postfix/sni/domain2.example.pem
 </code></pre><p>The sni-chains is a SNI lookup table created for storing certificate chains mapped to the SNI domains. In postfix, we use a postmap command to create the hash table. The syntax is:</p>
@@ -423,12 +436,12 @@ smtpd_tls_cert_file = /path/to/the/cert/file/smtp_cert.pem
 <p>Need to note that, You&rsquo;ll need to rebuild the table (again with &ldquo;postmap -F&rdquo;) whenever you want to start using new certificates, adding new certificates  even if the file names are unchanged.</p>
 <p>Further also note that, The sni-chain must always list the private key before the associated certificate chain. You can list a file with just the key first, and then the certificate file. An advanced use case is to list multiple files for the same domain, each with a key and certificate chain for a different algorithm.</p>
 <p>Example sni-chain file:</p>
-<pre><code>mail.security-protocol.com /etc/letsencrypt/live/security-protocol.com/privkey.pem /etc/letsencrypt/live/security-protocol.com/fullchain.pem
+<pre tabindex="0"><code>mail.security-protocol.com /etc/letsencrypt/live/security-protocol.com/privkey.pem /etc/letsencrypt/live/security-protocol.com/fullchain.pem
 mail.valid.security-protocol.com /etc/letsencrypt/live/valid.security-protocol.com/privkey.pem /etc/letsencrypt/live/valid.security-protocol.com/fullchain.pem
 mail.different-cert.security-protocol.com /etc/letsencrypt/live/security-protocol.com/privkey.pem /etc/letsencrypt/live/security-protocol.com/fullchain.pem
 </code></pre><p>Save your changes.</p>
 <p>Restart Postfix:</p>
-<pre><code>sudo service postfix restart
+<pre tabindex="0"><code>sudo service postfix restart
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
 </code></pre><h3 id="4-reproducing-client-side-dane-results">4. Reproducing client-side DANE results</h3>
 <p>After the installation of Bind9 DNS server software and compiling custom version of Postfix. We can start testing and see how to reproduce the client side table in the paper.</p>
@@ -437,7 +450,7 @@ mail.different-cert.security-protocol.com /etc/letsencrypt/live/security-protoco
 <li>Step 2: Check the DNS logs using <code>tail -n 50 -f /var/cache/bind/query.log</code></li>
 </ul>
 <p>The below example DNS logs show the DNSSEC and DANE (TLSA) support of the resolver that the mail provider uses (i.e., D0 bit enabled, and DS, DNSKEY, and TLSA record fetched).</p>
-<pre><code>07-Feb-2020 19:55:54.593 client @0x7fc2c80e0720 74.208.114.131#31068 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
+<pre tabindex="0"><code>07-Feb-2020 19:55:54.593 client @0x7fc2c80e0720 74.208.114.131#31068 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
 07-Feb-2020 19:55:55.469 client @0x7fc2c80e0720 74.208.114.131#29440 (valid.security-protocol.com): query: valid.security-protocol.com IN MX -E(0)D (172.31.27.143)
 07-Feb-2020 19:55:55.530 client @0x7fc2c80e0720 74.208.114.131#45210 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
 07-Feb-2020 19:55:55.591 client @0x7fc2c80e0720 74.208.114.131#52183 (valid.security-protocol.com): query: valid.security-protocol.com IN DS -E(0)D (172.31.27.143)
@@ -474,7 +487,7 @@ mail.different-cert.security-protocol.com /etc/letsencrypt/live/security-protoco
 <li>Step 3: Check the SMTP log using <code>tail -n 50 -f /var/log/mail.log</code></li>
 </ul>
 <p>The below example shows that the email provider supports STARTTLS.</p>
-<pre><code>Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: initializing the server-side TLS engine
+<pre tabindex="0"><code>Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: initializing the server-side TLS engine
 Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: connect from mout.gmx.com[74.208.4.200]
 Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: setting up TLS connection from mout.gmx.com[74.208.4.200]
 Feb  7 19:55:57 security-protocol postfix/smtpd[17916]: mout.gmx.com[74.208.4.200]: TLS cipher list &quot;aNULL:-aNULL:HIGH:MEDIUM:+RC4:@STRENGTH&quot;

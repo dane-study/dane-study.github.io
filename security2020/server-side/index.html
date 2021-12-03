@@ -37,11 +37,24 @@
   <div class="collapse navbar-collapse" id="navbar-collapse">
     <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/security2020/">USENIX Security 2020</a></li>
-        <li class="active"><a href="/security2020/server-side/">Server-side Artifacts</a></li>
-        <li><a href="/client-side/">Client-side Artifacts</a></li>
-        <li><a href="/contact/">Contact</a></li>
-        <li><a href="/critics/">Critics</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2020<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2020/security2020-abstract">Abstract</a></li>
+            <li><a href="/security2020/server-side">Server-side Artifacts</a></li>
+            <li><a href="/security2020/client-side">Client-side Artifacts</a></li>
+            <li><a href="/security2020/critics">Critics</a></li>
+            <li><a href="/security2020/contact">Contact</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">USENIX Security 2022<span class="caret">&nbsp;</span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/security2022/security2022-abstract">Abstract</a></li>
+            <li><a href="/security2022/measurement">Measurement Artifacts</a></li>
+            <li><a href="/security2022/contact">Contact</a></li>
+          </ul>
+        </li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
     </ul>
@@ -92,12 +105,12 @@ We had collected them over 4 months across 5 vantage points. Due to the massive 
 <tbody>
 <tr>
 <td><code>Analytics</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/analytics_data.html">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/analytics_data.html">link</a></td>
 <td>Input datasets for the figures on the paper.</td>
 </tr>
 <tr>
 <td><code>plotting-scripts.tar.gz</code></td>
-<td><a href="/codes/plotting-scripts.tar.gz">link</a></td>
+<td><a href="/codes/plotting-scripts-2020.tar.gz">link</a></td>
 <td>Plotting scripts for 6 figures.</td>
 </tr>
 </tbody>
@@ -142,22 +155,22 @@ table, th, td {
 <tr>
 <td><code>missing-dnssec.plot</code></td>
 <td>Figure 5</td>
-<td>dnssec_stat_output_[*city*].txt which is included in <code>dnssec_stat_output.tar.gz</code></td>
+<td>dnssec_stat_output_[<em>city</em>].txt which is included in <code>dnssec_stat_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>startls-availability.plot</code></td>
 <td>Figure 6</td>
-<td>starttls_error_stat_output_[*city*].txt which is included in <code>starttls_error_stat_output.tar.gz</code></td>
+<td>starttls_error_stat_output_[<em>city</em>].txt which is included in <code>starttls_error_stat_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>incorrect-percent-per-comp.plot</code></td>
 <td>Figure 7</td>
-<td>check_incorrect_stat_output_[*city*].txt which is included in <code>check_incorrect_stat_output.tar.gz</code></td>
+<td>check_incorrect_stat_output_[<em>city</em>].txt which is included in <code>check_incorrect_stat_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>4months-valid-per-tld.plot</code></td>
 <td>Figure 8</td>
-<td>valid_dn_stat_output_[*city*].txt which is included in <code>valid_dn_stat_output.tar.gz</code></td>
+<td>valid_dn_stat_output_[<em>city</em>].txt which is included in <code>valid_dn_stat_output.tar.gz</code></td>
 </tr>
 </tbody>
 </table>
@@ -188,18 +201,18 @@ After executing the analysis scripts you may use those output files as inputs to
 </thead>
 <tbody>
 <tr>
-<td><code>hourly snapshots</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/raw.html">link to datasets</a></td>
+<td><code>hourly dataset</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/raw.html">link</a></td>
 <td>TLSA records and their certificates (through STARTTLS) collected for 4 month (July ~ October, 2019) on the five EC2 vantage points (Virginia, Oregon, Paris, Sydney, and São Paulo).</td>
 </tr>
 <tr>
 <td><code>tlsa-domains-seeds.tar.gz</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/tlsa-domains-seeds.tar.gz">link</a></td>
-<td>Domain names who have TLSA records for July 10st, 2019 and October 31st, 2019, which are used in <code>rollover-candidate.py</code></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/tlsa-domains-seeds.tar.gz">link</a></td>
+<td>Domain names who have TLSA records for July 10st, 2019 and October 31st, 2019, which are used in <code>rollover-candidate.py</code>.</td>
 </tr>
 <tr>
 <td><code>mx-with-tlsa.tar.gz</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/mx-with-tlsa.tar.gz">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/mx-with-tlsa.tar.gz">link</a></td>
 <td>A list of MX records that have TLSA records as well. This dataset is measured at <a href="https://openintel.nl">OpenINTEL</a>.</td>
 </tr>
 <tr>
@@ -209,23 +222,23 @@ After executing the analysis scripts you may use those output files as inputs to
 </tr>
 <tr>
 <td><code>alexa1m-mx.tar.gz</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/alexa1m-mx.tar.gz">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/alexa1m-mx.tar.gz">link</a></td>
 <td>Alexa 1M domain names that have MX records (measured at October 31st, 2019).</td>
 </tr>
 <tr>
 <td><code>alexa1m-tlsa.tar.gz</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/alexa1m-tlsa.tar.gz">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/alexa1m-tlsa.tar.gz">link</a></td>
 <td>Alexa 1M domains that have TLSA records (measured at October 31st, 2019).</td>
 </tr>
 <tr>
 <td><code>root-ca-list.tar.gz</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/root-ca-list.tar.gz">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/root-ca-list.tar.gz">link</a></td>
 <td>A list of root CA&rsquo;s certificates for verifying certificates.</td>
 </tr>
 <tr>
 <td><code>Intermediary data</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/intermediary_data.html">link</a></td>
-<td>Intermediary datasets which are outputs of Spark scripts and also can be used as an input for analysis scripts</td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/intermediary_data.html">link</a></td>
+<td>Intermediary datasets which are outputs of Spark scripts and also can be used as an input for analysis scripts.</td>
 </tr>
 </tbody>
 </table>
@@ -253,7 +266,7 @@ table, th, td {
 <tbody>
 <tr>
 <td><code>dependencies.zip</code></td>
-<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/dependencies.tar.gz">link</a></td>
+<td><a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/dependencies.tar.gz">link</a></td>
 <td>It includes our crafted python <code>dns</code> package for the Spark scripts.</td>
 </tr>
 <tr>
@@ -263,12 +276,12 @@ table, th, td {
 </tr>
 <tr>
 <td><code>spark-codes.tar.gz</code></td>
-<td><a href="/codes/spark-codes.tar.gz">link</a></td>
+<td><a href="/codes/spark-codes-2020.tar.gz">link</a></td>
 <td>It includes pySpark scripts for our analysis.</td>
 </tr>
 <tr>
 <td><code>stats-codes.tar.gz</code></td>
-<td><a href="/codes/stats-codes.tar.gz">link</a></td>
+<td><a href="/codes/stats-codes-2020.tar.gz">link</a></td>
 <td>It includes python scripts for our analysis.</td>
 </tr>
 </tbody>
@@ -284,11 +297,11 @@ table, th, td {
 <h3 id="1-preprocessing-the-raw-datasets">(1) Preprocessing the raw datasets.</h3>
 <p>We had collected two raw datasets: TLSA records (via DNS) and their certificates (via STARTTLS).
 To use DANE correctly, these two objects have to be matched; thus, we read these two datasets using <code>raw-mergy.py</code> and generates the output as a JSON format.
-After downloading the <code>hourly snapshots</code>, configure the input and output path (global variable in the script) for a city <br>(e.g., virginia) you want to merge and run <code>raw-merge.py</code>.</p>
-<pre><code>python3 raw-merge.py 190711 191031 
-</code></pre><p>After execution, merged outputs are placed in the <code>merged_output/[city]/</code> directory.</p>
+After downloading the <code>hourly dataset</code>, configure the input and output path (global variable in the script) for a city (e.g., virginia) you want to merge and run <code>raw-merge.py</code>.</p>
+<pre tabindex="0"><code>python3 raw-merge.py 190711 191031 
+</code></pre><p>After execution, merged outputs are placed in the <code>[output_path]/[city]/</code> directory.</p>
 <p>Below JSON data is an example of a merged output.</p>
-<pre><code>...
+<pre tabindex="0"><code>...
 {
   &quot;domain&quot;: &quot;mail.ietf.org.&quot;,
   &quot;port&quot;: &quot;25&quot;,
@@ -386,7 +399,7 @@ table, th, td {
 <h4 id="running-spark-scripts">Running Spark scripts</h4>
 <p>The <code>spark-codes.tar.gz</code> file contains nine Spark scripts that run on a Spark machine. Please note that these scripts take the <em>merged data</em> as an input.
 We use a third-party library that we crafted, <a href="http://www.dnsypython.org">dns</a>. You may want to install this library on the Spark machine or you can pass this library to the machine when you run the Spark code by using the <code>--py-files</code> option. For the sake of simplicity, we have provided a package, <code>dependencies.zip</code>.</p>
-<pre><code>spark-submit --py-files=/path/to/dependencies.zip [spark_script.py]
+<pre tabindex="0"><code>spark-submit --py-files=/path/to/dependencies.zip [spark_script.py]
 </code></pre><p>The below table describes each of the Spark script that we use for the analyses.</p>
 
 
@@ -399,55 +412,55 @@ We use a third-party library that we crafted, <a href="http://www.dnsypython.org
 <th>Filename</th>
 <th>Description</th>
 <th>Input</th>
-<th>Output (same as the ones in <a href="https://mmlab.snu.ac.kr/~hmlee/dane/intermediary_data.html">Intermediary data</a>)</th>
+<th>Output (same as the ones in <a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/intermediary_data.html">Intermediary data</a>)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>chain-validation.py</code></td>
-<td>It verifies a chain of certificates</td>
+<td>It verifies a chain of certificates.</td>
 <td><code>root-ca-list</code></td>
 <td><code>chain_validation_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>dane-validation.py</code></td>
-<td>It validates DANE based on <a href="https://tools.ietf.org/html/rfc7671">RFC7671</a></td>
+<td>It validates DANE based on <a href="https://tools.ietf.org/html/rfc7671">RFC7671</a>.</td>
 <td>the output of <code>chain-validation.py</code><br>(e.g., chain_output_virginia/ in <code>chain_validation_output.tar.gz</code>)</td>
 <td><code>dane_validation_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>dnssec.py</code></td>
-<td>It checks DNSSEC validity of TLSA records</td>
+<td>It checks DNSSEC validity of TLSA records.</td>
 <td>-</td>
 <td><code>dnssec_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>starttls-error.py</code></td>
-<td>It classifies the reasons of STARTTLS scanning failure</td>
+<td>It classifies the reasons of STARTTLS scanning failure.</td>
 <td>-</td>
 <td><code>starttls_error_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>check-incorrect.py</code></td>
-<td>It classify the reasons of DANE validation failure</td>
+<td>It classify the reasons of DANE validation failure.</td>
 <td>-</td>
 <td><code>check_incorrect_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>rollover-candidate.py</code></td>
-<td>It extracts the domains who have conducted rollover</td>
+<td>It extracts the domains who have conducted rollover.</td>
 <td><code>tlsa-base-domains-seeds</code></td>
 <td><code>rollover_candidate_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>rollover.py</code></td>
-<td>It evaluates rollover behavior of domains</td>
+<td>It evaluates rollover behavior of domains.</td>
 <td>the output of <code>rollover-candidate-sub.py</code><br>(e.g., rollover-cand-merged-virginia.txt in <code>rollover_cand_merged_output.tar.gz</code>)</td>
 <td><code>rollover_output.tar.gz</code></td>
 </tr>
 <tr>
 <td><code>valid-dn.py</code></td>
-<td>It counts the number of domains associated with mail servers which have valid TLSA records</td>
+<td>It counts the number of domains associated with mail servers which have valid TLSA records.</td>
 <td>the output of <code>dane-validation.py</code><br>(e.g., dane_output_virginia/ in <code>dane_validation_output.tar.gz</code>) &amp; <code>mx-with-tlsa</code></td>
 <td><code>valid_dn_output.tar.gz</code></td>
 </tr>
@@ -461,7 +474,7 @@ table, th, td {
 </style>
 
 <h4 id="running-analysis-scripts">Running analysis scripts</h4>
-<p>After getting outputs from the Spark scripts, you can analyze those outputs. <code>stats-codes.tar.gz</code> contains 9 analysis scripts for this purpose. The output files must be same as the ones in the <a href="https://mmlab.snu.ac.kr/~hmlee/dane/analytics_data.html">Analytics</a>.</p>
+<p>After getting outputs from the Spark scripts, you can analyze those outputs. <code>stats-codes.tar.gz</code> contains nine analysis scripts for this purpose. The output files must be same as the ones in the <a href="https://mmlab.snu.ac.kr/~hmlee/dane/security2020/analytics_data.html"><code>Analytics</code></a>.</p>
 
 
 
@@ -480,56 +493,56 @@ table, th, td {
 <tbody>
 <tr>
 <td><code>dane-validation-stat.py</code></td>
-<td>It calculates stats of dane validation results</td>
-<td>the output of <code>dane-validation.py</code><br>(e.g., dane_output_[*city*]/ in <code>dane_validation_output.tar.gz</code>)</td>
+<td>It calculates stats of dane validation results.</td>
+<td>the output of <code>dane-validation.py</code><br>(e.g., dane_output_[<em>city</em>]/ in <code>dane_validation_output.tar.gz</code>)</td>
 <td><code>dane_valid_stat_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>dnssec-stat.py</code></td>
-<td>It calculates stats of dnssec validation results</td>
-<td>the output of <code>dnssec.py</code><br>(e.g., dnssec_output_[*city*]/ in <code>dnssec_output.tar.gz</code>)</td>
+<td>It calculates stats of dnssec validation results.</td>
+<td>the output of <code>dnssec.py</code><br>(e.g., dnssec_output_[<em>city</em>]/ in <code>dnssec_output.tar.gz</code>)</td>
 <td><code>dnssec_stat_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>starttls-error-stat.py</code></td>
-<td>It calculates the stats of STARTTLS scanning errors</td>
-<td>the output of <code>starttls-error.py</code><br>(e.g., starttls_error_output_[*city*]/ in <code>starttls_error_output.tar.gz</code>)</td>
+<td>It calculates the stats of STARTTLS scanning errors.</td>
+<td>the output of <code>starttls-error.py</code><br>(e.g., starttls_error_output_[<em>city</em>]/ in <code>starttls_error_output.tar.gz</code>)</td>
 <td><code>starttls_error_stat_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>check-incorrect-stat.py</code></td>
-<td>It calculates stats of dane validation failure reasons</td>
-<td>the output of <code>check-incorrect.py</code><br>(e.g, incorrect_output_[*city*]/ in <code>check_incorrect_output.tar.gz</code>)</td>
+<td>It calculates stats of dane validation failure reasons.</td>
+<td>the output of <code>check-incorrect.py</code><br>(e.g, incorrect_output_[<em>city</em>]/ in <code>check_incorrect_output.tar.gz</code>)</td>
 <td><code>check_incorrect_stat_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>rollover-candidate-sub.py</code></td>
-<td>It finds the domains who have conducted rollover</td>
+<td>It finds the domains who have conducted rollover.</td>
 <td>the output of <code>rollover-candidate.py</code><br>(e.g., rollover_cand_output_virginia/ in <code>rollover_candidate_output.tar.gz</code>)</td>
 <td><code>rollover_cand_merged_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>rollover-stat.py</code></td>
-<td>It calculates stats of rollover behavior of domains</td>
+<td>It calculates stats of rollover behavior of domains.</td>
 <td>the output of <code>rollover.py</code><br>(e.g., rollover_output_virginia/ in <code>rollover_output.tar.gz</code>)</td>
 <td><code>rollover_stat_output.tar.gz</code></td>
 <td>Section 5.5, Key Rollover</td>
 </tr>
 <tr>
 <td><code>valid-dn-stat.py</code></td>
-<td>It calculates stats of DANE-valid domains for each TLD</td>
+<td>It calculates stats of DANE-valid domains for each TLD.</td>
 <td>the output of <code>valid-dn.py</code><br>(e.g., valid_dn_virginia/ in <code>valid_dn_output.tar.gz</code>)</td>
 <td><code>valid_dn_stat_output.tar.gz</code></td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>alexa1m-dane-stat.py</code></td>
-<td>It calculates stats of Alexa 1M domains who have TLSA records</td>
+<td>It calculates stats of Alexa 1M domains who have TLSA records.</td>
 <td><code>alexa1m-mx</code>, <code>alexa1m-tlsa</code>, <code>alexa-top1m.csv</code></td>
 <td><code>alexa_dane_stat_output.tar.gz</code></td>
 <td>-</td>
@@ -543,9 +556,9 @@ table, th, td {
 }
 </style>
 
-<h1 id="3-running-our-measurement-codes-to-get-your-own-raw-datasets-tlsa-records-and-their-certificates">3. Running our measurement codes to get your own raw datasets (TLSA records and their certificates)</h1>
+<h1 id="section3">3. Running our measurement codes to get your own raw datasets (TLSA records and their certificates)</h1>
 <p>This section introduces our source codes that we used to collect our datasets. We used these source codes to collect TLSA records and their certificates by sending average 11,972 TLSA record lookups as well as the certificate chains every hour from July 11, 2019 to October 31, 2019. We refer to these measurements as the Hourly dataset.</p>
-<p>What about Daily dataset? Because the Daily dataset that contains every domain names under top level domains was collected using zone files that are given under agreement with registries, we cannot make them just publicly available. Instead, we provide intermediary data <br>(e.g. <code>tlsa-counts.csv</code>) extracted from the Daily dataset which is needed to run our scripts.</p>
+<p>What about Daily dataset? Because the Daily dataset that contains every domain names under top level domains was collected using zone files that are given under agreement with registries, we cannot make them just publicly available. Instead, we provide intermediary data (e.g. <code>tlsa-counts.csv</code>) extracted from the Daily dataset which is needed to run our scripts.</p>
 <h2 id="scanning-source-codes">Scanning source codes</h2>
 <p>
 
@@ -563,12 +576,12 @@ table, th, td {
 <tbody>
 <tr>
 <td><code>tlsa-scan.go</code></td>
-<td>It fetches TLSA records from a list of domains</td>
+<td>It fetches TLSA records from a list of domains.</td>
 <td><a href="/codes/tlsa-scan.go">link</a><sup>1</sup></td>
 </tr>
 <tr>
 <td><code>starttls-scan.go</code></td>
-<td>It collects certificates via STARTTLS</td>
+<td>It collects certificates via STARTTLS.</td>
 <td><a href="/codes/starttls-scan.go">link</a></td>
 </tr>
 </tbody>
